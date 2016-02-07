@@ -172,6 +172,24 @@
 }
 
 
+/** Promotional section  */
+#section-below-slider .block-large .block-title,
+.product-cat-desc {
+    background: rgba(203, 60, 131, 0.47)
+}
+#section-promo3 .caption, 
+aside.widget_eightstore_lite_promo,
+#section-promo2 .caption {
+    background: #CB3C83;
+}
+
+/** Product section*/
+.title-cart a.add_to_cart_button:before {
+    background: #ac0472 none repeat scroll 0 0;
+}
+.title-cart a.add_to_cart_button::after {
+    border-top: 7px solid #ac0472;
+}
 
 
 
