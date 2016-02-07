@@ -170,7 +170,45 @@
 .caption-title p.other-all{
     color: #CB3C83;
 }
+.slick-dots li:hover, .slick-dots li.slick-active {
+    background-color: #CB3C83;
+}
+.slick-dots li {
+    border: 1px solid #CB3C83;
+}
+.es-slider .slick-prev {
+    background: url("images/bt-prev.png") no-repeat scroll center center rgba(255, 255, 255, 0.43);
+}
+.es-slider .slick-prev:hover{
+    background: url("images/bt-prev.png") no-repeat scroll center center rgba(255, 255, 255, 0.8);
+}
+.es-slider .slick-next {
+    background: url("images/bt-next.png") no-repeat scroll center center rgba(255, 255, 255, 0.43);
+}
+.es-slider .slick-next:hover {
+   background: url("images/bt-next.png") no-repeat scroll center center rgba(255, 255, 255, 0.8);
+}
 
+/** Image Elements */
+.slick-next {
+	background: url(images/product-arrow-next.jpg) no-repeat scroll 0 0;
+	background-position: -24px 0;
+}
+.slick-prev {
+	background: url(images/product-arrow-prev.jpg) no-repeat scroll 0 0;
+}
+.title-cart a.add_to_cart_button{
+	background: url(images/shopping-cart.png) no-repeat;
+}
+.title-cart a.add_to_cart_button:hover{
+	background: url(images/shopping-cart.png) no-repeat;
+}
+.title-cart a.product_type_variable{
+	background: url(images/shopping-cart.png) no-repeat;
+}
+.woocommerce a.button:hover{
+	background-image: url(images/shopping-cart.png) no-repeat scroll 0 0;
+}
 
 /** Promotional section  */
 #section-below-slider .block-large .block-title,
