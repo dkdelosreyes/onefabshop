@@ -1,0 +1,187 @@
+/*
+ Theme Name:   EightStore Lite Child
+ Theme URI:    http://8degreethemes.com/wordpress-themes/eightstore-lite/
+ Description:  EightStore Lite Child Theme
+ Author:       Dianne Katherine Delos Reyes
+ Template:     eightstore-lite
+ Version:      1.0.0
+ License:      GNU General Public License v2 or later
+ License URI:  http://www.gnu.org/licenses/gpl-2.0.html
+ Tags: blue, white, light, custom-menu, one-column, two-columns, three-columns, left-sidebar, right-sidebar, responsive-layout, custom-background, theme-options, threaded-comments, featured-images, custom-header, translation-ready
+ Text Domain:  eightstore-lite-child
+*/
+
+
+/* Header BG */
+.site-header {
+	background: url('images/header-bg-combine.jpg') no-repeat 0 0;
+}
+.top-header {
+    background: rgba(203, 60, 131, 0.23) none repeat scroll 0 0;
+}
+.social-icons .fa {
+    background: #AC0472 none repeat scroll 0 0;
+}
+.social-icons .fa::after {
+    border-top: 10px solid rgb(236, 194, 213) !important;
+}
+.social-icons .fa:hover {
+	background: #cb3c83;
+}
+.header-callto .fa.fa-phone, 
+.header-callto .fa.fa-envelope {
+    color: #AC0472;
+}
+.header-callto > a:hover {
+	color: #cb3c83;
+}
+.header-callto > a {
+    color: #AC0472;
+}
+
+/* Header Branding */
+.site-branding {
+    width: 80%;
+}
+.site-branding a.header-image {
+    display: inline-block;
+    width: 10%;
+    max-width: 90px;
+}
+.site-titles {
+     display: inline-block; 
+}
+.right-links {
+    width: 15%;
+    text-align: right;
+}
+.site-branding h1.site-title {
+	color: #ac0472;
+    font-family: mistral;
+    font-size: 82px;
+    font-weight: 100;
+    text-transform: capitalize;
+    line-height: 0.8;
+}
+.site-description {
+	/*color: #AC0472;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 12px;*/
+    color: #AC0472;
+    font-weight: bold;
+    text-transform: none;
+    font-size: 17px;
+    font-family: "Roboto Condensed";
+}
+/** Menu */
+.store-menu {
+    background: #cb3c83 none repeat scroll 0 0;
+}
+.main-navigation .current_page_item > a, .main-navigation .current-menu-item > a, .main-navigation .current_page_ancestor > a {
+    background: #AC0472;
+    color: #fff;
+}
+.nav-menu > li a:hover{
+    background: #ba2871;
+    color: #fff;
+}
+.main-navigation ul.menu li::before {
+	border-right: 0px;
+}
+.main-navigation li {
+	margin-left: -3px;
+}
+.main-navigation ul ul {
+	background: #ac0472;
+	overflow: hidden;
+}
+
+/** Search Box Styling */
+.main-header .fa {
+	background: #ac0472 none repeat scroll 0 0;
+}
+.main-header .fa:hover, .my-account:hover .fa {
+	background: #cb3c83;
+}
+.cart-count {
+    border: 1px solid #ac0472;
+    color: #ac0472;
+}
+.view-cart:hover .fa{
+	background: #cb3c83;	
+}
+.view-cart:hover .cart-count{
+	border-color: #cb3c83;
+	color: #cb3c83;
+}
+
+/* Account Sub Menu */
+.welcome-user::before {
+	border-bottom: 10px solid #ac0472;
+}
+.welcome-user{
+	background: #ac0472 none repeat scroll 0 0;
+	box-shadow: 0 0 5px #ac0472;
+}
+.welcome-user a {
+	color: #ffffff;
+}
+.welcome-user a:hover {
+	text-decoration: none;
+	color: #f3d3ef;
+}
+.welcome-user > h2 {
+	border-bottom: 1px solid #ac0472;
+}
+
+/* Cart Box */
+.main-header .right-links .cart-box .view-cart .sub-menu{
+	background-color: #ac0472;
+	box-shadow: 0 0 5px #ac0472;
+}
+.view-cart ul.sub-menu li {
+	border-bottom: 1px solid #fff;
+}
+.main-header .fa.fa-shopping-cart:hover::after {
+	border-bottom: 10px solid #ac0472;
+}
+.view-cart a.remove {
+	background: #cb4185 none repeat scroll 0 0;
+}
+.view-cart a.remove:hover {
+	background: #f5d5f0;
+	color: #ac0472; 
+}
+.view-cart .btn.quick-checkout {
+	background: #cb4185 none repeat scroll 0 0;
+}
+.view-cart .btn.quick-checkout:hover {
+	background: #007371;
+	background: #f5d5f0;
+	color: #ac0472; 
+}
+
+/** Banner Slider */
+.caption-title {
+    border-top: 3px solid #CB3C83;
+    border-bottom: 3px solid #CB3C83;
+}
+.caption-title p.other-all{
+    color: #CB3C83;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
