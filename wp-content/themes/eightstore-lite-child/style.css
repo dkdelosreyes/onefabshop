@@ -198,7 +198,7 @@
 	background: url(images/product-arrow-prev.jpg) no-repeat scroll 0 0;
 }
 .title-cart a.add_to_cart_button{
-	background: url(images/shopping-cart.png) no-repeat;
+	background: url(images/shopping-rt.png) no-repeat;
 }
 .title-cart a.add_to_cart_button:hover{
 	background: url(images/shopping-cart.png) no-repeat;
@@ -208,6 +208,9 @@
 }
 .woocommerce a.button:hover{
 	background-image: url(images/shopping-cart.png) no-repeat scroll 0 0;
+}
+.title-cart a:hover{
+	color: #ac0472;
 }
 
 /** Promotional section  */
@@ -229,7 +232,24 @@ aside.widget_eightstore_lite_promo,
     border-top: 7px solid #ac0472;
 }
 
+/** Blog section */
+.blog-content > span a:hover {
+	color: #ac0472;
+}
 
+/** Footer section*/
+#section-footer2 .menu-custom-footer-menu-container ul.menu li.current-menu-item a, 
+#section-footer2 .menu-custom-footer-menu-container ul.menu li.current_page_item a, 
+#section-footer2 .menu-custom-footer-menu-container ul.menu li a:hover {
+	color: #cb3c83;
+	padding-left: 0px;
+}
+
+/** Floaters */
+div#es-top:hover {
+	background: #cb3c83;
+	color: #ffffff;
+}
 
 
 
