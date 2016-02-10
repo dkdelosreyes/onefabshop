@@ -344,10 +344,73 @@ div#es-top:hover {
 .woocommerce input.button.alt {
     background-color: #CB3C83;
 }
+.woocommerce #respond input#submit.alt:hover, 
+.woocommerce a.button.alt:hover, 
+.woocommerce button.button.alt:hover, 
+.woocommerce input.button.alt:hover {
+    background-color: #AC0472;
+}
 
+/** Checkout */
+.woocommerce .woocommerce-error, 
+.woocommerce .woocommerce-info, 
+.woocommerce .woocommerce-message {
+    border-bottom: 3px solid #CB3C83;
+}
+.woocommerce .woocommerce-info::before {
+    color: #CB3C83;
+}
+.entry-content .woocommerce-info a {
+    color: #CB3C83;
+    border-bottom: 1px solid transparent !important;
+}
+.entry-content .woocommerce-info a:hover {
+	color: #AC0472;
+	border-bottom: 1px solid #AC0472 !important;
+}
 
-
-
+/** Blogs and Testimonialssam */
+.blog-comment a:hover,
+.testimonial-content > span a:hover {
+    color: #AC0472;
+}
+.entry-meta a,
+.single .entry-footer a, 
+.single .entry-footer span, 
+.search .entry-footer span.edit-link a,
+.comment-list a {
+    color: #CB3C83;
+}
+.entry-meta a:hover,
+.single .entry-footer a:hover, 
+.search .entry-footer span.edit-link a:hover,
+.comment-list a:hover {
+	color: #AC0472;
+}
+.nav-previous a, .nav-next a {
+    background: #CB3C83;
+}
+.nav-previous a:hover, 
+.nav-next a:hover {
+    background: #AC0472;
+}
+h3.comment-reply-title {
+    background-color: #CB3C83;
+}
+a.comment-reply-link, 
+.comment-form .form-submit input#submit {
+    background: #CB3C83;
+}
+a.comment-reply-link:hover, 
+.comment-form .form-submit input#submit:hover {
+    background: #AC0472;
+}
+.comments-area #respond {
+	margin-bottom: 20px;
+}
+h3.comment-reply-title {
+    background-color: #949494;
+}
 
 
 
