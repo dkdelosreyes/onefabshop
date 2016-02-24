@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.11
+-- version 3.3.9
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 07, 2016 at 03:01 PM
--- Server version: 5.6.21
--- PHP Version: 5.5.19
+-- Generation Time: Feb 24, 2016 at 08:28 AM
+-- Server version: 5.5.8
+-- PHP Version: 5.3.5
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -27,11 +26,19 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_2_commentmeta` (
-`meta_id` bigint(20) unsigned NOT NULL,
+  `meta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `comment_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `meta_key` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `meta_value` longtext COLLATE utf8mb4_unicode_ci
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `meta_value` longtext COLLATE utf8mb4_unicode_ci,
+  PRIMARY KEY (`meta_id`),
+  KEY `comment_id` (`comment_id`),
+  KEY `meta_key` (`meta_key`(191))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `ofs2616_2_commentmeta`
+--
+
 
 -- --------------------------------------------------------
 
@@ -40,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `ofs2616_2_commentmeta` (
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_2_comments` (
-`comment_ID` bigint(20) unsigned NOT NULL,
+  `comment_ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `comment_post_ID` bigint(20) unsigned NOT NULL DEFAULT '0',
   `comment_author` tinytext COLLATE utf8mb4_unicode_ci NOT NULL,
   `comment_author_email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
@@ -54,8 +61,14 @@ CREATE TABLE IF NOT EXISTS `ofs2616_2_comments` (
   `comment_agent` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `comment_type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `comment_parent` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `user_id` bigint(20) unsigned NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `user_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`comment_ID`),
+  KEY `comment_post_ID` (`comment_post_ID`),
+  KEY `comment_approved_date_gmt` (`comment_approved`,`comment_date_gmt`),
+  KEY `comment_date_gmt` (`comment_date_gmt`),
+  KEY `comment_parent` (`comment_parent`),
+  KEY `comment_author_email` (`comment_author_email`(10))
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `ofs2616_2_comments`
@@ -71,7 +84,7 @@ INSERT INTO `ofs2616_2_comments` (`comment_ID`, `comment_post_ID`, `comment_auth
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_2_links` (
-`link_id` bigint(20) unsigned NOT NULL,
+  `link_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `link_url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `link_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `link_image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
@@ -83,8 +96,15 @@ CREATE TABLE IF NOT EXISTS `ofs2616_2_links` (
   `link_updated` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `link_rel` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `link_notes` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `link_rss` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `link_rss` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`link_id`),
+  KEY `link_visible` (`link_visible`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `ofs2616_2_links`
+--
+
 
 -- --------------------------------------------------------
 
@@ -93,11 +113,13 @@ CREATE TABLE IF NOT EXISTS `ofs2616_2_links` (
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_2_options` (
-`option_id` bigint(20) unsigned NOT NULL,
+  `option_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `option_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `option_value` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `autoload` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes'
-) ENGINE=InnoDB AUTO_INCREMENT=264 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `autoload` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
+  PRIMARY KEY (`option_id`),
+  UNIQUE KEY `option_name` (`option_name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=261 ;
 
 --
 -- Dumping data for table `ofs2616_2_options`
@@ -354,11 +376,14 @@ INSERT INTO `ofs2616_2_options` (`option_id`, `option_name`, `option_value`, `au
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_2_postmeta` (
-`meta_id` bigint(20) unsigned NOT NULL,
+  `meta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `post_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `meta_key` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `meta_value` longtext COLLATE utf8mb4_unicode_ci
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `meta_value` longtext COLLATE utf8mb4_unicode_ci,
+  PRIMARY KEY (`meta_id`),
+  KEY `post_id` (`post_id`),
+  KEY `meta_key` (`meta_key`(191))
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=36 ;
 
 --
 -- Dumping data for table `ofs2616_2_postmeta`
@@ -408,7 +433,7 @@ INSERT INTO `ofs2616_2_postmeta` (`meta_id`, `post_id`, `meta_key`, `meta_value`
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_2_posts` (
-`ID` bigint(20) unsigned NOT NULL,
+  `ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `post_author` bigint(20) unsigned NOT NULL DEFAULT '0',
   `post_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `post_date_gmt` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -430,8 +455,13 @@ CREATE TABLE IF NOT EXISTS `ofs2616_2_posts` (
   `menu_order` int(11) NOT NULL DEFAULT '0',
   `post_type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'post',
   `post_mime_type` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `comment_count` bigint(20) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `comment_count` bigint(20) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ID`),
+  KEY `post_name` (`post_name`(191)),
+  KEY `type_status_date` (`post_type`,`post_status`,`post_date`,`ID`),
+  KEY `post_parent` (`post_parent`),
+  KEY `post_author` (`post_author`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data for table `ofs2616_2_posts`
@@ -455,11 +485,19 @@ INSERT INTO `ofs2616_2_posts` (`ID`, `post_author`, `post_date`, `post_date_gmt`
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_2_termmeta` (
-`meta_id` bigint(20) unsigned NOT NULL,
+  `meta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `term_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `meta_key` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `meta_value` longtext COLLATE utf8mb4_unicode_ci
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `meta_value` longtext COLLATE utf8mb4_unicode_ci,
+  PRIMARY KEY (`meta_id`),
+  KEY `term_id` (`term_id`),
+  KEY `meta_key` (`meta_key`(191))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `ofs2616_2_termmeta`
+--
+
 
 -- --------------------------------------------------------
 
@@ -468,12 +506,15 @@ CREATE TABLE IF NOT EXISTS `ofs2616_2_termmeta` (
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_2_terms` (
-`term_id` bigint(20) unsigned NOT NULL,
+  `term_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `slug` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `term_group` bigint(10) NOT NULL DEFAULT '0',
-  `term_order` int(4) DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `term_order` int(4) DEFAULT '0',
+  PRIMARY KEY (`term_id`),
+  KEY `slug` (`slug`(191)),
+  KEY `name` (`name`(191))
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `ofs2616_2_terms`
@@ -498,7 +539,9 @@ INSERT INTO `ofs2616_2_terms` (`term_id`, `name`, `slug`, `term_group`, `term_or
 CREATE TABLE IF NOT EXISTS `ofs2616_2_term_relationships` (
   `object_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `term_taxonomy_id` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `term_order` int(11) NOT NULL DEFAULT '0'
+  `term_order` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`object_id`,`term_taxonomy_id`),
+  KEY `term_taxonomy_id` (`term_taxonomy_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -519,13 +562,16 @@ INSERT INTO `ofs2616_2_term_relationships` (`object_id`, `term_taxonomy_id`, `te
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_2_term_taxonomy` (
-`term_taxonomy_id` bigint(20) unsigned NOT NULL,
+  `term_taxonomy_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `term_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `taxonomy` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `parent` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `count` bigint(20) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `count` bigint(20) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`term_taxonomy_id`),
+  UNIQUE KEY `term_id_taxonomy` (`term_id`,`taxonomy`),
+  KEY `taxonomy` (`taxonomy`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `ofs2616_2_term_taxonomy`
@@ -548,11 +594,17 @@ INSERT INTO `ofs2616_2_term_taxonomy` (`term_taxonomy_id`, `term_id`, `taxonomy`
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_2_ufbl_entries` (
-`entry_id` mediumint(9) NOT NULL,
+  `entry_id` mediumint(9) NOT NULL AUTO_INCREMENT,
   `form_id` mediumint(9) DEFAULT NULL,
   `entry_detail` text COLLATE utf8mb4_unicode_ci,
-  `entry_created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `entry_created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  UNIQUE KEY `entry_id` (`entry_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `ofs2616_2_ufbl_entries`
+--
+
 
 -- --------------------------------------------------------
 
@@ -561,13 +613,19 @@ CREATE TABLE IF NOT EXISTS `ofs2616_2_ufbl_entries` (
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_2_ufbl_forms` (
-`form_id` mediumint(9) NOT NULL,
+  `form_id` mediumint(9) NOT NULL AUTO_INCREMENT,
   `form_title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `form_detail` text COLLATE utf8mb4_unicode_ci,
   `form_status` int(11) DEFAULT NULL,
   `form_created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `form_modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `form_modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  UNIQUE KEY `form_id` (`form_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `ofs2616_2_ufbl_forms`
+--
+
 
 -- --------------------------------------------------------
 
@@ -576,7 +634,7 @@ CREATE TABLE IF NOT EXISTS `ofs2616_2_ufbl_forms` (
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_2_woocommerce_api_keys` (
-`key_id` bigint(20) NOT NULL,
+  `key_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) NOT NULL,
   `description` longtext COLLATE utf8mb4_unicode_ci,
   `permissions` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -584,8 +642,16 @@ CREATE TABLE IF NOT EXISTS `ofs2616_2_woocommerce_api_keys` (
   `consumer_secret` char(43) COLLATE utf8mb4_unicode_ci NOT NULL,
   `nonces` longtext COLLATE utf8mb4_unicode_ci,
   `truncated_key` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `last_access` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `last_access` datetime DEFAULT NULL,
+  PRIMARY KEY (`key_id`),
+  KEY `consumer_key` (`consumer_key`),
+  KEY `consumer_secret` (`consumer_secret`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `ofs2616_2_woocommerce_api_keys`
+--
+
 
 -- --------------------------------------------------------
 
@@ -594,13 +660,20 @@ CREATE TABLE IF NOT EXISTS `ofs2616_2_woocommerce_api_keys` (
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_2_woocommerce_attribute_taxonomies` (
-`attribute_id` bigint(20) NOT NULL,
+  `attribute_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `attribute_name` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute_label` longtext COLLATE utf8mb4_unicode_ci,
   `attribute_type` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute_orderby` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `attribute_public` int(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `attribute_public` int(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`attribute_id`),
+  KEY `attribute_name` (`attribute_name`(191))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `ofs2616_2_woocommerce_attribute_taxonomies`
+--
+
 
 -- --------------------------------------------------------
 
@@ -609,7 +682,7 @@ CREATE TABLE IF NOT EXISTS `ofs2616_2_woocommerce_attribute_taxonomies` (
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_2_woocommerce_downloadable_product_permissions` (
-`permission_id` bigint(20) NOT NULL,
+  `permission_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `download_id` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
   `product_id` bigint(20) NOT NULL,
   `order_id` bigint(20) NOT NULL DEFAULT '0',
@@ -619,8 +692,16 @@ CREATE TABLE IF NOT EXISTS `ofs2616_2_woocommerce_downloadable_product_permissio
   `downloads_remaining` varchar(9) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `access_granted` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `access_expires` datetime DEFAULT NULL,
-  `download_count` bigint(20) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `download_count` bigint(20) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`permission_id`),
+  KEY `download_order_key_product` (`product_id`,`order_id`,`order_key`(191),`download_id`),
+  KEY `download_order_product` (`download_id`,`order_id`,`product_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `ofs2616_2_woocommerce_downloadable_product_permissions`
+--
+
 
 -- --------------------------------------------------------
 
@@ -629,11 +710,19 @@ CREATE TABLE IF NOT EXISTS `ofs2616_2_woocommerce_downloadable_product_permissio
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_2_woocommerce_order_itemmeta` (
-`meta_id` bigint(20) NOT NULL,
+  `meta_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `order_item_id` bigint(20) NOT NULL,
   `meta_key` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `meta_value` longtext COLLATE utf8mb4_unicode_ci
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `meta_value` longtext COLLATE utf8mb4_unicode_ci,
+  PRIMARY KEY (`meta_id`),
+  KEY `order_item_id` (`order_item_id`),
+  KEY `meta_key` (`meta_key`(191))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `ofs2616_2_woocommerce_order_itemmeta`
+--
+
 
 -- --------------------------------------------------------
 
@@ -642,11 +731,18 @@ CREATE TABLE IF NOT EXISTS `ofs2616_2_woocommerce_order_itemmeta` (
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_2_woocommerce_order_items` (
-`order_item_id` bigint(20) NOT NULL,
+  `order_item_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `order_item_name` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `order_item_type` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `order_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `order_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`order_item_id`),
+  KEY `order_id` (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `ofs2616_2_woocommerce_order_items`
+--
+
 
 -- --------------------------------------------------------
 
@@ -655,11 +751,13 @@ CREATE TABLE IF NOT EXISTS `ofs2616_2_woocommerce_order_items` (
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_2_woocommerce_sessions` (
-`session_id` bigint(20) NOT NULL,
+  `session_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `session_key` char(32) COLLATE utf8mb4_unicode_ci NOT NULL,
   `session_value` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `session_expiry` bigint(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `session_expiry` bigint(20) NOT NULL,
+  PRIMARY KEY (`session_key`),
+  UNIQUE KEY `session_id` (`session_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `ofs2616_2_woocommerce_sessions`
@@ -675,7 +773,7 @@ INSERT INTO `ofs2616_2_woocommerce_sessions` (`session_id`, `session_key`, `sess
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_2_woocommerce_tax_rates` (
-`tax_rate_id` bigint(20) NOT NULL,
+  `tax_rate_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `tax_rate_country` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `tax_rate_state` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `tax_rate` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
@@ -684,8 +782,18 @@ CREATE TABLE IF NOT EXISTS `ofs2616_2_woocommerce_tax_rates` (
   `tax_rate_compound` int(1) NOT NULL DEFAULT '0',
   `tax_rate_shipping` int(1) NOT NULL DEFAULT '1',
   `tax_rate_order` bigint(20) NOT NULL,
-  `tax_rate_class` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `tax_rate_class` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`tax_rate_id`),
+  KEY `tax_rate_country` (`tax_rate_country`(191)),
+  KEY `tax_rate_state` (`tax_rate_state`(191)),
+  KEY `tax_rate_class` (`tax_rate_class`(191)),
+  KEY `tax_rate_priority` (`tax_rate_priority`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `ofs2616_2_woocommerce_tax_rates`
+--
+
 
 -- --------------------------------------------------------
 
@@ -694,11 +802,20 @@ CREATE TABLE IF NOT EXISTS `ofs2616_2_woocommerce_tax_rates` (
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_2_woocommerce_tax_rate_locations` (
-`location_id` bigint(20) NOT NULL,
+  `location_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `location_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tax_rate_id` bigint(20) NOT NULL,
-  `location_type` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `location_type` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`location_id`),
+  KEY `tax_rate_id` (`tax_rate_id`),
+  KEY `location_type` (`location_type`),
+  KEY `location_type_code` (`location_type`,`location_code`(90))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `ofs2616_2_woocommerce_tax_rate_locations`
+--
+
 
 -- --------------------------------------------------------
 
@@ -707,11 +824,14 @@ CREATE TABLE IF NOT EXISTS `ofs2616_2_woocommerce_tax_rate_locations` (
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_2_woocommerce_termmeta` (
-`meta_id` bigint(20) NOT NULL,
+  `meta_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `woocommerce_term_id` bigint(20) NOT NULL,
   `meta_key` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `meta_value` longtext COLLATE utf8mb4_unicode_ci
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `meta_value` longtext COLLATE utf8mb4_unicode_ci,
+  PRIMARY KEY (`meta_id`),
+  KEY `woocommerce_term_id` (`woocommerce_term_id`),
+  KEY `meta_key` (`meta_key`(191))
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `ofs2616_2_woocommerce_termmeta`
@@ -732,7 +852,7 @@ INSERT INTO `ofs2616_2_woocommerce_termmeta` (`meta_id`, `woocommerce_term_id`, 
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_blogs` (
-`blog_id` bigint(20) NOT NULL,
+  `blog_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `site_id` bigint(20) NOT NULL DEFAULT '0',
   `domain` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `path` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
@@ -743,15 +863,18 @@ CREATE TABLE IF NOT EXISTS `ofs2616_blogs` (
   `mature` tinyint(2) NOT NULL DEFAULT '0',
   `spam` tinyint(2) NOT NULL DEFAULT '0',
   `deleted` tinyint(2) NOT NULL DEFAULT '0',
-  `lang_id` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `lang_id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`blog_id`),
+  KEY `domain` (`domain`(50),`path`(5)),
+  KEY `lang_id` (`lang_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `ofs2616_blogs`
 --
 
 INSERT INTO `ofs2616_blogs` (`blog_id`, `site_id`, `domain`, `path`, `registered`, `last_updated`, `public`, `archived`, `mature`, `spam`, `deleted`, `lang_id`) VALUES
-(1, 1, 'localhost', '/onefabshop/', '2016-02-07 12:09:58', '0000-00-00 00:00:00', 1, 0, 0, 0, 0, 0),
+(1, 1, 'localhost', '/onefabshop/', '2016-02-07 12:09:58', '2016-02-24 07:26:01', 1, 0, 0, 0, 0, 0),
 (2, 1, 'localhost', '/onefabshop/ae/', '2016-02-07 12:18:43', '2016-02-07 12:42:32', 1, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
@@ -763,8 +886,15 @@ INSERT INTO `ofs2616_blogs` (`blog_id`, `site_id`, `domain`, `path`, `registered
 CREATE TABLE IF NOT EXISTS `ofs2616_blog_versions` (
   `blog_id` bigint(20) NOT NULL DEFAULT '0',
   `db_version` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `last_updated` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `last_updated` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`blog_id`),
+  KEY `db_version` (`db_version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ofs2616_blog_versions`
+--
+
 
 -- --------------------------------------------------------
 
@@ -773,11 +903,14 @@ CREATE TABLE IF NOT EXISTS `ofs2616_blog_versions` (
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_commentmeta` (
-`meta_id` bigint(20) unsigned NOT NULL,
+  `meta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `comment_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `meta_key` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `meta_value` longtext COLLATE utf8mb4_unicode_ci
-) ENGINE=InnoDB AUTO_INCREMENT=206 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `meta_value` longtext COLLATE utf8mb4_unicode_ci,
+  PRIMARY KEY (`meta_id`),
+  KEY `comment_id` (`comment_id`),
+  KEY `meta_key` (`meta_key`(191))
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=208 ;
 
 --
 -- Dumping data for table `ofs2616_commentmeta`
@@ -988,7 +1121,9 @@ INSERT INTO `ofs2616_commentmeta` (`meta_id`, `comment_id`, `meta_key`, `meta_va
 (202, 31, 'verified', '0'),
 (203, 32, 'verified', '0'),
 (204, 37, 'verified', '0'),
-(205, 35, 'verified', '0');
+(205, 35, 'verified', '0'),
+(206, 40, 'verified', '0'),
+(207, 41, 'verified', '0');
 
 -- --------------------------------------------------------
 
@@ -997,7 +1132,7 @@ INSERT INTO `ofs2616_commentmeta` (`meta_id`, `comment_id`, `meta_key`, `meta_va
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_comments` (
-`comment_ID` bigint(20) unsigned NOT NULL,
+  `comment_ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `comment_post_ID` bigint(20) unsigned NOT NULL DEFAULT '0',
   `comment_author` tinytext COLLATE utf8mb4_unicode_ci NOT NULL,
   `comment_author_email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
@@ -1011,8 +1146,14 @@ CREATE TABLE IF NOT EXISTS `ofs2616_comments` (
   `comment_agent` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `comment_type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `comment_parent` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `user_id` bigint(20) unsigned NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `user_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`comment_ID`),
+  KEY `comment_post_ID` (`comment_post_ID`),
+  KEY `comment_approved_date_gmt` (`comment_approved`,`comment_date_gmt`),
+  KEY `comment_date_gmt` (`comment_date_gmt`),
+  KEY `comment_parent` (`comment_parent`),
+  KEY `comment_author_email` (`comment_author_email`(10))
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=42 ;
 
 --
 -- Dumping data for table `ofs2616_comments`
@@ -1068,7 +1209,7 @@ INSERT INTO `ofs2616_comments` (`comment_ID`, `comment_post_ID`, `comment_author
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_links` (
-`link_id` bigint(20) unsigned NOT NULL,
+  `link_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `link_url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `link_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `link_image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
@@ -1080,8 +1221,15 @@ CREATE TABLE IF NOT EXISTS `ofs2616_links` (
   `link_updated` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `link_rel` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `link_notes` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `link_rss` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `link_rss` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`link_id`),
+  KEY `link_visible` (`link_visible`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `ofs2616_links`
+--
+
 
 -- --------------------------------------------------------
 
@@ -1090,11 +1238,13 @@ CREATE TABLE IF NOT EXISTS `ofs2616_links` (
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_options` (
-`option_id` bigint(20) unsigned NOT NULL,
+  `option_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `option_name` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `option_value` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `autoload` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes'
-) ENGINE=InnoDB AUTO_INCREMENT=506 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `autoload` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
+  PRIMARY KEY (`option_id`),
+  UNIQUE KEY `option_name` (`option_name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=637 ;
 
 --
 -- Dumping data for table `ofs2616_options`
@@ -1128,11 +1278,11 @@ INSERT INTO `ofs2616_options` (`option_id`, `option_name`, `option_value`, `auto
 (25, 'links_updated_date_format', 'F j, Y g:i a', 'yes'),
 (26, 'comment_moderation', '0', 'yes'),
 (27, 'moderation_notify', '1', 'yes'),
-(28, 'permalink_structure', '/blog/%year%/%monthnum%/%day%/%postname%/', 'yes'),
+(28, 'permalink_structure', '/%postname%/', 'yes'),
 (30, 'hack_file', '0', 'yes'),
 (31, 'blog_charset', 'UTF-8', 'yes'),
 (32, 'moderation_keys', '', 'no'),
-(33, 'active_plugins', 'a:4:{i:0;s:59:"intuitive-custom-post-order/intuitive-custom-post-order.php";i:1;s:57:"ultimate-form-builder-lite/ultimate-form-builder-lite.php";i:2;s:27:"woocommerce/woocommerce.php";i:3;s:41:"wordpress-importer/wordpress-importer.php";}', 'yes'),
+(33, 'active_plugins', 'a:5:{i:0;s:39:"custom-permalinks/custom-permalinks.php";i:1;s:59:"intuitive-custom-post-order/intuitive-custom-post-order.php";i:2;s:57:"ultimate-form-builder-lite/ultimate-form-builder-lite.php";i:3;s:27:"woocommerce/woocommerce.php";i:4;s:41:"wordpress-importer/wordpress-importer.php";}', 'yes'),
 (34, 'category_base', '', 'yes'),
 (35, 'ping_sites', 'http://rpc.pingomatic.com/', 'yes'),
 (37, 'comment_max_links', '2', 'yes'),
@@ -1150,7 +1300,7 @@ INSERT INTO `ofs2616_options` (`option_id`, `option_name`, `option_value`, `auto
 (49, 'db_version', '35700', 'yes'),
 (50, 'uploads_use_yearmonth_folders', '1', 'yes'),
 (51, 'upload_path', '', 'yes'),
-(52, 'blog_public', '0', 'yes'),
+(52, 'blog_public', '1', 'yes'),
 (53, 'default_link_category', '2', 'yes'),
 (54, 'show_on_front', 'page', 'yes'),
 (55, 'tag_base', '', 'yes'),
@@ -1178,7 +1328,7 @@ INSERT INTO `ofs2616_options` (`option_id`, `option_name`, `option_value`, `auto
 (77, 'comment_order', 'asc', 'yes'),
 (78, 'sticky_posts', 'a:0:{}', 'yes'),
 (79, 'widget_categories', 'a:2:{i:2;a:4:{s:5:"title";s:0:"";s:5:"count";i:0;s:12:"hierarchical";i:0;s:8:"dropdown";i:0;}s:12:"_multiwidget";i:1;}', 'yes'),
-(80, 'widget_text', 'a:6:{i:1;a:0:{}i:2;a:3:{s:5:"title";s:21:"Follow us on Facebook";s:4:"text";s:12:"content here";s:6:"filter";b:0;}i:3;a:3:{s:5:"title";s:12:"Order Online";s:4:"text";s:0:"";s:6:"filter";b:0;}i:4;a:3:{s:5:"title";s:14:"Totally Secure";s:4:"text";s:0:"";s:6:"filter";b:0;}i:5;a:3:{s:5:"title";s:13:"Free Shipping";s:4:"text";s:0:"";s:6:"filter";b:0;}s:12:"_multiwidget";i:1;}', 'yes'),
+(80, 'widget_text', 'a:4:{i:1;a:0:{}i:2;a:3:{s:5:"title";s:21:"Follow us on Facebook";s:4:"text";s:269:"<div class="fb-page" data-href="https://www.facebook.com/Onefabshopph-215945351924631/?fref=nf" data-tabs="timeline" data-width="100%" data-height="214" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"></div>";s:6:"filter";b:0;}i:6;a:3:{s:5:"title";s:15:"Payment Options";s:4:"text";s:290:"<div class="menu-custom-footer-menu-container">\r\n	<ul class="menu">\r\n		<li class="menu-item">Bank</li>\r\n		<li class="menu-item">Credit Card</li>\r\n		<li class="menu-item">Cebuana</li>\r\n                <li class="menu-item">M Lhuiller</li>\r\n		<li class="menu-item">Paypal</li>\r\n	</ul>\r\n</div>";s:6:"filter";b:0;}s:12:"_multiwidget";i:1;}', 'yes'),
 (81, 'widget_rss', 'a:2:{i:1;a:0:{}s:12:"_multiwidget";i:1;}', 'yes'),
 (82, 'uninstall_plugins', 'a:1:{s:59:"intuitive-custom-post-order/intuitive-custom-post-order.php";s:15:"hicpo_uninstall";}', 'no'),
 (83, 'timezone_string', '', 'yes'),
@@ -1194,12 +1344,12 @@ INSERT INTO `ofs2616_options` (`option_id`, `option_name`, `option_value`, `auto
 (93, 'widget_recent-comments', 'a:2:{i:2;a:2:{s:5:"title";s:0:"";s:6:"number";i:5;}s:12:"_multiwidget";i:1;}', 'yes'),
 (94, 'widget_archives', 'a:2:{i:2;a:3:{s:5:"title";s:0:"";s:5:"count";i:0;s:8:"dropdown";i:0;}s:12:"_multiwidget";i:1;}', 'yes'),
 (95, 'widget_meta', 'a:2:{i:2;a:1:{s:5:"title";s:0:"";}s:12:"_multiwidget";i:1;}', 'yes'),
-(96, 'sidebars_widgets', 'a:17:{s:19:"wp_inactive_widgets";a:0:{}s:9:"sidebar-1";a:6:{i:0;s:8:"search-2";i:1;s:14:"recent-posts-2";i:2;s:17:"recent-comments-2";i:3;s:10:"archives-2";i:4;s:12:"categories-2";i:5;s:6:"meta-2";}s:4:"shop";a:2:{i:0;s:32:"woocommerce_product_categories-2";i:1;s:26:"woocommerce_price_filter-2";}s:31:"eightstore-lite-language-option";a:0:{}s:16:"widget-product-1";a:1:{i:0;s:25:"eightstore_lite_product-3";}s:14:"widget-promo-1";a:1:{i:0;s:27:"eightstore_lite_cta_video-2";}s:17:"widget-category-1";a:1:{i:0;s:29:"eightstore_lite_cat_product-2";}s:14:"widget-promo-2";a:1:{i:0;s:23:"eightstore_lite_promo-3";}s:17:"widget-category-2";a:1:{i:0;s:29:"eightstore_lite_cat_product-3";}s:14:"widget-promo-3";a:1:{i:0;s:23:"eightstore_lite_promo-4";}s:16:"widget-product-2";a:0:{}s:14:"widget-promo-4";a:0:{}s:12:"sidebar-left";a:0:{}s:13:"sidebar-right";a:0:{}s:8:"footer-1";a:3:{i:0;s:6:"text-3";i:1;s:6:"text-4";i:2;s:6:"text-5";}s:8:"footer-2";a:2:{i:0;s:10:"nav_menu-2";i:1;s:6:"text-2";}s:13:"array_version";i:3;}', 'yes'),
-(99, 'cron', 'a:10:{i:1454856602;a:1:{s:32:"woocommerce_cancel_unpaid_orders";a:1:{s:32:"40cd750bba9870f18aada2478b24840a";a:2:{s:8:"schedule";b:0;s:4:"args";a:0:{}}}}i:1454873628;a:3:{s:16:"wp_version_check";a:1:{s:32:"40cd750bba9870f18aada2478b24840a";a:3:{s:8:"schedule";s:10:"twicedaily";s:4:"args";a:0:{}s:8:"interval";i:43200;}}s:17:"wp_update_plugins";a:1:{s:32:"40cd750bba9870f18aada2478b24840a";a:3:{s:8:"schedule";s:10:"twicedaily";s:4:"args";a:0:{}s:8:"interval";i:43200;}}s:16:"wp_update_themes";a:1:{s:32:"40cd750bba9870f18aada2478b24840a";a:3:{s:8:"schedule";s:10:"twicedaily";s:4:"args";a:0:{}s:8:"interval";i:43200;}}}i:1454889600;a:1:{s:27:"woocommerce_scheduled_sales";a:1:{s:32:"40cd750bba9870f18aada2478b24840a";a:3:{s:8:"schedule";s:5:"daily";s:4:"args";a:0:{}s:8:"interval";i:86400;}}}i:1454890344;a:1:{s:21:"update_network_counts";a:1:{s:32:"40cd750bba9870f18aada2478b24840a";a:3:{s:8:"schedule";s:10:"twicedaily";s:4:"args";a:0:{}s:8:"interval";i:43200;}}}i:1454891174;a:1:{s:28:"woocommerce_cleanup_sessions";a:1:{s:32:"40cd750bba9870f18aada2478b24840a";a:3:{s:8:"schedule";s:10:"twicedaily";s:4:"args";a:0:{}s:8:"interval";i:43200;}}}i:1454916920;a:1:{s:19:"wp_scheduled_delete";a:1:{s:32:"40cd750bba9870f18aada2478b24840a";a:3:{s:8:"schedule";s:5:"daily";s:4:"args";a:0:{}s:8:"interval";i:86400;}}}i:1454919352;a:1:{s:30:"wp_scheduled_auto_draft_delete";a:1:{s:32:"40cd750bba9870f18aada2478b24840a";a:3:{s:8:"schedule";s:5:"daily";s:4:"args";a:0:{}s:8:"interval";i:86400;}}}i:1454934374;a:1:{s:30:"woocommerce_tracker_send_event";a:1:{s:32:"40cd750bba9870f18aada2478b24840a";a:3:{s:8:"schedule";s:5:"daily";s:4:"args";a:0:{}s:8:"interval";i:86400;}}}i:1456790400;a:1:{s:25:"woocommerce_geoip_updater";a:1:{s:32:"40cd750bba9870f18aada2478b24840a";a:3:{s:8:"schedule";s:7:"monthly";s:4:"args";a:0:{}s:8:"interval";i:2635200;}}}s:7:"version";i:2;}', 'yes'),
-(111, '_transient_random_seed', 'd6783e2484c0b7768a6f1d39d998c2a2', 'yes'),
-(113, '_transient_timeout_plugin_slugs', '1454934458', 'no'),
-(114, '_transient_plugin_slugs', 'a:5:{i:0;s:59:"intuitive-custom-post-order/intuitive-custom-post-order.php";i:1;s:57:"ultimate-form-builder-lite/ultimate-form-builder-lite.php";i:2;s:27:"woocommerce/woocommerce.php";i:3;s:41:"wordpress-importer/wordpress-importer.php";i:4;s:45:"wp-admin-bar-removal/wp-admin-bar-removal.php";}', 'no'),
-(119, 'recently_activated', 'a:1:{s:45:"wp-admin-bar-removal/wp-admin-bar-removal.php";i:1454813910;}', 'yes'),
+(96, 'sidebars_widgets', 'a:17:{s:19:"wp_inactive_widgets";a:0:{}s:9:"sidebar-1";a:6:{i:0;s:8:"search-2";i:1;s:14:"recent-posts-2";i:2;s:17:"recent-comments-2";i:3;s:10:"archives-2";i:4;s:12:"categories-2";i:5;s:6:"meta-2";}s:4:"shop";a:2:{i:0;s:32:"woocommerce_product_categories-2";i:1;s:26:"woocommerce_price_filter-2";}s:31:"eightstore-lite-language-option";a:0:{}s:16:"widget-product-1";a:1:{i:0;s:25:"eightstore_lite_product-3";}s:14:"widget-promo-1";a:1:{i:0;s:27:"eightstore_lite_cta_video-2";}s:17:"widget-category-1";a:1:{i:0;s:29:"eightstore_lite_cat_product-2";}s:14:"widget-promo-2";a:1:{i:0;s:23:"eightstore_lite_promo-3";}s:17:"widget-category-2";a:1:{i:0;s:29:"eightstore_lite_cat_product-3";}s:14:"widget-promo-3";a:1:{i:0;s:23:"eightstore_lite_promo-4";}s:16:"widget-product-2";a:0:{}s:14:"widget-promo-4";a:0:{}s:12:"sidebar-left";a:0:{}s:13:"sidebar-right";a:0:{}s:8:"footer-1";a:0:{}s:8:"footer-2";a:3:{i:0;s:10:"nav_menu-2";i:1;s:6:"text-6";i:2;s:6:"text-2";}s:13:"array_version";i:3;}', 'yes'),
+(99, 'cron', 'a:9:{i:1456299228;a:3:{s:16:"wp_version_check";a:1:{s:32:"40cd750bba9870f18aada2478b24840a";a:3:{s:8:"schedule";s:10:"twicedaily";s:4:"args";a:0:{}s:8:"interval";i:43200;}}s:17:"wp_update_plugins";a:1:{s:32:"40cd750bba9870f18aada2478b24840a";a:3:{s:8:"schedule";s:10:"twicedaily";s:4:"args";a:0:{}s:8:"interval";i:43200;}}s:16:"wp_update_themes";a:1:{s:32:"40cd750bba9870f18aada2478b24840a";a:3:{s:8:"schedule";s:10:"twicedaily";s:4:"args";a:0:{}s:8:"interval";i:43200;}}}i:1456299320;a:1:{s:19:"wp_scheduled_delete";a:1:{s:32:"40cd750bba9870f18aada2478b24840a";a:3:{s:8:"schedule";s:5:"daily";s:4:"args";a:0:{}s:8:"interval";i:86400;}}}i:1456301421;a:1:{s:32:"woocommerce_cancel_unpaid_orders";a:1:{s:32:"40cd750bba9870f18aada2478b24840a";a:2:{s:8:"schedule";b:0;s:4:"args";a:0:{}}}}i:1456301752;a:1:{s:30:"wp_scheduled_auto_draft_delete";a:1:{s:32:"40cd750bba9870f18aada2478b24840a";a:3:{s:8:"schedule";s:5:"daily";s:4:"args";a:0:{}s:8:"interval";i:86400;}}}i:1456315944;a:1:{s:21:"update_network_counts";a:1:{s:32:"40cd750bba9870f18aada2478b24840a";a:3:{s:8:"schedule";s:10:"twicedaily";s:4:"args";a:0:{}s:8:"interval";i:43200;}}}i:1456316774;a:2:{s:30:"woocommerce_tracker_send_event";a:1:{s:32:"40cd750bba9870f18aada2478b24840a";a:3:{s:8:"schedule";s:5:"daily";s:4:"args";a:0:{}s:8:"interval";i:86400;}}s:28:"woocommerce_cleanup_sessions";a:1:{s:32:"40cd750bba9870f18aada2478b24840a";a:3:{s:8:"schedule";s:10:"twicedaily";s:4:"args";a:0:{}s:8:"interval";i:43200;}}}i:1456358400;a:1:{s:27:"woocommerce_scheduled_sales";a:1:{s:32:"40cd750bba9870f18aada2478b24840a";a:3:{s:8:"schedule";s:5:"daily";s:4:"args";a:0:{}s:8:"interval";i:86400;}}}i:1456790400;a:1:{s:25:"woocommerce_geoip_updater";a:1:{s:32:"40cd750bba9870f18aada2478b24840a";a:3:{s:8:"schedule";s:7:"monthly";s:4:"args";a:0:{}s:8:"interval";i:2635200;}}}s:7:"version";i:2;}', 'yes'),
+(111, '_transient_random_seed', '4dce6920fda25af8e4b9dad4aaae8233', 'yes'),
+(113, '_transient_timeout_plugin_slugs', '1456385078', 'no'),
+(114, '_transient_plugin_slugs', 'a:6:{i:0;s:39:"custom-permalinks/custom-permalinks.php";i:1;s:59:"intuitive-custom-post-order/intuitive-custom-post-order.php";i:2;s:57:"ultimate-form-builder-lite/ultimate-form-builder-lite.php";i:3;s:27:"woocommerce/woocommerce.php";i:4;s:41:"wordpress-importer/wordpress-importer.php";i:5;s:45:"wp-admin-bar-removal/wp-admin-bar-removal.php";}', 'no'),
+(119, 'recently_activated', 'a:0:{}', 'yes'),
 (124, '_site_transient_timeout_browser_09405e74b30b86007210b586b2ddc252', '1455350134', 'yes'),
 (125, '_site_transient_browser_09405e74b30b86007210b586b2ddc252', 'a:9:{s:8:"platform";s:9:"Macintosh";s:4:"name";s:6:"Chrome";s:7:"version";s:13:"48.0.2564.103";s:10:"update_url";s:28:"http://www.google.com/chrome";s:7:"img_src";s:49:"http://s.wordpress.org/images/browsers/chrome.png";s:11:"img_src_ssl";s:48:"https://wordpress.org/images/browsers/chrome.png";s:15:"current_version";s:2:"18";s:7:"upgrade";b:0;s:8:"insecure";b:0;}', 'yes'),
 (128, 'widget_pages', 'a:1:{s:12:"_multiwidget";i:1;}', 'yes'),
@@ -1321,8 +1471,8 @@ INSERT INTO `ofs2616_options` (`option_id`, `option_name`, `option_value`, `auto
 (259, 'woocommerce_cheque_settings', 'a:1:{s:7:"enabled";s:2:"no";}', 'yes'),
 (260, 'woocommerce_cod_settings', 'a:1:{s:7:"enabled";s:2:"no";}', 'yes'),
 (261, 'woocommerce_bacs_settings', 'a:1:{s:7:"enabled";s:2:"no";}', 'yes'),
-(262, '_transient_product_query-transient-version', '1454760285', 'yes'),
-(263, '_transient_product-transient-version', '1454750170', 'yes'),
+(262, '_transient_product_query-transient-version', '1456296040', 'yes'),
+(263, '_transient_product-transient-version', '1456296040', 'yes'),
 (266, '_site_transient_timeout_wporg_theme_feature_list', '1454757656', 'yes'),
 (267, '_site_transient_wporg_theme_feature_list', 'a:4:{s:6:"Colors";a:15:{i:0;s:5:"black";i:1;s:4:"blue";i:2;s:5:"brown";i:3;s:4:"gray";i:4;s:5:"green";i:5;s:6:"orange";i:6;s:4:"pink";i:7;s:6:"purple";i:8;s:3:"red";i:9;s:6:"silver";i:10;s:3:"tan";i:11;s:5:"white";i:12;s:6:"yellow";i:13;s:4:"dark";i:14;s:5:"light";}s:6:"Layout";a:9:{i:0;s:12:"fixed-layout";i:1;s:12:"fluid-layout";i:2;s:17:"responsive-layout";i:3;s:10:"one-column";i:4;s:11:"two-columns";i:5;s:13:"three-columns";i:6;s:12:"four-columns";i:7;s:12:"left-sidebar";i:8;s:13:"right-sidebar";}s:8:"Features";a:20:{i:0;s:19:"accessibility-ready";i:1;s:8:"blavatar";i:2;s:10:"buddypress";i:3;s:17:"custom-background";i:4;s:13:"custom-colors";i:5;s:13:"custom-header";i:6;s:11:"custom-menu";i:7;s:12:"editor-style";i:8;s:21:"featured-image-header";i:9;s:15:"featured-images";i:10;s:15:"flexible-header";i:11;s:20:"front-page-post-form";i:12;s:19:"full-width-template";i:13;s:12:"microformats";i:14;s:12:"post-formats";i:15;s:20:"rtl-language-support";i:16;s:11:"sticky-post";i:17;s:13:"theme-options";i:18;s:17:"threaded-comments";i:19;s:17:"translation-ready";}s:7:"Subject";a:3:{i:0;s:7:"holiday";i:1;s:13:"photoblogging";i:2;s:8:"seasonal";}}', 'yes'),
 (270, 'theme_mods_twentyfifteen', 'a:1:{s:16:"sidebars_widgets";a:2:{s:4:"time";i:1454747443;s:4:"data";a:2:{s:19:"wp_inactive_widgets";a:0:{}s:9:"sidebar-1";a:6:{i:0;s:8:"search-2";i:1;s:14:"recent-posts-2";i:2;s:17:"recent-comments-2";i:3;s:10:"archives-2";i:4;s:12:"categories-2";i:5;s:6:"meta-2";}}}}', 'yes'),
@@ -1335,25 +1485,10 @@ INSERT INTO `ofs2616_options` (`option_id`, `option_name`, `option_value`, `auto
 (277, 'widget_eightstore_lite_cat_product', 'a:3:{i:2;a:2:{s:17:"product_alignment";s:11:"right_align";s:16:"product_category";s:2:"26";}i:3;a:2:{s:17:"product_alignment";s:10:"left_align";s:16:"product_category";s:2:"23";}s:12:"_multiwidget";i:1;}', 'yes'),
 (278, 'widget_eightstore_lite_cta_video', 'a:2:{i:2;a:4:{s:15:"cta_video_title";s:19:"Sample Promo Banner";s:14:"cta_video_desc";s:21:"Read about this promo";s:13:"cta_video_bkg";s:68:"http://localhost/onefabshop/wp-content/uploads/2016/02/video-bkg.jpg";s:16:"cta_video_iframe";s:21:"http://www.google.com";}s:12:"_multiwidget";i:1;}', 'yes'),
 (308, 'nav_menu_options', 'a:2:{i:0;b:0;s:8:"auto_add";a:0:{}}', 'yes'),
-(313, '_transient_timeout_wc_low_stock_count', '1457343055', 'no'),
-(314, '_transient_wc_low_stock_count', '0', 'no'),
-(315, '_transient_timeout_wc_outofstock_count', '1457343055', 'no'),
-(316, '_transient_wc_outofstock_count', '0', 'no'),
 (325, '_site_transient_timeout_popular_importers_en_US', '1454932752', 'yes'),
 (326, '_site_transient_popular_importers_en_US', 'a:2:{s:9:"importers";a:8:{s:7:"blogger";a:4:{s:4:"name";s:7:"Blogger";s:11:"description";s:86:"Install the Blogger importer to import posts, comments, and users from a Blogger blog.";s:11:"plugin-slug";s:16:"blogger-importer";s:11:"importer-id";s:7:"blogger";}s:9:"wpcat2tag";a:4:{s:4:"name";s:29:"Categories and Tags Converter";s:11:"description";s:109:"Install the category/tag converter to convert existing categories to tags or tags to categories, selectively.";s:11:"plugin-slug";s:18:"wpcat2tag-importer";s:11:"importer-id";s:9:"wpcat2tag";}s:11:"livejournal";a:4:{s:4:"name";s:11:"LiveJournal";s:11:"description";s:82:"Install the LiveJournal importer to import posts from LiveJournal using their API.";s:11:"plugin-slug";s:20:"livejournal-importer";s:11:"importer-id";s:11:"livejournal";}s:11:"movabletype";a:4:{s:4:"name";s:24:"Movable Type and TypePad";s:11:"description";s:99:"Install the Movable Type importer to import posts and comments from a Movable Type or TypePad blog.";s:11:"plugin-slug";s:20:"movabletype-importer";s:11:"importer-id";s:2:"mt";}s:4:"opml";a:4:{s:4:"name";s:8:"Blogroll";s:11:"description";s:61:"Install the blogroll importer to import links in OPML format.";s:11:"plugin-slug";s:13:"opml-importer";s:11:"importer-id";s:4:"opml";}s:3:"rss";a:4:{s:4:"name";s:3:"RSS";s:11:"description";s:58:"Install the RSS importer to import posts from an RSS feed.";s:11:"plugin-slug";s:12:"rss-importer";s:11:"importer-id";s:3:"rss";}s:6:"tumblr";a:4:{s:4:"name";s:6:"Tumblr";s:11:"description";s:84:"Install the Tumblr importer to import posts &amp; media from Tumblr using their API.";s:11:"plugin-slug";s:15:"tumblr-importer";s:11:"importer-id";s:6:"tumblr";}s:9:"wordpress";a:4:{s:4:"name";s:9:"WordPress";s:11:"description";s:130:"Install the WordPress importer to import posts, pages, comments, custom fields, categories, and tags from a WordPress export file.";s:11:"plugin-slug";s:18:"wordpress-importer";s:11:"importer-id";s:9:"wordpress";}}s:10:"translated";b:0;}', 'yes'),
-(332, 'product_cat_children', 'a:4:{i:7;a:4:{i:0;i:8;i:1;i:9;i:2;i:10;i:3;i:11;}i:6;a:4:{i:0;i:12;i:1;i:13;i:2;i:14;i:3;i:15;}i:20;a:2:{i:0;i:21;i:1;i:25;}i:22;a:2:{i:0;i:24;i:1;i:26;}}', 'yes'),
 (333, 'product_shipping_class_children', 'a:0:{}', 'yes'),
 (334, 'pa_color_children', 'a:0:{}', 'yes'),
-(339, '_transient_timeout_wc_uf_pid_ef4a9080b4e4593670f8e56eba00fcb4', '1457352364', 'no'),
-(340, '_transient_wc_uf_pid_ef4a9080b4e4593670f8e56eba00fcb4', 'a:24:{i:0;i:8;i:1;i:99;i:2;i:96;i:3;i:93;i:4;i:90;i:5;i:87;i:6;i:83;i:7;i:79;i:8;i:76;i:9;i:73;i:10;i:70;i:11;i:67;i:12;i:60;i:13;i:56;i:14;i:53;i:15;i:50;i:16;i:47;i:17;i:40;i:18;i:37;i:19;i:34;i:20;i:31;i:21;i:104;i:22;i:103;i:23;i:102;}', 'no'),
-(341, '_transient_timeout_wc_product_children_104', '1457352365', 'no'),
-(342, '_transient_wc_product_children_104', 'a:2:{s:7:"visible";a:2:{i:0;i:105;i:1;i:106;}s:3:"all";a:2:{i:0;i:105;i:1;i:106;}}', 'no'),
-(343, '_transient_timeout_wc_var_prices_104', '1457352366', 'no'),
-(344, '_transient_wc_var_prices_104', '{"version":"1454750170","f9e544f77b7eac7add281ef28ca5559f":{"price":{"106":"20","105":"20"},"regular_price":{"106":"20","105":"20"},"sale_price":{"106":"20","105":"20"}},"e1b88e1c9a8573a0fff4a38a491fcd6d":{"price":{"106":20,"105":20},"regular_price":{"106":20,"105":20},"sale_price":{"106":20,"105":20}}}', 'no'),
-(345, '_transient_timeout_wc_product_children_40', '1457352366', 'no'),
-(346, '_transient_wc_product_children_40', 'a:2:{s:7:"visible";a:2:{i:0;i:41;i:1;i:42;}s:3:"all";a:2:{i:0;i:41;i:1;i:42;}}', 'no'),
-(347, '_transient_timeout_wc_var_prices_40', '1457352366', 'no'),
-(348, '_transient_wc_var_prices_40', '{"version":"1454750170","f9e544f77b7eac7add281ef28ca5559f":{"price":{"42":"30","41":"35"},"regular_price":{"42":"35","41":"35"},"sale_price":{"42":"30","41":"35"}},"e1b88e1c9a8573a0fff4a38a491fcd6d":{"price":{"42":30,"41":35},"regular_price":{"42":35,"41":35},"sale_price":{"42":30,"41":35}}}', 'no'),
 (349, '_transient_orders-transient-version', '1454760401', 'yes'),
 (350, '_transient_timeout_wc_cbp_bbb0d7fcb8c0a96e01cc67f6c32ade14', '1457352402', 'no'),
 (351, '_transient_wc_cbp_bbb0d7fcb8c0a96e01cc67f6c32ade14', 'a:0:{}', 'no'),
@@ -1363,40 +1498,70 @@ INSERT INTO `ofs2616_options` (`option_id`, `option_name`, `option_value`, `auto
 (355, '_transient_wc_cbp_e23e06d97fd277452b787a49bdbe2e36', 'a:0:{}', 'no'),
 (356, '_transient_timeout_wc_cbp_031c22fbd2c932977c1791a24619681f', '1457352402', 'no'),
 (357, '_transient_wc_cbp_031c22fbd2c932977c1791a24619681f', 'a:0:{}', 'no'),
-(361, '_transient_timeout_wc_term_counts', '1457352697', 'no'),
-(362, '_transient_wc_term_counts', 'a:17:{i:11;s:0:"";i:15;s:0:"";i:26;s:1:"4";i:10;s:0:"";i:14;s:0:"";i:8;s:1:"1";i:13;s:0:"";i:20;s:2:"12";i:21;s:1:"6";i:6;s:0:"";i:22;s:1:"6";i:23;s:1:"5";i:9;s:0:"";i:12;s:0:"";i:24;s:1:"2";i:25;s:1:"6";i:7;s:1:"1";}', 'no'),
-(373, 'category_children', 'a:0:{}', 'yes'),
 (388, '_site_transient_timeout_poptags_40cd750bba9870f18aada2478b24840a', '1454773887', 'yes'),
 (389, '_site_transient_poptags_40cd750bba9870f18aada2478b24840a', 'a:100:{s:6:"widget";a:3:{s:4:"name";s:6:"widget";s:4:"slug";s:6:"widget";s:5:"count";s:4:"5663";}s:4:"post";a:3:{s:4:"name";s:4:"Post";s:4:"slug";s:4:"post";s:5:"count";s:4:"3554";}s:6:"plugin";a:3:{s:4:"name";s:6:"plugin";s:4:"slug";s:6:"plugin";s:5:"count";s:4:"3503";}s:5:"admin";a:3:{s:4:"name";s:5:"admin";s:4:"slug";s:5:"admin";s:5:"count";s:4:"3011";}s:5:"posts";a:3:{s:4:"name";s:5:"posts";s:4:"slug";s:5:"posts";s:5:"count";s:4:"2738";}s:9:"shortcode";a:3:{s:4:"name";s:9:"shortcode";s:4:"slug";s:9:"shortcode";s:5:"count";s:4:"2224";}s:7:"sidebar";a:3:{s:4:"name";s:7:"sidebar";s:4:"slug";s:7:"sidebar";s:5:"count";s:4:"2168";}s:6:"google";a:3:{s:4:"name";s:6:"google";s:4:"slug";s:6:"google";s:5:"count";s:4:"2009";}s:7:"twitter";a:3:{s:4:"name";s:7:"twitter";s:4:"slug";s:7:"twitter";s:5:"count";s:4:"1956";}s:4:"page";a:3:{s:4:"name";s:4:"page";s:4:"slug";s:4:"page";s:5:"count";s:4:"1949";}s:6:"images";a:3:{s:4:"name";s:6:"images";s:4:"slug";s:6:"images";s:5:"count";s:4:"1939";}s:8:"comments";a:3:{s:4:"name";s:8:"comments";s:4:"slug";s:8:"comments";s:5:"count";s:4:"1886";}s:5:"image";a:3:{s:4:"name";s:5:"image";s:4:"slug";s:5:"image";s:5:"count";s:4:"1791";}s:8:"facebook";a:3:{s:4:"name";s:8:"Facebook";s:4:"slug";s:8:"facebook";s:5:"count";s:4:"1589";}s:3:"seo";a:3:{s:4:"name";s:3:"seo";s:4:"slug";s:3:"seo";s:5:"count";s:4:"1520";}s:9:"wordpress";a:3:{s:4:"name";s:9:"wordpress";s:4:"slug";s:9:"wordpress";s:5:"count";s:4:"1502";}s:11:"woocommerce";a:3:{s:4:"name";s:11:"woocommerce";s:4:"slug";s:11:"woocommerce";s:5:"count";s:4:"1447";}s:6:"social";a:3:{s:4:"name";s:6:"social";s:4:"slug";s:6:"social";s:5:"count";s:4:"1302";}s:5:"links";a:3:{s:4:"name";s:5:"links";s:4:"slug";s:5:"links";s:5:"count";s:4:"1262";}s:7:"gallery";a:3:{s:4:"name";s:7:"gallery";s:4:"slug";s:7:"gallery";s:5:"count";s:4:"1248";}s:5:"email";a:3:{s:4:"name";s:5:"email";s:4:"slug";s:5:"email";s:5:"count";s:4:"1140";}s:7:"widgets";a:3:{s:4:"name";s:7:"widgets";s:4:"slug";s:7:"widgets";s:5:"count";s:4:"1066";}s:5:"pages";a:3:{s:4:"name";s:5:"pages";s:4:"slug";s:5:"pages";s:5:"count";s:4:"1040";}s:6:"jquery";a:3:{s:4:"name";s:6:"jquery";s:4:"slug";s:6:"jquery";s:5:"count";s:3:"984";}s:5:"media";a:3:{s:4:"name";s:5:"media";s:4:"slug";s:5:"media";s:5:"count";s:3:"946";}s:3:"rss";a:3:{s:4:"name";s:3:"rss";s:4:"slug";s:3:"rss";s:5:"count";s:3:"901";}s:4:"ajax";a:3:{s:4:"name";s:4:"AJAX";s:4:"slug";s:4:"ajax";s:5:"count";s:3:"883";}s:9:"ecommerce";a:3:{s:4:"name";s:9:"ecommerce";s:4:"slug";s:9:"ecommerce";s:5:"count";s:3:"883";}s:5:"video";a:3:{s:4:"name";s:5:"video";s:4:"slug";s:5:"video";s:5:"count";s:3:"872";}s:7:"content";a:3:{s:4:"name";s:7:"content";s:4:"slug";s:7:"content";s:5:"count";s:3:"867";}s:5:"login";a:3:{s:4:"name";s:5:"login";s:4:"slug";s:5:"login";s:5:"count";s:3:"854";}s:10:"javascript";a:3:{s:4:"name";s:10:"javascript";s:4:"slug";s:10:"javascript";s:5:"count";s:3:"807";}s:10:"buddypress";a:3:{s:4:"name";s:10:"buddypress";s:4:"slug";s:10:"buddypress";s:5:"count";s:3:"766";}s:10:"responsive";a:3:{s:4:"name";s:10:"responsive";s:4:"slug";s:10:"responsive";s:5:"count";s:3:"747";}s:8:"security";a:3:{s:4:"name";s:8:"security";s:4:"slug";s:8:"security";s:5:"count";s:3:"740";}s:5:"photo";a:3:{s:4:"name";s:5:"photo";s:4:"slug";s:5:"photo";s:5:"count";s:3:"735";}s:4:"feed";a:3:{s:4:"name";s:4:"feed";s:4:"slug";s:4:"feed";s:5:"count";s:3:"729";}s:7:"youtube";a:3:{s:4:"name";s:7:"youtube";s:4:"slug";s:7:"youtube";s:5:"count";s:3:"725";}s:4:"link";a:3:{s:4:"name";s:4:"link";s:4:"slug";s:4:"link";s:5:"count";s:3:"721";}s:4:"spam";a:3:{s:4:"name";s:4:"spam";s:4:"slug";s:4:"spam";s:5:"count";s:3:"718";}s:5:"share";a:3:{s:4:"name";s:5:"Share";s:4:"slug";s:5:"share";s:5:"count";s:3:"706";}s:10:"e-commerce";a:3:{s:4:"name";s:10:"e-commerce";s:4:"slug";s:10:"e-commerce";s:5:"count";s:3:"701";}s:6:"photos";a:3:{s:4:"name";s:6:"photos";s:4:"slug";s:6:"photos";s:5:"count";s:3:"681";}s:8:"category";a:3:{s:4:"name";s:8:"category";s:4:"slug";s:8:"category";s:5:"count";s:3:"675";}s:5:"embed";a:3:{s:4:"name";s:5:"embed";s:4:"slug";s:5:"embed";s:5:"count";s:3:"657";}s:9:"analytics";a:3:{s:4:"name";s:9:"analytics";s:4:"slug";s:9:"analytics";s:5:"count";s:3:"655";}s:4:"form";a:3:{s:4:"name";s:4:"form";s:4:"slug";s:4:"form";s:5:"count";s:3:"648";}s:3:"css";a:3:{s:4:"name";s:3:"CSS";s:4:"slug";s:3:"css";s:5:"count";s:3:"642";}s:6:"search";a:3:{s:4:"name";s:6:"search";s:4:"slug";s:6:"search";s:5:"count";s:3:"635";}s:9:"slideshow";a:3:{s:4:"name";s:9:"slideshow";s:4:"slug";s:9:"slideshow";s:5:"count";s:3:"629";}s:6:"custom";a:3:{s:4:"name";s:6:"custom";s:4:"slug";s:6:"custom";s:5:"count";s:3:"608";}s:5:"stats";a:3:{s:4:"name";s:5:"stats";s:4:"slug";s:5:"stats";s:5:"count";s:3:"598";}s:6:"slider";a:3:{s:4:"name";s:6:"slider";s:4:"slug";s:6:"slider";s:5:"count";s:3:"595";}s:6:"button";a:3:{s:4:"name";s:6:"button";s:4:"slug";s:6:"button";s:5:"count";s:3:"589";}s:7:"comment";a:3:{s:4:"name";s:7:"comment";s:4:"slug";s:7:"comment";s:5:"count";s:3:"585";}s:5:"theme";a:3:{s:4:"name";s:5:"theme";s:4:"slug";s:5:"theme";s:5:"count";s:3:"578";}s:4:"menu";a:3:{s:4:"name";s:4:"menu";s:4:"slug";s:4:"menu";s:5:"count";s:3:"575";}s:4:"tags";a:3:{s:4:"name";s:4:"tags";s:4:"slug";s:4:"tags";s:5:"count";s:3:"574";}s:9:"dashboard";a:3:{s:4:"name";s:9:"dashboard";s:4:"slug";s:9:"dashboard";s:5:"count";s:3:"569";}s:10:"categories";a:3:{s:4:"name";s:10:"categories";s:4:"slug";s:10:"categories";s:5:"count";s:3:"561";}s:10:"statistics";a:3:{s:4:"name";s:10:"statistics";s:4:"slug";s:10:"statistics";s:5:"count";s:3:"546";}s:3:"ads";a:3:{s:4:"name";s:3:"ads";s:4:"slug";s:3:"ads";s:5:"count";s:3:"538";}s:6:"mobile";a:3:{s:4:"name";s:6:"mobile";s:4:"slug";s:6:"mobile";s:5:"count";s:3:"533";}s:4:"user";a:3:{s:4:"name";s:4:"user";s:4:"slug";s:4:"user";s:5:"count";s:3:"522";}s:6:"editor";a:3:{s:4:"name";s:6:"editor";s:4:"slug";s:6:"editor";s:5:"count";s:3:"521";}s:5:"users";a:3:{s:4:"name";s:5:"users";s:4:"slug";s:5:"users";s:5:"count";s:3:"510";}s:4:"list";a:3:{s:4:"name";s:4:"list";s:4:"slug";s:4:"list";s:5:"count";s:3:"504";}s:7:"picture";a:3:{s:4:"name";s:7:"picture";s:4:"slug";s:7:"picture";s:5:"count";s:3:"504";}s:9:"affiliate";a:3:{s:4:"name";s:9:"affiliate";s:4:"slug";s:9:"affiliate";s:5:"count";s:3:"499";}s:7:"plugins";a:3:{s:4:"name";s:7:"plugins";s:4:"slug";s:7:"plugins";s:5:"count";s:3:"498";}s:6:"simple";a:3:{s:4:"name";s:6:"simple";s:4:"slug";s:6:"simple";s:5:"count";s:3:"476";}s:9:"multisite";a:3:{s:4:"name";s:9:"multisite";s:4:"slug";s:9:"multisite";s:5:"count";s:3:"475";}s:12:"contact-form";a:3:{s:4:"name";s:12:"contact form";s:4:"slug";s:12:"contact-form";s:5:"count";s:3:"472";}s:12:"social-media";a:3:{s:4:"name";s:12:"social media";s:4:"slug";s:12:"social-media";s:5:"count";s:3:"462";}s:7:"contact";a:3:{s:4:"name";s:7:"contact";s:4:"slug";s:7:"contact";s:5:"count";s:3:"461";}s:8:"pictures";a:3:{s:4:"name";s:8:"pictures";s:4:"slug";s:8:"pictures";s:5:"count";s:3:"457";}s:10:"navigation";a:3:{s:4:"name";s:10:"navigation";s:4:"slug";s:10:"navigation";s:5:"count";s:3:"432";}s:3:"url";a:3:{s:4:"name";s:3:"url";s:4:"slug";s:3:"url";s:5:"count";s:3:"429";}s:5:"flash";a:3:{s:4:"name";s:5:"flash";s:4:"slug";s:5:"flash";s:5:"count";s:3:"422";}s:4:"html";a:3:{s:4:"name";s:4:"html";s:4:"slug";s:4:"html";s:5:"count";s:3:"421";}s:4:"shop";a:3:{s:4:"name";s:4:"shop";s:4:"slug";s:4:"shop";s:5:"count";s:3:"418";}s:3:"api";a:3:{s:4:"name";s:3:"api";s:4:"slug";s:3:"api";s:5:"count";s:3:"415";}s:10:"newsletter";a:3:{s:4:"name";s:10:"newsletter";s:4:"slug";s:10:"newsletter";s:5:"count";s:3:"414";}s:9:"marketing";a:3:{s:4:"name";s:9:"marketing";s:4:"slug";s:9:"marketing";s:5:"count";s:3:"408";}s:4:"meta";a:3:{s:4:"name";s:4:"meta";s:4:"slug";s:4:"meta";s:5:"count";s:3:"403";}s:3:"tag";a:3:{s:4:"name";s:3:"tag";s:4:"slug";s:3:"tag";s:5:"count";s:3:"400";}s:6:"events";a:3:{s:4:"name";s:6:"events";s:4:"slug";s:6:"events";s:5:"count";s:3:"400";}s:8:"calendar";a:3:{s:4:"name";s:8:"calendar";s:4:"slug";s:8:"calendar";s:5:"count";s:3:"398";}s:4:"news";a:3:{s:4:"name";s:4:"News";s:4:"slug";s:4:"news";s:5:"count";s:3:"396";}s:8:"tracking";a:3:{s:4:"name";s:8:"tracking";s:4:"slug";s:8:"tracking";s:5:"count";s:3:"389";}s:9:"thumbnail";a:3:{s:4:"name";s:9:"thumbnail";s:4:"slug";s:9:"thumbnail";s:5:"count";s:3:"389";}s:11:"advertising";a:3:{s:4:"name";s:11:"advertising";s:4:"slug";s:11:"advertising";s:5:"count";s:3:"389";}s:4:"code";a:3:{s:4:"name";s:4:"code";s:4:"slug";s:4:"code";s:5:"count";s:3:"382";}s:10:"shortcodes";a:3:{s:4:"name";s:10:"shortcodes";s:4:"slug";s:10:"shortcodes";s:5:"count";s:3:"380";}s:8:"lightbox";a:3:{s:4:"name";s:8:"lightbox";s:4:"slug";s:8:"lightbox";s:5:"count";s:3:"379";}s:4:"text";a:3:{s:4:"name";s:4:"text";s:4:"slug";s:4:"text";s:5:"count";s:3:"379";}s:9:"automatic";a:3:{s:4:"name";s:9:"automatic";s:4:"slug";s:9:"automatic";s:5:"count";s:3:"377";}s:6:"upload";a:3:{s:4:"name";s:6:"upload";s:4:"slug";s:6:"upload";s:5:"count";s:3:"375";}s:6:"paypal";a:3:{s:4:"name";s:6:"paypal";s:4:"slug";s:6:"paypal";s:5:"count";s:3:"375";}s:7:"profile";a:3:{s:4:"name";s:7:"profile";s:4:"slug";s:7:"profile";s:5:"count";s:3:"371";}}', 'yes'),
 (392, 'hicpo_activation', '1', 'yes'),
 (397, 'hicpo_options', 'a:2:{s:7:"objects";a:3:{i:0;s:4:"post";i:1;s:4:"page";i:2;s:7:"product";}s:4:"tags";s:0:"";}', 'yes'),
-(402, 'woocommerce_permalinks', 'a:4:{s:13:"category_base";s:0:"";s:8:"tag_base";s:0:"";s:14:"attribute_base";s:0:"";s:12:"product_base";s:0:"";}', 'yes'),
-(414, '_transient_timeout_wc_related_90', '1454853968', 'no'),
-(415, '_transient_wc_related_90', 'a:5:{i:0;s:2:"83";i:1;s:2:"87";i:2;s:2:"93";i:3;s:2:"96";i:4;s:2:"99";}', 'no'),
+(402, 'woocommerce_permalinks', 'a:4:{s:13:"category_base";s:4:"shop";s:8:"tag_base";s:0:"";s:14:"attribute_base";s:0:"";s:12:"product_base";s:0:"";}', 'yes'),
 (416, '_transient_timeout_wc_cbp_7eb8ee8a4edd0a69182ba1d2891c9a62', '1457360227', 'no'),
 (417, '_transient_wc_cbp_7eb8ee8a4edd0a69182ba1d2891c9a62', 'a:0:{}', 'no'),
-(418, '_transient_timeout_wc_related_76', '1454854627', 'no'),
-(419, '_transient_wc_related_76', 'a:4:{i:0;s:2:"67";i:1;s:2:"70";i:2;s:2:"73";i:3;s:2:"79";}', 'no'),
-(429, '_site_transient_update_themes', 'O:8:"stdClass":4:{s:12:"last_checked";i:1454831011;s:7:"checked";a:2:{s:21:"eightstore-lite-child";s:5:"1.0.0";s:15:"eightstore-lite";s:6:"1.0.53";}s:8:"response";a:0:{}s:12:"translations";a:0:{}}', 'yes');
+(429, '_site_transient_update_themes', 'O:8:"stdClass":4:{s:12:"last_checked";i:1454831011;s:7:"checked";a:2:{s:21:"eightstore-lite-child";s:5:"1.0.0";s:15:"eightstore-lite";s:6:"1.0.53";}s:8:"response";a:0:{}s:12:"translations";a:0:{}}', 'yes'),
+(434, '_site_transient_update_plugins', 'O:8:"stdClass":4:{s:12:"last_checked";i:1454846886;s:8:"response";a:0:{}s:12:"translations";a:0:{}s:9:"no_update";a:5:{s:59:"intuitive-custom-post-order/intuitive-custom-post-order.php";O:8:"stdClass":6:{s:2:"id";s:5:"35583";s:4:"slug";s:27:"intuitive-custom-post-order";s:6:"plugin";s:59:"intuitive-custom-post-order/intuitive-custom-post-order.php";s:11:"new_version";s:5:"3.0.7";s:3:"url";s:58:"https://wordpress.org/plugins/intuitive-custom-post-order/";s:7:"package";s:76:"https://downloads.wordpress.org/plugin/intuitive-custom-post-order.3.0.7.zip";}s:57:"ultimate-form-builder-lite/ultimate-form-builder-lite.php";O:8:"stdClass":6:{s:2:"id";s:5:"64085";s:4:"slug";s:26:"ultimate-form-builder-lite";s:6:"plugin";s:57:"ultimate-form-builder-lite/ultimate-form-builder-lite.php";s:11:"new_version";s:5:"1.1.3";s:3:"url";s:57:"https://wordpress.org/plugins/ultimate-form-builder-lite/";s:7:"package";s:75:"https://downloads.wordpress.org/plugin/ultimate-form-builder-lite.1.1.3.zip";}s:27:"woocommerce/woocommerce.php";O:8:"stdClass":6:{s:2:"id";s:5:"25331";s:4:"slug";s:11:"woocommerce";s:6:"plugin";s:27:"woocommerce/woocommerce.php";s:11:"new_version";s:5:"2.5.2";s:3:"url";s:42:"https://wordpress.org/plugins/woocommerce/";s:7:"package";s:60:"https://downloads.wordpress.org/plugin/woocommerce.2.5.2.zip";}s:41:"wordpress-importer/wordpress-importer.php";O:8:"stdClass":6:{s:2:"id";s:5:"14975";s:4:"slug";s:18:"wordpress-importer";s:6:"plugin";s:41:"wordpress-importer/wordpress-importer.php";s:11:"new_version";s:5:"0.6.1";s:3:"url";s:49:"https://wordpress.org/plugins/wordpress-importer/";s:7:"package";s:67:"https://downloads.wordpress.org/plugin/wordpress-importer.0.6.1.zip";}s:45:"wp-admin-bar-removal/wp-admin-bar-removal.php";O:8:"stdClass":7:{s:2:"id";s:5:"18320";s:4:"slug";s:20:"wp-admin-bar-removal";s:6:"plugin";s:45:"wp-admin-bar-removal/wp-admin-bar-removal.php";s:11:"new_version";s:14:"2014.0707.0383";s:3:"url";s:51:"https://wordpress.org/plugins/wp-admin-bar-removal/";s:7:"package";s:78:"https://downloads.wordpress.org/plugin/wp-admin-bar-removal.2014.0707.0383.zip";s:14:"upgrade_notice";s:252:"Major Update [CERTIFIED] Disable WordPress Admin Bar and Toolbar and Remove Code Completely on WP 3.1+ or later for Minimal Memory Load, and Dashboard Speedup, with new Unified Coding Approach without loosing Logout and Network MultiSite functionality!";}}}', 'yes');
 INSERT INTO `ofs2616_options` (`option_id`, `option_name`, `option_value`, `autoload`) VALUES
-(434, '_site_transient_update_plugins', 'O:8:"stdClass":4:{s:12:"last_checked";i:1454846886;s:8:"response";a:0:{}s:12:"translations";a:0:{}s:9:"no_update";a:5:{s:59:"intuitive-custom-post-order/intuitive-custom-post-order.php";O:8:"stdClass":6:{s:2:"id";s:5:"35583";s:4:"slug";s:27:"intuitive-custom-post-order";s:6:"plugin";s:59:"intuitive-custom-post-order/intuitive-custom-post-order.php";s:11:"new_version";s:5:"3.0.7";s:3:"url";s:58:"https://wordpress.org/plugins/intuitive-custom-post-order/";s:7:"package";s:76:"https://downloads.wordpress.org/plugin/intuitive-custom-post-order.3.0.7.zip";}s:57:"ultimate-form-builder-lite/ultimate-form-builder-lite.php";O:8:"stdClass":6:{s:2:"id";s:5:"64085";s:4:"slug";s:26:"ultimate-form-builder-lite";s:6:"plugin";s:57:"ultimate-form-builder-lite/ultimate-form-builder-lite.php";s:11:"new_version";s:5:"1.1.3";s:3:"url";s:57:"https://wordpress.org/plugins/ultimate-form-builder-lite/";s:7:"package";s:75:"https://downloads.wordpress.org/plugin/ultimate-form-builder-lite.1.1.3.zip";}s:27:"woocommerce/woocommerce.php";O:8:"stdClass":6:{s:2:"id";s:5:"25331";s:4:"slug";s:11:"woocommerce";s:6:"plugin";s:27:"woocommerce/woocommerce.php";s:11:"new_version";s:5:"2.5.2";s:3:"url";s:42:"https://wordpress.org/plugins/woocommerce/";s:7:"package";s:60:"https://downloads.wordpress.org/plugin/woocommerce.2.5.2.zip";}s:41:"wordpress-importer/wordpress-importer.php";O:8:"stdClass":6:{s:2:"id";s:5:"14975";s:4:"slug";s:18:"wordpress-importer";s:6:"plugin";s:41:"wordpress-importer/wordpress-importer.php";s:11:"new_version";s:5:"0.6.1";s:3:"url";s:49:"https://wordpress.org/plugins/wordpress-importer/";s:7:"package";s:67:"https://downloads.wordpress.org/plugin/wordpress-importer.0.6.1.zip";}s:45:"wp-admin-bar-removal/wp-admin-bar-removal.php";O:8:"stdClass":7:{s:2:"id";s:5:"18320";s:4:"slug";s:20:"wp-admin-bar-removal";s:6:"plugin";s:45:"wp-admin-bar-removal/wp-admin-bar-removal.php";s:11:"new_version";s:14:"2014.0707.0383";s:3:"url";s:51:"https://wordpress.org/plugins/wp-admin-bar-removal/";s:7:"package";s:78:"https://downloads.wordpress.org/plugin/wp-admin-bar-removal.2014.0707.0383.zip";s:14:"upgrade_notice";s:252:"Major Update [CERTIFIED] Disable WordPress Admin Bar and Toolbar and Remove Code Completely on WP 3.1+ or later for Minimal Memory Load, and Dashboard Speedup, with new Unified Coding Approach without loosing Logout and Network MultiSite functionality!";}}}', 'yes'),
-(451, 'theme_mods_eightstore-lite-child', 'a:29:{i:0;b:0;s:18:"nav_menu_locations";a:1:{s:7:"primary";i:16;}s:23:"ticker_setting_category";i:29;s:23:"slider_setting_category";i:27;s:34:"es_category_promo_setting_category";i:30;s:32:"eightstore_blog_setting_category";i:28;s:39:"eightstore_testimonial_setting_category";i:31;s:22:"social_icons_in_header";i:1;s:15:"social_facebook";s:1:"#";s:16:"social_instagram";s:1:"#";s:18:"heading_typography";s:0:"";s:15:"body_typography";s:27:"Roboto Condensed,sans-serif";s:23:"eightstore_blog_section";i:1;s:30:"eightstore_testimonial_section";i:1;s:12:"header_image";s:66:"http://localhost/onefabshop/wp-content/uploads/2016/02/ofslogo.png";s:17:"header_image_data";O:8:"stdClass":5:{s:13:"attachment_id";i:146;s:3:"url";s:66:"http://localhost/onefabshop/wp-content/uploads/2016/02/ofslogo.png";s:13:"thumbnail_url";s:66:"http://localhost/onefabshop/wp-content/uploads/2016/02/ofslogo.png";s:6:"height";i:250;s:5:"width";i:250;}s:20:"typography_format_h1";s:2:"82";s:19:"typography_color_h1";s:7:"#ac0472";s:11:"callto_text";s:125:"<a href="#"><i class="fa fa-phone"></i>+012-345-6789</a>\n\n<a href="#"><i class="fa fa-envelope"></i> onefabshop@gmail.com</a>";s:26:"eightstore_ticker_checkbox";s:0:"";s:14:"display_slider";i:1;s:13:"display_pager";i:1;s:16:"display_controls";i:1;s:22:"enable_auto_transition";i:1;s:15:"transition_type";s:4:"true";s:16:"transition_speed";s:3:"300";s:16:"display_captions";i:1;s:21:"eightstore_blog_title";s:9:"Our Blogs";s:28:"eightstore_testimonial_title";s:16:"Our Testimonials";}', 'yes'),
+(451, 'theme_mods_eightstore-lite-child', 'a:30:{i:0;b:0;s:18:"nav_menu_locations";a:1:{s:7:"primary";i:33;}s:23:"ticker_setting_category";i:29;s:23:"slider_setting_category";i:27;s:34:"es_category_promo_setting_category";i:30;s:32:"eightstore_blog_setting_category";i:28;s:39:"eightstore_testimonial_setting_category";i:31;s:22:"social_icons_in_header";i:1;s:15:"social_facebook";s:1:"#";s:16:"social_instagram";s:1:"#";s:18:"heading_typography";s:0:"";s:15:"body_typography";s:27:"Roboto Condensed,sans-serif";s:23:"eightstore_blog_section";i:1;s:30:"eightstore_testimonial_section";i:1;s:12:"header_image";s:66:"http://localhost/onefabshop/wp-content/uploads/2016/02/ofslogo.png";s:17:"header_image_data";O:8:"stdClass":5:{s:13:"attachment_id";i:146;s:3:"url";s:66:"http://localhost/onefabshop/wp-content/uploads/2016/02/ofslogo.png";s:13:"thumbnail_url";s:66:"http://localhost/onefabshop/wp-content/uploads/2016/02/ofslogo.png";s:6:"height";i:250;s:5:"width";i:250;}s:20:"typography_format_h1";s:2:"82";s:19:"typography_color_h1";s:7:"#ac0472";s:11:"callto_text";s:125:"<a href="#"><i class="fa fa-phone"></i>+012-345-6789</a>\n\n<a href="#"><i class="fa fa-envelope"></i> onefabshop@gmail.com</a>";s:26:"eightstore_ticker_checkbox";s:0:"";s:14:"display_slider";i:1;s:13:"display_pager";i:1;s:16:"display_controls";i:1;s:22:"enable_auto_transition";i:1;s:15:"transition_type";s:4:"true";s:16:"transition_speed";s:3:"300";s:16:"display_captions";i:1;s:21:"eightstore_blog_title";s:9:"Our Blogs";s:28:"eightstore_testimonial_title";s:16:"Our Testimonials";s:21:"footer_copyright_text";s:98:"© 2016 Onefabshop. All Rights Reserved.\n<br />\n Web design and development by <a href="">D.K</a>.";}', 'yes'),
 (468, '_transient_shipping-transient-version', '1454831828', 'yes'),
-(477, '_transient_is_multi_author', '0', 'yes'),
 (481, '_site_transient_timeout_theme_roots', '1454841467', 'yes'),
 (482, '_site_transient_theme_roots', 'a:2:{s:21:"eightstore-lite-child";s:7:"/themes";s:15:"eightstore-lite";s:7:"/themes";}', 'yes'),
 (484, 'general_options', '', 'yes'),
 (485, 'pricing_options', '', 'yes'),
 (487, '_transient_woocommerce_cache_excluded_uris', 'a:6:{i:0;s:3:"p=5";i:1;s:6:"/cart/";i:2;s:3:"p=6";i:3;s:10:"/checkout/";i:4;s:3:"p=7";i:5;s:12:"/my-account/";}', 'yes'),
-(490, '_transient_timeout_dash_88ae138922fe95674369b1cb3d215a2b', '1454890422', 'no'),
-(491, '_transient_dash_88ae138922fe95674369b1cb3d215a2b', '<div class="rss-widget"><p><strong>RSS Error</strong>: WP HTTP Error: Operation timed out after 10425 milliseconds with 0 out of 0 bytes received</p></div><div class="rss-widget"><p><strong>RSS Error</strong>: WP HTTP Error: Operation timed out after 10163 milliseconds with 3819 out of 269529 bytes received</p></div>', 'no'),
-(497, '_transient_timeout_wc_admin_report', '1454933718', 'no'),
-(498, '_transient_wc_admin_report', 'a:1:{s:32:"0bd3c12d8c2166971db21c0e4c04be1a";a:0:{}}', 'no'),
 (499, 'woocommerce_db_version', '2.5.2', 'yes'),
 (500, 'woocommerce_version', '2.5.2', 'yes'),
-(501, 'rewrite_rules', 'a:188:{s:22:"^wc-api/v([1-3]{1})/?$";s:51:"index.php?wc-api-version=$matches[1]&wc-api-route=/";s:24:"^wc-api/v([1-3]{1})(.*)?";s:61:"index.php?wc-api-version=$matches[1]&wc-api-route=$matches[2]";s:24:"^wc-auth/v([1]{1})/(.*)?";s:63:"index.php?wc-auth-version=$matches[1]&wc-auth-route=$matches[2]";s:7:"shop/?$";s:27:"index.php?post_type=product";s:37:"shop/feed/(feed|rdf|rss|rss2|atom)/?$";s:44:"index.php?post_type=product&feed=$matches[1]";s:32:"shop/(feed|rdf|rss|rss2|atom)/?$";s:44:"index.php?post_type=product&feed=$matches[1]";s:24:"shop/page/([0-9]{1,})/?$";s:45:"index.php?post_type=product&paged=$matches[1]";s:11:"^wp-json/?$";s:22:"index.php?rest_route=/";s:14:"^wp-json/(.*)?";s:33:"index.php?rest_route=/$matches[1]";s:52:"blog/category/(.+?)/feed/(feed|rdf|rss|rss2|atom)/?$";s:52:"index.php?category_name=$matches[1]&feed=$matches[2]";s:47:"blog/category/(.+?)/(feed|rdf|rss|rss2|atom)/?$";s:52:"index.php?category_name=$matches[1]&feed=$matches[2]";s:40:"blog/category/(.+?)/page/?([0-9]{1,})/?$";s:53:"index.php?category_name=$matches[1]&paged=$matches[2]";s:37:"blog/category/(.+?)/wc-api(/(.*))?/?$";s:54:"index.php?category_name=$matches[1]&wc-api=$matches[3]";s:22:"blog/category/(.+?)/?$";s:35:"index.php?category_name=$matches[1]";s:49:"blog/tag/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:42:"index.php?tag=$matches[1]&feed=$matches[2]";s:44:"blog/tag/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:42:"index.php?tag=$matches[1]&feed=$matches[2]";s:37:"blog/tag/([^/]+)/page/?([0-9]{1,})/?$";s:43:"index.php?tag=$matches[1]&paged=$matches[2]";s:34:"blog/tag/([^/]+)/wc-api(/(.*))?/?$";s:44:"index.php?tag=$matches[1]&wc-api=$matches[3]";s:19:"blog/tag/([^/]+)/?$";s:25:"index.php?tag=$matches[1]";s:50:"blog/type/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:50:"index.php?post_format=$matches[1]&feed=$matches[2]";s:45:"blog/type/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:50:"index.php?post_format=$matches[1]&feed=$matches[2]";s:38:"blog/type/([^/]+)/page/?([0-9]{1,})/?$";s:51:"index.php?post_format=$matches[1]&paged=$matches[2]";s:20:"blog/type/([^/]+)/?$";s:33:"index.php?post_format=$matches[1]";s:55:"product-category/(.+?)/feed/(feed|rdf|rss|rss2|atom)/?$";s:50:"index.php?product_cat=$matches[1]&feed=$matches[2]";s:50:"product-category/(.+?)/(feed|rdf|rss|rss2|atom)/?$";s:50:"index.php?product_cat=$matches[1]&feed=$matches[2]";s:43:"product-category/(.+?)/page/?([0-9]{1,})/?$";s:51:"index.php?product_cat=$matches[1]&paged=$matches[2]";s:25:"product-category/(.+?)/?$";s:33:"index.php?product_cat=$matches[1]";s:52:"product-tag/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:50:"index.php?product_tag=$matches[1]&feed=$matches[2]";s:47:"product-tag/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:50:"index.php?product_tag=$matches[1]&feed=$matches[2]";s:40:"product-tag/([^/]+)/page/?([0-9]{1,})/?$";s:51:"index.php?product_tag=$matches[1]&paged=$matches[2]";s:22:"product-tag/([^/]+)/?$";s:33:"index.php?product_tag=$matches[1]";s:35:"product/[^/]+/attachment/([^/]+)/?$";s:32:"index.php?attachment=$matches[1]";s:45:"product/[^/]+/attachment/([^/]+)/trackback/?$";s:37:"index.php?attachment=$matches[1]&tb=1";s:65:"product/[^/]+/attachment/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:60:"product/[^/]+/attachment/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:60:"product/[^/]+/attachment/([^/]+)/comment-page-([0-9]{1,})/?$";s:50:"index.php?attachment=$matches[1]&cpage=$matches[2]";s:41:"product/[^/]+/attachment/([^/]+)/embed/?$";s:43:"index.php?attachment=$matches[1]&embed=true";s:24:"product/([^/]+)/embed/?$";s:40:"index.php?product=$matches[1]&embed=true";s:28:"product/([^/]+)/trackback/?$";s:34:"index.php?product=$matches[1]&tb=1";s:48:"product/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:46:"index.php?product=$matches[1]&feed=$matches[2]";s:43:"product/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:46:"index.php?product=$matches[1]&feed=$matches[2]";s:36:"product/([^/]+)/page/?([0-9]{1,})/?$";s:47:"index.php?product=$matches[1]&paged=$matches[2]";s:43:"product/([^/]+)/comment-page-([0-9]{1,})/?$";s:47:"index.php?product=$matches[1]&cpage=$matches[2]";s:33:"product/([^/]+)/wc-api(/(.*))?/?$";s:48:"index.php?product=$matches[1]&wc-api=$matches[3]";s:39:"product/[^/]+/([^/]+)/wc-api(/(.*))?/?$";s:51:"index.php?attachment=$matches[1]&wc-api=$matches[3]";s:50:"product/[^/]+/attachment/([^/]+)/wc-api(/(.*))?/?$";s:51:"index.php?attachment=$matches[1]&wc-api=$matches[3]";s:32:"product/([^/]+)(?:/([0-9]+))?/?$";s:46:"index.php?product=$matches[1]&page=$matches[2]";s:24:"product/[^/]+/([^/]+)/?$";s:32:"index.php?attachment=$matches[1]";s:34:"product/[^/]+/([^/]+)/trackback/?$";s:37:"index.php?attachment=$matches[1]&tb=1";s:54:"product/[^/]+/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:49:"product/[^/]+/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:49:"product/[^/]+/([^/]+)/comment-page-([0-9]{1,})/?$";s:50:"index.php?attachment=$matches[1]&cpage=$matches[2]";s:30:"product/[^/]+/([^/]+)/embed/?$";s:43:"index.php?attachment=$matches[1]&embed=true";s:50:"blog/product_variation/[^/]+/attachment/([^/]+)/?$";s:32:"index.php?attachment=$matches[1]";s:60:"blog/product_variation/[^/]+/attachment/([^/]+)/trackback/?$";s:37:"index.php?attachment=$matches[1]&tb=1";s:80:"blog/product_variation/[^/]+/attachment/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:75:"blog/product_variation/[^/]+/attachment/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:75:"blog/product_variation/[^/]+/attachment/([^/]+)/comment-page-([0-9]{1,})/?$";s:50:"index.php?attachment=$matches[1]&cpage=$matches[2]";s:56:"blog/product_variation/[^/]+/attachment/([^/]+)/embed/?$";s:43:"index.php?attachment=$matches[1]&embed=true";s:39:"blog/product_variation/([^/]+)/embed/?$";s:50:"index.php?product_variation=$matches[1]&embed=true";s:43:"blog/product_variation/([^/]+)/trackback/?$";s:44:"index.php?product_variation=$matches[1]&tb=1";s:51:"blog/product_variation/([^/]+)/page/?([0-9]{1,})/?$";s:57:"index.php?product_variation=$matches[1]&paged=$matches[2]";s:58:"blog/product_variation/([^/]+)/comment-page-([0-9]{1,})/?$";s:57:"index.php?product_variation=$matches[1]&cpage=$matches[2]";s:48:"blog/product_variation/([^/]+)/wc-api(/(.*))?/?$";s:58:"index.php?product_variation=$matches[1]&wc-api=$matches[3]";s:54:"blog/product_variation/[^/]+/([^/]+)/wc-api(/(.*))?/?$";s:51:"index.php?attachment=$matches[1]&wc-api=$matches[3]";s:65:"blog/product_variation/[^/]+/attachment/([^/]+)/wc-api(/(.*))?/?$";s:51:"index.php?attachment=$matches[1]&wc-api=$matches[3]";s:47:"blog/product_variation/([^/]+)(?:/([0-9]+))?/?$";s:56:"index.php?product_variation=$matches[1]&page=$matches[2]";s:39:"blog/product_variation/[^/]+/([^/]+)/?$";s:32:"index.php?attachment=$matches[1]";s:49:"blog/product_variation/[^/]+/([^/]+)/trackback/?$";s:37:"index.php?attachment=$matches[1]&tb=1";s:69:"blog/product_variation/[^/]+/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:64:"blog/product_variation/[^/]+/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:64:"blog/product_variation/[^/]+/([^/]+)/comment-page-([0-9]{1,})/?$";s:50:"index.php?attachment=$matches[1]&cpage=$matches[2]";s:45:"blog/product_variation/[^/]+/([^/]+)/embed/?$";s:43:"index.php?attachment=$matches[1]&embed=true";s:50:"blog/shop_order_refund/[^/]+/attachment/([^/]+)/?$";s:32:"index.php?attachment=$matches[1]";s:60:"blog/shop_order_refund/[^/]+/attachment/([^/]+)/trackback/?$";s:37:"index.php?attachment=$matches[1]&tb=1";s:80:"blog/shop_order_refund/[^/]+/attachment/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:75:"blog/shop_order_refund/[^/]+/attachment/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:75:"blog/shop_order_refund/[^/]+/attachment/([^/]+)/comment-page-([0-9]{1,})/?$";s:50:"index.php?attachment=$matches[1]&cpage=$matches[2]";s:56:"blog/shop_order_refund/[^/]+/attachment/([^/]+)/embed/?$";s:43:"index.php?attachment=$matches[1]&embed=true";s:39:"blog/shop_order_refund/([^/]+)/embed/?$";s:50:"index.php?shop_order_refund=$matches[1]&embed=true";s:43:"blog/shop_order_refund/([^/]+)/trackback/?$";s:44:"index.php?shop_order_refund=$matches[1]&tb=1";s:51:"blog/shop_order_refund/([^/]+)/page/?([0-9]{1,})/?$";s:57:"index.php?shop_order_refund=$matches[1]&paged=$matches[2]";s:58:"blog/shop_order_refund/([^/]+)/comment-page-([0-9]{1,})/?$";s:57:"index.php?shop_order_refund=$matches[1]&cpage=$matches[2]";s:48:"blog/shop_order_refund/([^/]+)/wc-api(/(.*))?/?$";s:58:"index.php?shop_order_refund=$matches[1]&wc-api=$matches[3]";s:54:"blog/shop_order_refund/[^/]+/([^/]+)/wc-api(/(.*))?/?$";s:51:"index.php?attachment=$matches[1]&wc-api=$matches[3]";s:65:"blog/shop_order_refund/[^/]+/attachment/([^/]+)/wc-api(/(.*))?/?$";s:51:"index.php?attachment=$matches[1]&wc-api=$matches[3]";s:47:"blog/shop_order_refund/([^/]+)(?:/([0-9]+))?/?$";s:56:"index.php?shop_order_refund=$matches[1]&page=$matches[2]";s:39:"blog/shop_order_refund/[^/]+/([^/]+)/?$";s:32:"index.php?attachment=$matches[1]";s:49:"blog/shop_order_refund/[^/]+/([^/]+)/trackback/?$";s:37:"index.php?attachment=$matches[1]&tb=1";s:69:"blog/shop_order_refund/[^/]+/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:64:"blog/shop_order_refund/[^/]+/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:64:"blog/shop_order_refund/[^/]+/([^/]+)/comment-page-([0-9]{1,})/?$";s:50:"index.php?attachment=$matches[1]&cpage=$matches[2]";s:45:"blog/shop_order_refund/[^/]+/([^/]+)/embed/?$";s:43:"index.php?attachment=$matches[1]&embed=true";s:48:".*wp-(atom|rdf|rss|rss2|feed|commentsrss2)\\.php$";s:18:"index.php?feed=old";s:20:".*wp-app\\.php(/.*)?$";s:19:"index.php?error=403";s:16:".*wp-signup.php$";s:21:"index.php?signup=true";s:18:".*wp-activate.php$";s:23:"index.php?activate=true";s:18:".*wp-register.php$";s:23:"index.php?register=true";s:32:"feed/(feed|rdf|rss|rss2|atom)/?$";s:27:"index.php?&feed=$matches[1]";s:27:"(feed|rdf|rss|rss2|atom)/?$";s:27:"index.php?&feed=$matches[1]";s:20:"page/?([0-9]{1,})/?$";s:28:"index.php?&paged=$matches[1]";s:27:"comment-page-([0-9]{1,})/?$";s:40:"index.php?&page_id=111&cpage=$matches[1]";s:17:"wc-api(/(.*))?/?$";s:29:"index.php?&wc-api=$matches[2]";s:20:"order-pay(/(.*))?/?$";s:32:"index.php?&order-pay=$matches[2]";s:25:"order-received(/(.*))?/?$";s:37:"index.php?&order-received=$matches[2]";s:21:"view-order(/(.*))?/?$";s:33:"index.php?&view-order=$matches[2]";s:23:"edit-account(/(.*))?/?$";s:35:"index.php?&edit-account=$matches[2]";s:23:"edit-address(/(.*))?/?$";s:35:"index.php?&edit-address=$matches[2]";s:24:"lost-password(/(.*))?/?$";s:36:"index.php?&lost-password=$matches[2]";s:26:"customer-logout(/(.*))?/?$";s:38:"index.php?&customer-logout=$matches[2]";s:29:"add-payment-method(/(.*))?/?$";s:41:"index.php?&add-payment-method=$matches[2]";s:41:"comments/feed/(feed|rdf|rss|rss2|atom)/?$";s:42:"index.php?&feed=$matches[1]&withcomments=1";s:36:"comments/(feed|rdf|rss|rss2|atom)/?$";s:42:"index.php?&feed=$matches[1]&withcomments=1";s:26:"comments/wc-api(/(.*))?/?$";s:29:"index.php?&wc-api=$matches[2]";s:44:"search/(.+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:40:"index.php?s=$matches[1]&feed=$matches[2]";s:39:"search/(.+)/(feed|rdf|rss|rss2|atom)/?$";s:40:"index.php?s=$matches[1]&feed=$matches[2]";s:32:"search/(.+)/page/?([0-9]{1,})/?$";s:41:"index.php?s=$matches[1]&paged=$matches[2]";s:29:"search/(.+)/wc-api(/(.*))?/?$";s:42:"index.php?s=$matches[1]&wc-api=$matches[3]";s:14:"search/(.+)/?$";s:23:"index.php?s=$matches[1]";s:52:"blog/author/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:50:"index.php?author_name=$matches[1]&feed=$matches[2]";s:47:"blog/author/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:50:"index.php?author_name=$matches[1]&feed=$matches[2]";s:40:"blog/author/([^/]+)/page/?([0-9]{1,})/?$";s:51:"index.php?author_name=$matches[1]&paged=$matches[2]";s:37:"blog/author/([^/]+)/wc-api(/(.*))?/?$";s:52:"index.php?author_name=$matches[1]&wc-api=$matches[3]";s:22:"blog/author/([^/]+)/?$";s:33:"index.php?author_name=$matches[1]";s:74:"blog/([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/feed/(feed|rdf|rss|rss2|atom)/?$";s:80:"index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&feed=$matches[4]";s:69:"blog/([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/(feed|rdf|rss|rss2|atom)/?$";s:80:"index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&feed=$matches[4]";s:62:"blog/([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/page/?([0-9]{1,})/?$";s:81:"index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&paged=$matches[4]";s:59:"blog/([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/wc-api(/(.*))?/?$";s:82:"index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&wc-api=$matches[5]";s:44:"blog/([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/?$";s:63:"index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]";s:61:"blog/([0-9]{4})/([0-9]{1,2})/feed/(feed|rdf|rss|rss2|atom)/?$";s:64:"index.php?year=$matches[1]&monthnum=$matches[2]&feed=$matches[3]";s:56:"blog/([0-9]{4})/([0-9]{1,2})/(feed|rdf|rss|rss2|atom)/?$";s:64:"index.php?year=$matches[1]&monthnum=$matches[2]&feed=$matches[3]";s:49:"blog/([0-9]{4})/([0-9]{1,2})/page/?([0-9]{1,})/?$";s:65:"index.php?year=$matches[1]&monthnum=$matches[2]&paged=$matches[3]";s:46:"blog/([0-9]{4})/([0-9]{1,2})/wc-api(/(.*))?/?$";s:66:"index.php?year=$matches[1]&monthnum=$matches[2]&wc-api=$matches[4]";s:31:"blog/([0-9]{4})/([0-9]{1,2})/?$";s:47:"index.php?year=$matches[1]&monthnum=$matches[2]";s:48:"blog/([0-9]{4})/feed/(feed|rdf|rss|rss2|atom)/?$";s:43:"index.php?year=$matches[1]&feed=$matches[2]";s:43:"blog/([0-9]{4})/(feed|rdf|rss|rss2|atom)/?$";s:43:"index.php?year=$matches[1]&feed=$matches[2]";s:36:"blog/([0-9]{4})/page/?([0-9]{1,})/?$";s:44:"index.php?year=$matches[1]&paged=$matches[2]";s:33:"blog/([0-9]{4})/wc-api(/(.*))?/?$";s:45:"index.php?year=$matches[1]&wc-api=$matches[3]";s:18:"blog/([0-9]{4})/?$";s:26:"index.php?year=$matches[1]";s:63:"blog/[0-9]{4}/[0-9]{1,2}/[0-9]{1,2}/[^/]+/attachment/([^/]+)/?$";s:32:"index.php?attachment=$matches[1]";s:73:"blog/[0-9]{4}/[0-9]{1,2}/[0-9]{1,2}/[^/]+/attachment/([^/]+)/trackback/?$";s:37:"index.php?attachment=$matches[1]&tb=1";s:93:"blog/[0-9]{4}/[0-9]{1,2}/[0-9]{1,2}/[^/]+/attachment/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:88:"blog/[0-9]{4}/[0-9]{1,2}/[0-9]{1,2}/[^/]+/attachment/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:88:"blog/[0-9]{4}/[0-9]{1,2}/[0-9]{1,2}/[^/]+/attachment/([^/]+)/comment-page-([0-9]{1,})/?$";s:50:"index.php?attachment=$matches[1]&cpage=$matches[2]";s:69:"blog/[0-9]{4}/[0-9]{1,2}/[0-9]{1,2}/[^/]+/attachment/([^/]+)/embed/?$";s:43:"index.php?attachment=$matches[1]&embed=true";s:58:"blog/([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/([^/]+)/embed/?$";s:91:"index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&embed=true";s:62:"blog/([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/([^/]+)/trackback/?$";s:85:"index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&tb=1";s:82:"blog/([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:97:"index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&feed=$matches[5]";s:77:"blog/([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:97:"index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&feed=$matches[5]";s:70:"blog/([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/([^/]+)/page/?([0-9]{1,})/?$";s:98:"index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&paged=$matches[5]";s:77:"blog/([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/([^/]+)/comment-page-([0-9]{1,})/?$";s:98:"index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&cpage=$matches[5]";s:67:"blog/([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/([^/]+)/wc-api(/(.*))?/?$";s:99:"index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&wc-api=$matches[6]";s:67:"blog/[0-9]{4}/[0-9]{1,2}/[0-9]{1,2}/[^/]+/([^/]+)/wc-api(/(.*))?/?$";s:51:"index.php?attachment=$matches[1]&wc-api=$matches[3]";s:78:"blog/[0-9]{4}/[0-9]{1,2}/[0-9]{1,2}/[^/]+/attachment/([^/]+)/wc-api(/(.*))?/?$";s:51:"index.php?attachment=$matches[1]&wc-api=$matches[3]";s:66:"blog/([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/([^/]+)(?:/([0-9]+))?/?$";s:97:"index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&page=$matches[5]";s:52:"blog/[0-9]{4}/[0-9]{1,2}/[0-9]{1,2}/[^/]+/([^/]+)/?$";s:32:"index.php?attachment=$matches[1]";s:62:"blog/[0-9]{4}/[0-9]{1,2}/[0-9]{1,2}/[^/]+/([^/]+)/trackback/?$";s:37:"index.php?attachment=$matches[1]&tb=1";s:82:"blog/[0-9]{4}/[0-9]{1,2}/[0-9]{1,2}/[^/]+/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:77:"blog/[0-9]{4}/[0-9]{1,2}/[0-9]{1,2}/[^/]+/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:77:"blog/[0-9]{4}/[0-9]{1,2}/[0-9]{1,2}/[^/]+/([^/]+)/comment-page-([0-9]{1,})/?$";s:50:"index.php?attachment=$matches[1]&cpage=$matches[2]";s:58:"blog/[0-9]{4}/[0-9]{1,2}/[0-9]{1,2}/[^/]+/([^/]+)/embed/?$";s:43:"index.php?attachment=$matches[1]&embed=true";s:69:"blog/([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/comment-page-([0-9]{1,})/?$";s:81:"index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&cpage=$matches[4]";s:56:"blog/([0-9]{4})/([0-9]{1,2})/comment-page-([0-9]{1,})/?$";s:65:"index.php?year=$matches[1]&monthnum=$matches[2]&cpage=$matches[3]";s:43:"blog/([0-9]{4})/comment-page-([0-9]{1,})/?$";s:44:"index.php?year=$matches[1]&cpage=$matches[2]";s:27:".?.+?/attachment/([^/]+)/?$";s:32:"index.php?attachment=$matches[1]";s:37:".?.+?/attachment/([^/]+)/trackback/?$";s:37:"index.php?attachment=$matches[1]&tb=1";s:57:".?.+?/attachment/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:52:".?.+?/attachment/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:52:".?.+?/attachment/([^/]+)/comment-page-([0-9]{1,})/?$";s:50:"index.php?attachment=$matches[1]&cpage=$matches[2]";s:33:".?.+?/attachment/([^/]+)/embed/?$";s:43:"index.php?attachment=$matches[1]&embed=true";s:16:"(.?.+?)/embed/?$";s:41:"index.php?pagename=$matches[1]&embed=true";s:20:"(.?.+?)/trackback/?$";s:35:"index.php?pagename=$matches[1]&tb=1";s:40:"(.?.+?)/feed/(feed|rdf|rss|rss2|atom)/?$";s:47:"index.php?pagename=$matches[1]&feed=$matches[2]";s:35:"(.?.+?)/(feed|rdf|rss|rss2|atom)/?$";s:47:"index.php?pagename=$matches[1]&feed=$matches[2]";s:28:"(.?.+?)/page/?([0-9]{1,})/?$";s:48:"index.php?pagename=$matches[1]&paged=$matches[2]";s:35:"(.?.+?)/comment-page-([0-9]{1,})/?$";s:48:"index.php?pagename=$matches[1]&cpage=$matches[2]";s:25:"(.?.+?)/wc-api(/(.*))?/?$";s:49:"index.php?pagename=$matches[1]&wc-api=$matches[3]";s:28:"(.?.+?)/order-pay(/(.*))?/?$";s:52:"index.php?pagename=$matches[1]&order-pay=$matches[3]";s:33:"(.?.+?)/order-received(/(.*))?/?$";s:57:"index.php?pagename=$matches[1]&order-received=$matches[3]";s:29:"(.?.+?)/view-order(/(.*))?/?$";s:53:"index.php?pagename=$matches[1]&view-order=$matches[3]";s:31:"(.?.+?)/edit-account(/(.*))?/?$";s:55:"index.php?pagename=$matches[1]&edit-account=$matches[3]";s:31:"(.?.+?)/edit-address(/(.*))?/?$";s:55:"index.php?pagename=$matches[1]&edit-address=$matches[3]";s:32:"(.?.+?)/lost-password(/(.*))?/?$";s:56:"index.php?pagename=$matches[1]&lost-password=$matches[3]";s:34:"(.?.+?)/customer-logout(/(.*))?/?$";s:58:"index.php?pagename=$matches[1]&customer-logout=$matches[3]";s:37:"(.?.+?)/add-payment-method(/(.*))?/?$";s:61:"index.php?pagename=$matches[1]&add-payment-method=$matches[3]";s:31:".?.+?/([^/]+)/wc-api(/(.*))?/?$";s:51:"index.php?attachment=$matches[1]&wc-api=$matches[3]";s:42:".?.+?/attachment/([^/]+)/wc-api(/(.*))?/?$";s:51:"index.php?attachment=$matches[1]&wc-api=$matches[3]";s:24:"(.?.+?)(?:/([0-9]+))?/?$";s:47:"index.php?pagename=$matches[1]&page=$matches[2]";}', 'yes'),
 (502, 'woocommerce_admin_notices', 'a:1:{i:0;s:14:"template_files";}', 'yes'),
-(503, '_transient_wc_attribute_taxonomies', 'a:1:{i:0;O:8:"stdClass":6:{s:12:"attribute_id";s:1:"1";s:14:"attribute_name";s:5:"color";s:15:"attribute_label";s:5:"color";s:14:"attribute_type";s:6:"select";s:17:"attribute_orderby";s:10:"menu_order";s:16:"attribute_public";s:1:"0";}}', 'yes');
+(503, '_transient_wc_attribute_taxonomies', 'a:1:{i:0;O:8:"stdClass":6:{s:12:"attribute_id";s:1:"1";s:14:"attribute_name";s:5:"color";s:15:"attribute_label";s:5:"color";s:14:"attribute_type";s:6:"select";s:17:"attribute_orderby";s:10:"menu_order";s:16:"attribute_public";s:1:"0";}}', 'yes'),
+(506, '_transient_timeout_geoip_127.0.0.1', '1456689376', 'no'),
+(507, '_transient_geoip_127.0.0.1', '', 'no'),
+(508, '_transient_timeout_external_ip_address_127.0.0.1', '1456692117', 'no'),
+(509, '_transient_external_ip_address_127.0.0.1', '112.198.103.240', 'no'),
+(510, '_transient_timeout_geoip_112.198.103.240', '1456692160', 'no'),
+(511, '_transient_geoip_112.198.103.240', '', 'no'),
+(536, '_transient_timeout_dash_88ae138922fe95674369b1cb3d215a2b', '1456333807', 'no'),
+(537, '_transient_dash_88ae138922fe95674369b1cb3d215a2b', '<div class="rss-widget"><p><strong>RSS Error</strong>: WP HTTP Error: There are no HTTP transports available which can complete the requested request.</p></div><div class="rss-widget"><p><strong>RSS Error</strong>: WP HTTP Error: There are no HTTP transports available which can complete the requested request.</p></div>', 'no'),
+(538, 'post_count', '9', 'yes'),
+(559, '_transient_timeout_wc_product_children_40', '1458887714', 'no'),
+(560, '_transient_wc_product_children_40', 'a:2:{s:7:"visible";a:2:{i:0;i:41;i:1;i:42;}s:3:"all";a:2:{i:0;i:41;i:1;i:42;}}', 'no'),
+(561, '_transient_timeout_wc_var_prices_40', '1458888108', 'no'),
+(562, '_transient_wc_var_prices_40', '{"version":"1456296040","e1b88e1c9a8573a0fff4a38a491fcd6d":{"price":{"42":30,"41":35},"regular_price":{"42":35,"41":35},"sale_price":{"42":30,"41":35}},"f9e544f77b7eac7add281ef28ca5559f":{"price":{"42":"30","41":"35"},"regular_price":{"42":"35","41":"35"},"sale_price":{"42":"30","41":"35"}}}', 'no'),
+(563, '_transient_timeout_wc_product_children_104', '1458887875', 'no'),
+(564, '_transient_wc_product_children_104', 'a:2:{s:7:"visible";a:2:{i:0;i:105;i:1;i:106;}s:3:"all";a:2:{i:0;i:105;i:1;i:106;}}', 'no'),
+(565, '_transient_timeout_wc_var_prices_104', '1458888715', 'no'),
+(566, '_transient_wc_var_prices_104', '{"version":"1456296040","f9e544f77b7eac7add281ef28ca5559f":{"price":{"106":"20","105":"20"},"regular_price":{"106":"20","105":"20"},"sale_price":{"106":"20","105":"20"}},"e1b88e1c9a8573a0fff4a38a491fcd6d":{"price":{"106":20,"105":20},"regular_price":{"106":20,"105":20},"sale_price":{"106":20,"105":20}}}', 'no'),
+(581, 'product_cat_children', 'a:2:{i:7;a:4:{i:0;i:8;i:1;i:9;i:2;i:10;i:3;i:11;}i:6;a:4:{i:0;i:12;i:1;i:13;i:2;i:14;i:3;i:15;}}', 'yes'),
+(584, '_transient_timeout_wc_related_8', '1456382819', 'no'),
+(585, '_transient_wc_related_8', 'a:13:{i:0;s:2:"56";i:1;s:2:"60";i:2;s:2:"67";i:3;s:2:"70";i:4;s:2:"73";i:5;s:2:"76";i:6;s:2:"79";i:7;s:2:"83";i:8;s:2:"87";i:9;s:2:"90";i:10;s:2:"93";i:11;s:2:"96";i:12;s:2:"99";}', 'no'),
+(586, '_transient_timeout_wc_term_counts', '1458888420', 'no'),
+(587, '_transient_wc_term_counts', 'a:10:{i:11;s:1:"3";i:15;s:1:"1";i:10;s:1:"3";i:14;s:1:"3";i:8;s:1:"4";i:13;s:1:"3";i:6;s:2:"10";i:9;s:1:"4";i:12;s:1:"3";i:7;s:2:"14";}', 'no'),
+(588, '_transient_timeout_wc_uf_pid_2564c16a769c4302c1e102b3f11f015c', '1458888447', 'no'),
+(589, '_transient_wc_uf_pid_2564c16a769c4302c1e102b3f11f015c', 'a:24:{i:0;i:8;i:1;i:99;i:2;i:96;i:3;i:93;i:4;i:90;i:5;i:87;i:6;i:83;i:7;i:79;i:8;i:76;i:9;i:73;i:10;i:70;i:11;i:67;i:12;i:60;i:13;i:56;i:14;i:53;i:15;i:50;i:16;i:47;i:17;i:40;i:18;i:37;i:19;i:34;i:20;i:31;i:21;i:104;i:22;i:103;i:23;i:102;}', 'no'),
+(590, '_transient_timeout_wc_uf_pid_b243a41967adcae813611459fc269362', '1458888457', 'no'),
+(591, '_transient_wc_uf_pid_b243a41967adcae813611459fc269362', 'a:14:{i:0;i:8;i:1;i:99;i:2;i:96;i:3;i:93;i:4;i:90;i:5;i:87;i:6;i:83;i:7;i:79;i:8;i:76;i:9;i:73;i:10;i:70;i:11;i:67;i:12;i:60;i:13;i:56;}', 'no'),
+(595, '_transient_timeout_wc_uf_pid_5e7e604e943377b011fa254a55fe9da6', '1458888692', 'no'),
+(596, '_transient_wc_uf_pid_5e7e604e943377b011fa254a55fe9da6', 'a:1:{i:0;i:102;}', 'no'),
+(597, '_transient_timeout_wc_uf_pid_09acb553f8ab02254a16000988e64b01', '1458888703', 'no'),
+(598, '_transient_wc_uf_pid_09acb553f8ab02254a16000988e64b01', 'a:3:{i:0;i:67;i:1;i:60;i:2;i:56;}', 'no'),
+(599, '_transient_timeout_wc_uf_pid_174fc087a6143f0c12008dcb35fb3d05', '1458888714', 'no'),
+(600, '_transient_wc_uf_pid_174fc087a6143f0c12008dcb35fb3d05', 'a:10:{i:0;i:53;i:1;i:50;i:2;i:47;i:3;i:40;i:4;i:37;i:5;i:34;i:6;i:31;i:7;i:104;i:8;i:103;i:9;i:102;}', 'no'),
+(621, '_transient_timeout_wc_low_stock_count', '1458890567', 'no'),
+(622, '_transient_wc_low_stock_count', '0', 'no'),
+(623, '_transient_timeout_wc_outofstock_count', '1458890567', 'no'),
+(624, '_transient_wc_outofstock_count', '0', 'no'),
+(625, '_transient_timeout_wc_admin_report', '1456384967', 'no'),
+(626, '_transient_wc_admin_report', 'a:1:{s:32:"0bd3c12d8c2166971db21c0e4c04be1a";a:0:{}}', 'no'),
+(631, '_transient_is_multi_author', '0', 'yes'),
+(633, 'category_children', 'a:0:{}', 'yes'),
+(634, 'custom_permalink_table', 'a:1:{s:6:"blogs/";a:3:{s:2:"id";i:28;s:4:"kind";s:8:"category";s:4:"slug";s:4:"blog";}}', 'yes'),
+(635, '_transient_eightstore_lite_categories', '2', 'yes'),
+(636, 'rewrite_rules', 'a:185:{s:22:"^wc-api/v([1-3]{1})/?$";s:51:"index.php?wc-api-version=$matches[1]&wc-api-route=/";s:24:"^wc-api/v([1-3]{1})(.*)?";s:61:"index.php?wc-api-version=$matches[1]&wc-api-route=$matches[2]";s:24:"^wc-auth/v([1]{1})/(.*)?";s:63:"index.php?wc-auth-version=$matches[1]&wc-auth-route=$matches[2]";s:7:"shop/?$";s:27:"index.php?post_type=product";s:37:"shop/feed/(feed|rdf|rss|rss2|atom)/?$";s:44:"index.php?post_type=product&feed=$matches[1]";s:32:"shop/(feed|rdf|rss|rss2|atom)/?$";s:44:"index.php?post_type=product&feed=$matches[1]";s:24:"shop/page/([0-9]{1,})/?$";s:45:"index.php?post_type=product&paged=$matches[1]";s:11:"^wp-json/?$";s:22:"index.php?rest_route=/";s:14:"^wp-json/(.*)?";s:33:"index.php?rest_route=/$matches[1]";s:47:"category/(.+?)/feed/(feed|rdf|rss|rss2|atom)/?$";s:52:"index.php?category_name=$matches[1]&feed=$matches[2]";s:42:"category/(.+?)/(feed|rdf|rss|rss2|atom)/?$";s:52:"index.php?category_name=$matches[1]&feed=$matches[2]";s:35:"category/(.+?)/page/?([0-9]{1,})/?$";s:53:"index.php?category_name=$matches[1]&paged=$matches[2]";s:32:"category/(.+?)/wc-api(/(.*))?/?$";s:54:"index.php?category_name=$matches[1]&wc-api=$matches[3]";s:17:"category/(.+?)/?$";s:35:"index.php?category_name=$matches[1]";s:44:"tag/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:42:"index.php?tag=$matches[1]&feed=$matches[2]";s:39:"tag/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:42:"index.php?tag=$matches[1]&feed=$matches[2]";s:32:"tag/([^/]+)/page/?([0-9]{1,})/?$";s:43:"index.php?tag=$matches[1]&paged=$matches[2]";s:29:"tag/([^/]+)/wc-api(/(.*))?/?$";s:44:"index.php?tag=$matches[1]&wc-api=$matches[3]";s:14:"tag/([^/]+)/?$";s:25:"index.php?tag=$matches[1]";s:45:"type/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:50:"index.php?post_format=$matches[1]&feed=$matches[2]";s:40:"type/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:50:"index.php?post_format=$matches[1]&feed=$matches[2]";s:33:"type/([^/]+)/page/?([0-9]{1,})/?$";s:51:"index.php?post_format=$matches[1]&paged=$matches[2]";s:15:"type/([^/]+)/?$";s:33:"index.php?post_format=$matches[1]";s:43:"shop/(.+?)/feed/(feed|rdf|rss|rss2|atom)/?$";s:50:"index.php?product_cat=$matches[1]&feed=$matches[2]";s:38:"shop/(.+?)/(feed|rdf|rss|rss2|atom)/?$";s:50:"index.php?product_cat=$matches[1]&feed=$matches[2]";s:31:"shop/(.+?)/page/?([0-9]{1,})/?$";s:51:"index.php?product_cat=$matches[1]&paged=$matches[2]";s:13:"shop/(.+?)/?$";s:33:"index.php?product_cat=$matches[1]";s:52:"product-tag/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:50:"index.php?product_tag=$matches[1]&feed=$matches[2]";s:47:"product-tag/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:50:"index.php?product_tag=$matches[1]&feed=$matches[2]";s:40:"product-tag/([^/]+)/page/?([0-9]{1,})/?$";s:51:"index.php?product_tag=$matches[1]&paged=$matches[2]";s:22:"product-tag/([^/]+)/?$";s:33:"index.php?product_tag=$matches[1]";s:35:"product/[^/]+/attachment/([^/]+)/?$";s:32:"index.php?attachment=$matches[1]";s:45:"product/[^/]+/attachment/([^/]+)/trackback/?$";s:37:"index.php?attachment=$matches[1]&tb=1";s:65:"product/[^/]+/attachment/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:60:"product/[^/]+/attachment/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:60:"product/[^/]+/attachment/([^/]+)/comment-page-([0-9]{1,})/?$";s:50:"index.php?attachment=$matches[1]&cpage=$matches[2]";s:41:"product/[^/]+/attachment/([^/]+)/embed/?$";s:43:"index.php?attachment=$matches[1]&embed=true";s:24:"product/([^/]+)/embed/?$";s:40:"index.php?product=$matches[1]&embed=true";s:28:"product/([^/]+)/trackback/?$";s:34:"index.php?product=$matches[1]&tb=1";s:48:"product/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:46:"index.php?product=$matches[1]&feed=$matches[2]";s:43:"product/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:46:"index.php?product=$matches[1]&feed=$matches[2]";s:36:"product/([^/]+)/page/?([0-9]{1,})/?$";s:47:"index.php?product=$matches[1]&paged=$matches[2]";s:43:"product/([^/]+)/comment-page-([0-9]{1,})/?$";s:47:"index.php?product=$matches[1]&cpage=$matches[2]";s:33:"product/([^/]+)/wc-api(/(.*))?/?$";s:48:"index.php?product=$matches[1]&wc-api=$matches[3]";s:39:"product/[^/]+/([^/]+)/wc-api(/(.*))?/?$";s:51:"index.php?attachment=$matches[1]&wc-api=$matches[3]";s:50:"product/[^/]+/attachment/([^/]+)/wc-api(/(.*))?/?$";s:51:"index.php?attachment=$matches[1]&wc-api=$matches[3]";s:32:"product/([^/]+)(?:/([0-9]+))?/?$";s:46:"index.php?product=$matches[1]&page=$matches[2]";s:24:"product/[^/]+/([^/]+)/?$";s:32:"index.php?attachment=$matches[1]";s:34:"product/[^/]+/([^/]+)/trackback/?$";s:37:"index.php?attachment=$matches[1]&tb=1";s:54:"product/[^/]+/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:49:"product/[^/]+/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:49:"product/[^/]+/([^/]+)/comment-page-([0-9]{1,})/?$";s:50:"index.php?attachment=$matches[1]&cpage=$matches[2]";s:30:"product/[^/]+/([^/]+)/embed/?$";s:43:"index.php?attachment=$matches[1]&embed=true";s:45:"product_variation/[^/]+/attachment/([^/]+)/?$";s:32:"index.php?attachment=$matches[1]";s:55:"product_variation/[^/]+/attachment/([^/]+)/trackback/?$";s:37:"index.php?attachment=$matches[1]&tb=1";s:75:"product_variation/[^/]+/attachment/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:70:"product_variation/[^/]+/attachment/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:70:"product_variation/[^/]+/attachment/([^/]+)/comment-page-([0-9]{1,})/?$";s:50:"index.php?attachment=$matches[1]&cpage=$matches[2]";s:51:"product_variation/[^/]+/attachment/([^/]+)/embed/?$";s:43:"index.php?attachment=$matches[1]&embed=true";s:34:"product_variation/([^/]+)/embed/?$";s:50:"index.php?product_variation=$matches[1]&embed=true";s:38:"product_variation/([^/]+)/trackback/?$";s:44:"index.php?product_variation=$matches[1]&tb=1";s:46:"product_variation/([^/]+)/page/?([0-9]{1,})/?$";s:57:"index.php?product_variation=$matches[1]&paged=$matches[2]";s:53:"product_variation/([^/]+)/comment-page-([0-9]{1,})/?$";s:57:"index.php?product_variation=$matches[1]&cpage=$matches[2]";s:43:"product_variation/([^/]+)/wc-api(/(.*))?/?$";s:58:"index.php?product_variation=$matches[1]&wc-api=$matches[3]";s:49:"product_variation/[^/]+/([^/]+)/wc-api(/(.*))?/?$";s:51:"index.php?attachment=$matches[1]&wc-api=$matches[3]";s:60:"product_variation/[^/]+/attachment/([^/]+)/wc-api(/(.*))?/?$";s:51:"index.php?attachment=$matches[1]&wc-api=$matches[3]";s:42:"product_variation/([^/]+)(?:/([0-9]+))?/?$";s:56:"index.php?product_variation=$matches[1]&page=$matches[2]";s:34:"product_variation/[^/]+/([^/]+)/?$";s:32:"index.php?attachment=$matches[1]";s:44:"product_variation/[^/]+/([^/]+)/trackback/?$";s:37:"index.php?attachment=$matches[1]&tb=1";s:64:"product_variation/[^/]+/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:59:"product_variation/[^/]+/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:59:"product_variation/[^/]+/([^/]+)/comment-page-([0-9]{1,})/?$";s:50:"index.php?attachment=$matches[1]&cpage=$matches[2]";s:40:"product_variation/[^/]+/([^/]+)/embed/?$";s:43:"index.php?attachment=$matches[1]&embed=true";s:45:"shop_order_refund/[^/]+/attachment/([^/]+)/?$";s:32:"index.php?attachment=$matches[1]";s:55:"shop_order_refund/[^/]+/attachment/([^/]+)/trackback/?$";s:37:"index.php?attachment=$matches[1]&tb=1";s:75:"shop_order_refund/[^/]+/attachment/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:70:"shop_order_refund/[^/]+/attachment/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:70:"shop_order_refund/[^/]+/attachment/([^/]+)/comment-page-([0-9]{1,})/?$";s:50:"index.php?attachment=$matches[1]&cpage=$matches[2]";s:51:"shop_order_refund/[^/]+/attachment/([^/]+)/embed/?$";s:43:"index.php?attachment=$matches[1]&embed=true";s:34:"shop_order_refund/([^/]+)/embed/?$";s:50:"index.php?shop_order_refund=$matches[1]&embed=true";s:38:"shop_order_refund/([^/]+)/trackback/?$";s:44:"index.php?shop_order_refund=$matches[1]&tb=1";s:46:"shop_order_refund/([^/]+)/page/?([0-9]{1,})/?$";s:57:"index.php?shop_order_refund=$matches[1]&paged=$matches[2]";s:53:"shop_order_refund/([^/]+)/comment-page-([0-9]{1,})/?$";s:57:"index.php?shop_order_refund=$matches[1]&cpage=$matches[2]";s:43:"shop_order_refund/([^/]+)/wc-api(/(.*))?/?$";s:58:"index.php?shop_order_refund=$matches[1]&wc-api=$matches[3]";s:49:"shop_order_refund/[^/]+/([^/]+)/wc-api(/(.*))?/?$";s:51:"index.php?attachment=$matches[1]&wc-api=$matches[3]";s:60:"shop_order_refund/[^/]+/attachment/([^/]+)/wc-api(/(.*))?/?$";s:51:"index.php?attachment=$matches[1]&wc-api=$matches[3]";s:42:"shop_order_refund/([^/]+)(?:/([0-9]+))?/?$";s:56:"index.php?shop_order_refund=$matches[1]&page=$matches[2]";s:34:"shop_order_refund/[^/]+/([^/]+)/?$";s:32:"index.php?attachment=$matches[1]";s:44:"shop_order_refund/[^/]+/([^/]+)/trackback/?$";s:37:"index.php?attachment=$matches[1]&tb=1";s:64:"shop_order_refund/[^/]+/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:59:"shop_order_refund/[^/]+/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:59:"shop_order_refund/[^/]+/([^/]+)/comment-page-([0-9]{1,})/?$";s:50:"index.php?attachment=$matches[1]&cpage=$matches[2]";s:40:"shop_order_refund/[^/]+/([^/]+)/embed/?$";s:43:"index.php?attachment=$matches[1]&embed=true";s:48:".*wp-(atom|rdf|rss|rss2|feed|commentsrss2)\\.php$";s:18:"index.php?feed=old";s:20:".*wp-app\\.php(/.*)?$";s:19:"index.php?error=403";s:16:".*wp-signup.php$";s:21:"index.php?signup=true";s:18:".*wp-activate.php$";s:23:"index.php?activate=true";s:18:".*wp-register.php$";s:23:"index.php?register=true";s:32:"feed/(feed|rdf|rss|rss2|atom)/?$";s:27:"index.php?&feed=$matches[1]";s:27:"(feed|rdf|rss|rss2|atom)/?$";s:27:"index.php?&feed=$matches[1]";s:20:"page/?([0-9]{1,})/?$";s:28:"index.php?&paged=$matches[1]";s:27:"comment-page-([0-9]{1,})/?$";s:40:"index.php?&page_id=111&cpage=$matches[1]";s:17:"wc-api(/(.*))?/?$";s:29:"index.php?&wc-api=$matches[2]";s:20:"order-pay(/(.*))?/?$";s:32:"index.php?&order-pay=$matches[2]";s:25:"order-received(/(.*))?/?$";s:37:"index.php?&order-received=$matches[2]";s:21:"view-order(/(.*))?/?$";s:33:"index.php?&view-order=$matches[2]";s:23:"edit-account(/(.*))?/?$";s:35:"index.php?&edit-account=$matches[2]";s:23:"edit-address(/(.*))?/?$";s:35:"index.php?&edit-address=$matches[2]";s:24:"lost-password(/(.*))?/?$";s:36:"index.php?&lost-password=$matches[2]";s:26:"customer-logout(/(.*))?/?$";s:38:"index.php?&customer-logout=$matches[2]";s:29:"add-payment-method(/(.*))?/?$";s:41:"index.php?&add-payment-method=$matches[2]";s:41:"comments/feed/(feed|rdf|rss|rss2|atom)/?$";s:42:"index.php?&feed=$matches[1]&withcomments=1";s:36:"comments/(feed|rdf|rss|rss2|atom)/?$";s:42:"index.php?&feed=$matches[1]&withcomments=1";s:26:"comments/wc-api(/(.*))?/?$";s:29:"index.php?&wc-api=$matches[2]";s:44:"search/(.+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:40:"index.php?s=$matches[1]&feed=$matches[2]";s:39:"search/(.+)/(feed|rdf|rss|rss2|atom)/?$";s:40:"index.php?s=$matches[1]&feed=$matches[2]";s:32:"search/(.+)/page/?([0-9]{1,})/?$";s:41:"index.php?s=$matches[1]&paged=$matches[2]";s:29:"search/(.+)/wc-api(/(.*))?/?$";s:42:"index.php?s=$matches[1]&wc-api=$matches[3]";s:14:"search/(.+)/?$";s:23:"index.php?s=$matches[1]";s:47:"author/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:50:"index.php?author_name=$matches[1]&feed=$matches[2]";s:42:"author/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:50:"index.php?author_name=$matches[1]&feed=$matches[2]";s:35:"author/([^/]+)/page/?([0-9]{1,})/?$";s:51:"index.php?author_name=$matches[1]&paged=$matches[2]";s:32:"author/([^/]+)/wc-api(/(.*))?/?$";s:52:"index.php?author_name=$matches[1]&wc-api=$matches[3]";s:17:"author/([^/]+)/?$";s:33:"index.php?author_name=$matches[1]";s:69:"([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/feed/(feed|rdf|rss|rss2|atom)/?$";s:80:"index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&feed=$matches[4]";s:64:"([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/(feed|rdf|rss|rss2|atom)/?$";s:80:"index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&feed=$matches[4]";s:57:"([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/page/?([0-9]{1,})/?$";s:81:"index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&paged=$matches[4]";s:54:"([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/wc-api(/(.*))?/?$";s:82:"index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&wc-api=$matches[5]";s:39:"([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/?$";s:63:"index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]";s:56:"([0-9]{4})/([0-9]{1,2})/feed/(feed|rdf|rss|rss2|atom)/?$";s:64:"index.php?year=$matches[1]&monthnum=$matches[2]&feed=$matches[3]";s:51:"([0-9]{4})/([0-9]{1,2})/(feed|rdf|rss|rss2|atom)/?$";s:64:"index.php?year=$matches[1]&monthnum=$matches[2]&feed=$matches[3]";s:44:"([0-9]{4})/([0-9]{1,2})/page/?([0-9]{1,})/?$";s:65:"index.php?year=$matches[1]&monthnum=$matches[2]&paged=$matches[3]";s:41:"([0-9]{4})/([0-9]{1,2})/wc-api(/(.*))?/?$";s:66:"index.php?year=$matches[1]&monthnum=$matches[2]&wc-api=$matches[4]";s:26:"([0-9]{4})/([0-9]{1,2})/?$";s:47:"index.php?year=$matches[1]&monthnum=$matches[2]";s:43:"([0-9]{4})/feed/(feed|rdf|rss|rss2|atom)/?$";s:43:"index.php?year=$matches[1]&feed=$matches[2]";s:38:"([0-9]{4})/(feed|rdf|rss|rss2|atom)/?$";s:43:"index.php?year=$matches[1]&feed=$matches[2]";s:31:"([0-9]{4})/page/?([0-9]{1,})/?$";s:44:"index.php?year=$matches[1]&paged=$matches[2]";s:28:"([0-9]{4})/wc-api(/(.*))?/?$";s:45:"index.php?year=$matches[1]&wc-api=$matches[3]";s:13:"([0-9]{4})/?$";s:26:"index.php?year=$matches[1]";s:27:".?.+?/attachment/([^/]+)/?$";s:32:"index.php?attachment=$matches[1]";s:37:".?.+?/attachment/([^/]+)/trackback/?$";s:37:"index.php?attachment=$matches[1]&tb=1";s:57:".?.+?/attachment/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:52:".?.+?/attachment/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:52:".?.+?/attachment/([^/]+)/comment-page-([0-9]{1,})/?$";s:50:"index.php?attachment=$matches[1]&cpage=$matches[2]";s:33:".?.+?/attachment/([^/]+)/embed/?$";s:43:"index.php?attachment=$matches[1]&embed=true";s:16:"(.?.+?)/embed/?$";s:41:"index.php?pagename=$matches[1]&embed=true";s:20:"(.?.+?)/trackback/?$";s:35:"index.php?pagename=$matches[1]&tb=1";s:40:"(.?.+?)/feed/(feed|rdf|rss|rss2|atom)/?$";s:47:"index.php?pagename=$matches[1]&feed=$matches[2]";s:35:"(.?.+?)/(feed|rdf|rss|rss2|atom)/?$";s:47:"index.php?pagename=$matches[1]&feed=$matches[2]";s:28:"(.?.+?)/page/?([0-9]{1,})/?$";s:48:"index.php?pagename=$matches[1]&paged=$matches[2]";s:35:"(.?.+?)/comment-page-([0-9]{1,})/?$";s:48:"index.php?pagename=$matches[1]&cpage=$matches[2]";s:25:"(.?.+?)/wc-api(/(.*))?/?$";s:49:"index.php?pagename=$matches[1]&wc-api=$matches[3]";s:28:"(.?.+?)/order-pay(/(.*))?/?$";s:52:"index.php?pagename=$matches[1]&order-pay=$matches[3]";s:33:"(.?.+?)/order-received(/(.*))?/?$";s:57:"index.php?pagename=$matches[1]&order-received=$matches[3]";s:29:"(.?.+?)/view-order(/(.*))?/?$";s:53:"index.php?pagename=$matches[1]&view-order=$matches[3]";s:31:"(.?.+?)/edit-account(/(.*))?/?$";s:55:"index.php?pagename=$matches[1]&edit-account=$matches[3]";s:31:"(.?.+?)/edit-address(/(.*))?/?$";s:55:"index.php?pagename=$matches[1]&edit-address=$matches[3]";s:32:"(.?.+?)/lost-password(/(.*))?/?$";s:56:"index.php?pagename=$matches[1]&lost-password=$matches[3]";s:34:"(.?.+?)/customer-logout(/(.*))?/?$";s:58:"index.php?pagename=$matches[1]&customer-logout=$matches[3]";s:37:"(.?.+?)/add-payment-method(/(.*))?/?$";s:61:"index.php?pagename=$matches[1]&add-payment-method=$matches[3]";s:31:".?.+?/([^/]+)/wc-api(/(.*))?/?$";s:51:"index.php?attachment=$matches[1]&wc-api=$matches[3]";s:42:".?.+?/attachment/([^/]+)/wc-api(/(.*))?/?$";s:51:"index.php?attachment=$matches[1]&wc-api=$matches[3]";s:24:"(.?.+?)(?:/([0-9]+))?/?$";s:47:"index.php?pagename=$matches[1]&page=$matches[2]";s:27:"[^/]+/attachment/([^/]+)/?$";s:32:"index.php?attachment=$matches[1]";s:37:"[^/]+/attachment/([^/]+)/trackback/?$";s:37:"index.php?attachment=$matches[1]&tb=1";s:57:"[^/]+/attachment/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:52:"[^/]+/attachment/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:52:"[^/]+/attachment/([^/]+)/comment-page-([0-9]{1,})/?$";s:50:"index.php?attachment=$matches[1]&cpage=$matches[2]";s:33:"[^/]+/attachment/([^/]+)/embed/?$";s:43:"index.php?attachment=$matches[1]&embed=true";s:16:"([^/]+)/embed/?$";s:37:"index.php?name=$matches[1]&embed=true";s:20:"([^/]+)/trackback/?$";s:31:"index.php?name=$matches[1]&tb=1";s:40:"([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:43:"index.php?name=$matches[1]&feed=$matches[2]";s:35:"([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:43:"index.php?name=$matches[1]&feed=$matches[2]";s:28:"([^/]+)/page/?([0-9]{1,})/?$";s:44:"index.php?name=$matches[1]&paged=$matches[2]";s:35:"([^/]+)/comment-page-([0-9]{1,})/?$";s:44:"index.php?name=$matches[1]&cpage=$matches[2]";s:25:"([^/]+)/wc-api(/(.*))?/?$";s:45:"index.php?name=$matches[1]&wc-api=$matches[3]";s:31:"[^/]+/([^/]+)/wc-api(/(.*))?/?$";s:51:"index.php?attachment=$matches[1]&wc-api=$matches[3]";s:42:"[^/]+/attachment/([^/]+)/wc-api(/(.*))?/?$";s:51:"index.php?attachment=$matches[1]&wc-api=$matches[3]";s:24:"([^/]+)(?:/([0-9]+))?/?$";s:43:"index.php?name=$matches[1]&page=$matches[2]";s:16:"[^/]+/([^/]+)/?$";s:32:"index.php?attachment=$matches[1]";s:26:"[^/]+/([^/]+)/trackback/?$";s:37:"index.php?attachment=$matches[1]&tb=1";s:46:"[^/]+/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:41:"[^/]+/([^/]+)/(feed|rdf|rss|rss2|atom)/?$";s:49:"index.php?attachment=$matches[1]&feed=$matches[2]";s:41:"[^/]+/([^/]+)/comment-page-([0-9]{1,})/?$";s:50:"index.php?attachment=$matches[1]&cpage=$matches[2]";s:22:"[^/]+/([^/]+)/embed/?$";s:43:"index.php?attachment=$matches[1]&embed=true";}', 'yes');
 
 -- --------------------------------------------------------
 
@@ -1405,11 +1570,14 @@ INSERT INTO `ofs2616_options` (`option_id`, `option_name`, `option_value`, `auto
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_postmeta` (
-`meta_id` bigint(20) unsigned NOT NULL,
+  `meta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `post_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `meta_key` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `meta_value` longtext COLLATE utf8mb4_unicode_ci
-) ENGINE=InnoDB AUTO_INCREMENT=1075 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `meta_value` longtext COLLATE utf8mb4_unicode_ci,
+  PRIMARY KEY (`meta_id`),
+  KEY `post_id` (`post_id`),
+  KEY `meta_key` (`meta_key`(191))
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1209 ;
 
 --
 -- Dumping data for table `ofs2616_postmeta`
@@ -2298,8 +2466,8 @@ INSERT INTO `ofs2616_postmeta` (`meta_id`, `post_id`, `meta_key`, `meta_value`) 
 (930, 70, '_wc_review_count', '4'),
 (931, 67, '_wc_rating_count', 'a:0:{}'),
 (932, 67, '_wc_average_rating', '0'),
-(933, 4, '_edit_lock', '1454761723:1'),
-(934, 5, '_edit_lock', '1454760327:1'),
+(933, 4, '_edit_lock', '1456293148:1'),
+(934, 5, '_edit_lock', '1456293121:1'),
 (935, 1, '_wp_trash_meta_status', 'publish'),
 (936, 1, '_wp_trash_meta_time', '1454760478'),
 (937, 1, '_wp_trash_meta_comments_status', 'a:1:{i:1;s:1:"1";}'),
@@ -2325,11 +2493,11 @@ INSERT INTO `ofs2616_postmeta` (`meta_id`, `post_id`, `meta_key`, `meta_value`) 
 (963, 116, '_wp_attached_file', '2016/02/Unknown-7.jpg'),
 (964, 116, '_wp_attachment_metadata', 'a:5:{s:5:"width";i:520;s:6:"height";i:520;s:4:"file";s:21:"2016/02/Unknown-7.jpg";s:5:"sizes";a:7:{s:9:"thumbnail";a:4:{s:4:"file";s:21:"Unknown-7-150x150.jpg";s:5:"width";i:150;s:6:"height";i:150;s:9:"mime-type";s:10:"image/jpeg";}s:6:"medium";a:4:{s:4:"file";s:21:"Unknown-7-300x300.jpg";s:5:"width";i:300;s:6:"height";i:300;s:9:"mime-type";s:10:"image/jpeg";}s:14:"shop_thumbnail";a:4:{s:4:"file";s:21:"Unknown-7-180x180.jpg";s:5:"width";i:180;s:6:"height";i:180;s:9:"mime-type";s:10:"image/jpeg";}s:12:"shop_catalog";a:4:{s:4:"file";s:21:"Unknown-7-300x300.jpg";s:5:"width";i:300;s:6:"height";i:300;s:9:"mime-type";s:10:"image/jpeg";}s:22:"eightstore-promo-small";a:4:{s:4:"file";s:21:"Unknown-7-520x260.jpg";s:5:"width";i:520;s:6:"height";i:260;s:9:"mime-type";s:10:"image/jpeg";}s:21:"eightstore-blog-image";a:4:{s:4:"file";s:21:"Unknown-7-290x260.jpg";s:5:"width";i:290;s:6:"height";i:260;s:9:"mime-type";s:10:"image/jpeg";}s:28:"eightstore-testimonial-image";a:4:{s:4:"file";s:19:"Unknown-7-70x70.jpg";s:5:"width";i:70;s:6:"height";i:70;s:9:"mime-type";s:10:"image/jpeg";}}s:10:"image_meta";a:12:{s:8:"aperture";s:1:"0";s:6:"credit";s:0:"";s:6:"camera";s:0:"";s:7:"caption";s:0:"";s:17:"created_timestamp";s:1:"0";s:9:"copyright";s:0:"";s:12:"focal_length";s:1:"0";s:3:"iso";s:1:"0";s:13:"shutter_speed";s:1:"0";s:5:"title";s:0:"";s:11:"orientation";s:1:"0";s:8:"keywords";a:0:{}}}'),
 (970, 120, '_edit_last', '1'),
-(971, 120, '_edit_lock', '1454762484:1'),
+(971, 120, '_edit_lock', '1456297892:1'),
 (972, 120, '_thumbnail_id', '115'),
 (974, 120, 'eightstore_lite_sidebar_layout', 'sidebar-no'),
 (975, 122, '_edit_last', '1'),
-(976, 122, '_edit_lock', '1454763747:1'),
+(976, 122, '_edit_lock', '1456296399:1'),
 (977, 122, '_thumbnail_id', '116'),
 (979, 122, 'eightstore_lite_sidebar_layout', 'sidebar-no'),
 (980, 124, '_edit_last', '1'),
@@ -2372,7 +2540,7 @@ INSERT INTO `ofs2616_postmeta` (`meta_id`, `post_id`, `meta_key`, `meta_value`) 
 INSERT INTO `ofs2616_postmeta` (`meta_id`, `post_id`, `meta_key`, `meta_value`) VALUES
 (1024, 139, '_wp_attachment_metadata', 'a:5:{s:5:"width";i:899;s:6:"height";i:204;s:4:"file";s:22:"2016/02/denin-jens.jpg";s:5:"sizes";a:10:{s:9:"thumbnail";a:4:{s:4:"file";s:22:"denin-jens-150x150.jpg";s:5:"width";i:150;s:6:"height";i:150;s:9:"mime-type";s:10:"image/jpeg";}s:6:"medium";a:4:{s:4:"file";s:21:"denin-jens-300x68.jpg";s:5:"width";i:300;s:6:"height";i:68;s:9:"mime-type";s:10:"image/jpeg";}s:12:"medium_large";a:4:{s:4:"file";s:22:"denin-jens-768x174.jpg";s:5:"width";i:768;s:6:"height";i:174;s:9:"mime-type";s:10:"image/jpeg";}s:14:"shop_thumbnail";a:4:{s:4:"file";s:22:"denin-jens-180x180.jpg";s:5:"width";i:180;s:6:"height";i:180;s:9:"mime-type";s:10:"image/jpeg";}s:12:"shop_catalog";a:4:{s:4:"file";s:22:"denin-jens-300x204.jpg";s:5:"width";i:300;s:6:"height";i:204;s:9:"mime-type";s:10:"image/jpeg";}s:11:"shop_single";a:4:{s:4:"file";s:22:"denin-jens-600x204.jpg";s:5:"width";i:600;s:6:"height";i:204;s:9:"mime-type";s:10:"image/jpeg";}s:22:"eightstore-promo-small";a:4:{s:4:"file";s:22:"denin-jens-520x204.jpg";s:5:"width";i:520;s:6:"height";i:204;s:9:"mime-type";s:10:"image/jpeg";}s:22:"eightstore-promo-large";a:4:{s:4:"file";s:22:"denin-jens-520x204.jpg";s:5:"width";i:520;s:6:"height";i:204;s:9:"mime-type";s:10:"image/jpeg";}s:21:"eightstore-blog-image";a:4:{s:4:"file";s:22:"denin-jens-290x204.jpg";s:5:"width";i:290;s:6:"height";i:204;s:9:"mime-type";s:10:"image/jpeg";}s:28:"eightstore-testimonial-image";a:4:{s:4:"file";s:20:"denin-jens-70x70.jpg";s:5:"width";i:70;s:6:"height";i:70;s:9:"mime-type";s:10:"image/jpeg";}}s:10:"image_meta";a:12:{s:8:"aperture";s:1:"0";s:6:"credit";s:0:"";s:6:"camera";s:0:"";s:7:"caption";s:0:"";s:17:"created_timestamp";s:1:"0";s:9:"copyright";s:0:"";s:12:"focal_length";s:1:"0";s:3:"iso";s:1:"0";s:13:"shutter_speed";s:1:"0";s:5:"title";s:0:"";s:11:"orientation";s:1:"0";s:8:"keywords";a:0:{}}}'),
 (1025, 140, '_edit_last', '1'),
-(1026, 140, '_edit_lock', '1454771065:1'),
+(1026, 140, '_edit_lock', '1456298635:1'),
 (1027, 140, '_thumbnail_id', '115'),
 (1029, 140, 'eightstore_lite_sidebar_layout', 'sidebar-right'),
 (1032, 40, '_wc_rating_count', 'a:3:{i:3;s:1:"1";i:4;s:1:"1";i:5;s:1:"1";}'),
@@ -2412,7 +2580,120 @@ INSERT INTO `ofs2616_postmeta` (`meta_id`, `post_id`, `meta_key`, `meta_value`) 
 (1069, 151, '_menu_item_url', 'http://localhost/onefabshop/blogs'),
 (1072, 6, '_edit_lock', '1454845986:1'),
 (1073, 99, '_wc_rating_count', 'a:2:{i:4;s:1:"1";i:5;s:1:"1";}'),
-(1074, 99, '_wc_average_rating', '4.50');
+(1074, 99, '_wc_average_rating', '4.50'),
+(1075, 99, '_wc_review_count', '2'),
+(1076, 153, '_menu_item_type', 'post_type'),
+(1077, 153, '_menu_item_menu_item_parent', '0'),
+(1078, 153, '_menu_item_object_id', '111'),
+(1079, 153, '_menu_item_object', 'page'),
+(1080, 153, '_menu_item_target', ''),
+(1081, 153, '_menu_item_classes', 'a:1:{i:0;s:0:"";}'),
+(1082, 153, '_menu_item_xfn', ''),
+(1083, 153, '_menu_item_url', ''),
+(1085, 154, '_menu_item_type', 'post_type'),
+(1086, 154, '_menu_item_menu_item_parent', '0'),
+(1087, 154, '_menu_item_object_id', '2'),
+(1088, 154, '_menu_item_object', 'page'),
+(1089, 154, '_menu_item_target', ''),
+(1090, 154, '_menu_item_classes', 'a:1:{i:0;s:0:"";}'),
+(1091, 154, '_menu_item_xfn', ''),
+(1092, 154, '_menu_item_url', ''),
+(1103, 156, '_edit_lock', '1456292866:1'),
+(1104, 156, '_edit_last', '1'),
+(1106, 156, 'eightstore_lite_sidebar_layout', 'sidebar-right'),
+(1107, 158, '_edit_lock', '1456293609:1'),
+(1108, 158, '_edit_last', '1'),
+(1109, 158, '_wp_page_template', 'default'),
+(1110, 158, 'eightstore_lite_sidebar_layout', 'sidebar-right'),
+(1111, 158, '_wp_trash_meta_status', 'publish'),
+(1112, 158, '_wp_trash_meta_time', '1456293738'),
+(1113, 99, '_edit_lock', '1456295160:1'),
+(1114, 99, '_edit_last', '1'),
+(1115, 99, '_upsell_ids', 'a:0:{}'),
+(1116, 99, '_crosssell_ids', 'a:0:{}'),
+(1117, 99, '_product_version', '2.5.2'),
+(1118, 96, '_edit_last', '1'),
+(1119, 96, '_edit_lock', '1456295339:1'),
+(1120, 93, '_edit_last', '1'),
+(1121, 93, '_edit_lock', '1456295355:1'),
+(1122, 90, '_edit_last', '1'),
+(1123, 90, '_edit_lock', '1456295383:1'),
+(1124, 83, '_edit_last', '1'),
+(1125, 83, '_edit_lock', '1456295406:1'),
+(1126, 87, '_edit_last', '1'),
+(1127, 87, '_edit_lock', '1456295440:1'),
+(1128, 79, '_edit_last', '1'),
+(1129, 79, '_edit_lock', '1456295463:1'),
+(1130, 76, '_edit_last', '1'),
+(1131, 76, '_edit_lock', '1456295484:1'),
+(1132, 73, '_edit_last', '1'),
+(1133, 73, '_edit_lock', '1456295504:1'),
+(1134, 70, '_edit_last', '1'),
+(1135, 70, '_edit_lock', '1456295524:1'),
+(1136, 67, '_edit_last', '1'),
+(1137, 67, '_edit_lock', '1456295585:1'),
+(1138, 60, '_edit_last', '1'),
+(1139, 60, '_edit_lock', '1456295612:1'),
+(1140, 56, '_edit_last', '1'),
+(1141, 56, '_edit_lock', '1456295634:1'),
+(1142, 53, '_edit_last', '1'),
+(1143, 53, '_edit_lock', '1456295658:1'),
+(1144, 50, '_edit_last', '1'),
+(1145, 50, '_edit_lock', '1456295682:1'),
+(1146, 47, '_edit_last', '1'),
+(1147, 47, '_edit_lock', '1456295699:1'),
+(1148, 40, '_edit_last', '1'),
+(1149, 41, '_stock_status', 'instock'),
+(1150, 42, '_stock_status', 'instock'),
+(1151, 40, '_edit_lock', '1456295714:1'),
+(1152, 37, '_edit_last', '1'),
+(1153, 37, '_edit_lock', '1456295734:1'),
+(1154, 34, '_edit_last', '1'),
+(1155, 34, '_edit_lock', '1456295756:1'),
+(1156, 31, '_edit_last', '1'),
+(1157, 31, '_edit_lock', '1456295810:1'),
+(1158, 104, '_edit_last', '1'),
+(1159, 105, '_stock_status', 'instock'),
+(1160, 106, '_stock_status', 'instock'),
+(1161, 104, '_edit_lock', '1456295875:1'),
+(1162, 103, '_edit_last', '1'),
+(1163, 103, '_edit_lock', '1456295905:1'),
+(1164, 102, '_edit_last', '1'),
+(1165, 102, '_edit_lock', '1456296040:1'),
+(1166, 73, '_wc_rating_count', 'a:2:{i:1;s:1:"1";i:3;s:1:"1";}'),
+(1167, 73, '_wc_average_rating', '2.00'),
+(1168, 102, '_wc_rating_count', 'a:1:{i:4;s:1:"1";}'),
+(1169, 102, '_wc_average_rating', '4.00'),
+(1170, 53, '_wc_rating_count', 'a:2:{i:1;s:1:"1";i:5;s:1:"1";}'),
+(1171, 53, '_wc_average_rating', '3.00'),
+(1175, 120, '_wp_old_slug', 'productmen'),
+(1176, 87, '_wc_rating_count', 'a:1:{i:4;s:1:"1";}'),
+(1177, 87, '_wc_average_rating', '4.00'),
+(1178, 160, '_menu_item_type', 'custom'),
+(1179, 160, '_menu_item_menu_item_parent', '0'),
+(1180, 160, '_menu_item_object_id', '160'),
+(1181, 160, '_menu_item_object', 'custom'),
+(1182, 160, '_menu_item_target', ''),
+(1183, 160, '_menu_item_classes', 'a:1:{i:0;s:0:"";}'),
+(1184, 160, '_menu_item_xfn', ''),
+(1185, 160, '_menu_item_url', 'http://localhost/onefabshop/shop/women/'),
+(1187, 161, '_menu_item_type', 'taxonomy'),
+(1188, 161, '_menu_item_menu_item_parent', '0'),
+(1189, 161, '_menu_item_object_id', '28'),
+(1190, 161, '_menu_item_object', 'category'),
+(1191, 161, '_menu_item_target', ''),
+(1192, 161, '_menu_item_classes', 'a:1:{i:0;s:0:"";}'),
+(1193, 161, '_menu_item_xfn', ''),
+(1194, 161, '_menu_item_url', ''),
+(1196, 162, '_menu_item_type', 'custom'),
+(1197, 162, '_menu_item_menu_item_parent', '0'),
+(1198, 162, '_menu_item_object_id', '162'),
+(1199, 162, '_menu_item_object', 'custom'),
+(1200, 162, '_menu_item_target', ''),
+(1201, 162, '_menu_item_classes', 'a:1:{i:0;s:0:"";}'),
+(1202, 162, '_menu_item_xfn', ''),
+(1203, 162, '_menu_item_url', 'http://localhost/onefabshop/shop/men/'),
+(1208, 140, 'custom_permalink', 'sample-blog-2');
 
 -- --------------------------------------------------------
 
@@ -2421,7 +2702,7 @@ INSERT INTO `ofs2616_postmeta` (`meta_id`, `post_id`, `meta_key`, `meta_value`) 
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_posts` (
-`ID` bigint(20) unsigned NOT NULL,
+  `ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `post_author` bigint(20) unsigned NOT NULL DEFAULT '0',
   `post_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `post_date_gmt` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -2443,8 +2724,13 @@ CREATE TABLE IF NOT EXISTS `ofs2616_posts` (
   `menu_order` int(11) NOT NULL DEFAULT '0',
   `post_type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'post',
   `post_mime_type` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `comment_count` bigint(20) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=152 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `comment_count` bigint(20) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ID`),
+  KEY `post_name` (`post_name`(191)),
+  KEY `type_status_date` (`post_type`,`post_status`,`post_date`,`ID`),
+  KEY `post_parent` (`post_parent`),
+  KEY `post_author` (`post_author`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=163 ;
 
 --
 -- Dumping data for table `ofs2616_posts`
@@ -2453,14 +2739,13 @@ CREATE TABLE IF NOT EXISTS `ofs2616_posts` (
 INSERT INTO `ofs2616_posts` (`ID`, `post_author`, `post_date`, `post_date_gmt`, `post_content`, `post_title`, `post_excerpt`, `post_status`, `comment_status`, `ping_status`, `post_password`, `post_name`, `to_ping`, `pinged`, `post_modified`, `post_modified_gmt`, `post_content_filtered`, `post_parent`, `guid`, `menu_order`, `post_type`, `post_mime_type`, `comment_count`) VALUES
 (1, 1, '2016-02-06 07:33:43', '2016-02-06 07:33:43', 'Welcome to WordPress. This is your first post. Edit or delete it, then start writing!', 'Hello world!', '', 'trash', 'open', 'open', '', 'hello-world', '', '', '2016-02-06 12:07:58', '2016-02-06 12:07:58', '', 0, 'http://localhost/onefabshop/?p=1', 0, 'post', '', 1),
 (2, 1, '2016-02-06 07:33:43', '2016-02-06 07:33:43', 'This is an example page. It''s different from a blog post because it will stay in one place and will show up in your site navigation (in most themes). Most people start with an About page that introduces them to potential site visitors. It might say something like this:\r\n\r\n<blockquote>Hi there! I''m a bike messenger by day, aspiring actor by night, and this is my website. I live in Los Angeles, have a great dog named Jack, and I like pi&#241;a coladas. (And gettin'' caught in the rain.)</blockquote>\r\n\r\n...or something like this:\r\n\r\n<blockquote>The XYZ Doohickey Company was founded in 1971, and has been providing quality doohickeys to the public ever since. Located in Gotham City, XYZ employs over 2,000 people and does all kinds of awesome things for the Gotham community.</blockquote>\r\n\r\nAs a new WordPress user, you should go to <a href="http://localhost/onefabshop/wp-admin/">your dashboard</a> to delete this page and create new pages for your content. Have fun!', 'About', '', 'publish', 'closed', 'open', '', 'sample-page', '', '', '2016-02-07 08:45:27', '2016-02-07 08:45:27', '', 0, 'http://localhost/onefabshop/?page_id=2', 5, 'page', '', 0),
-(3, 1, '2016-02-06 07:35:26', '0000-00-00 00:00:00', '', 'Auto Draft', '', 'auto-draft', 'open', 'open', '', '', '', '', '2016-02-06 07:35:26', '0000-00-00 00:00:00', '', 0, 'http://localhost/onefabshop/?p=3', 0, 'post', '', 0),
 (4, 1, '2016-02-06 08:06:34', '2016-02-06 08:06:34', '', 'Shop', '', 'publish', 'closed', 'closed', '', 'shop', '', '', '2016-02-06 08:06:34', '2016-02-06 08:06:34', '', 0, 'http://localhost/onefabshop/index.php/shop/', 6, 'page', '', 0),
 (5, 1, '2016-02-06 08:06:34', '2016-02-06 08:06:34', '[woocommerce_cart]', 'Cart', '', 'publish', 'closed', 'closed', '', 'cart', '', '', '2016-02-06 08:06:34', '2016-02-06 08:06:34', '', 0, 'http://localhost/onefabshop/index.php/cart/', 1, 'page', '', 0),
 (6, 1, '2016-02-06 08:06:34', '2016-02-06 08:06:34', '[woocommerce_checkout]', 'Checkout', '', 'publish', 'closed', 'closed', '', 'checkout', '', '', '2016-02-06 08:06:34', '2016-02-06 08:06:34', '', 0, 'http://localhost/onefabshop/index.php/checkout/', 2, 'page', '', 0),
 (7, 1, '2016-02-06 08:06:34', '2016-02-06 08:06:34', '[woocommerce_my_account]', 'My Account', '', 'publish', 'closed', 'closed', '', 'my-account', '', '', '2016-02-06 08:06:34', '2016-02-06 08:06:34', '', 0, 'http://localhost/onefabshop/index.php/my-account/', 4, 'page', '', 0),
 (8, 1, '2016-02-06 08:20:24', '2016-02-06 08:20:24', 'sample description here', 'MK Bag', 'sample short description here', 'publish', 'open', 'closed', '', 'mk-bag', '', '', '2016-02-06 09:16:10', '2016-02-06 09:16:10', '', 0, 'http://localhost/onefabshop/?post_type=product&#038;p=8', 1, 'product', '', 0),
 (9, 1, '2016-02-06 08:20:12', '2016-02-06 08:20:12', '', '12644998_572741109573734_5503681196439159547_n', '', 'inherit', 'open', 'closed', '', '12644998_572741109573734_5503681196439159547_n', '', '', '2016-02-06 08:20:12', '2016-02-06 08:20:12', '', 8, 'http://localhost/onefabshop/wp-content/uploads/2016/02/12644998_572741109573734_5503681196439159547_n.jpg', 0, 'attachment', 'image/jpeg', 0),
-(16, 1, '2016-02-06 09:26:24', '2016-02-06 09:26:24', ' ', '', '', 'publish', 'closed', 'closed', '', '16', '', '', '2016-02-07 08:46:37', '2016-02-07 08:46:37', '', 0, 'http://localhost/onefabshop/?p=16', 2, 'nav_menu_item', '', 0),
+(16, 1, '2016-02-06 09:26:24', '2016-02-06 09:26:24', ' ', '', '', 'publish', 'closed', 'closed', '', '16', '', '', '2016-02-23 06:41:56', '2016-02-23 06:41:56', '', 0, 'http://localhost/onefabshop/?p=16', 2, 'nav_menu_item', '', 0),
 (17, 1, '2016-02-06 09:39:17', '2016-02-06 09:39:17', '', '12695837_576621765852335_34695656_n', '', 'inherit', 'open', 'closed', '', '12695837_576621765852335_34695656_n', '', '', '2016-02-06 09:39:17', '2016-02-06 09:39:17', '', 0, 'http://localhost/onefabshop/wp-content/uploads/2016/02/12695837_576621765852335_34695656_n.jpg', 0, 'attachment', 'image/jpeg', 0),
 (18, 1, '2016-02-06 10:19:41', '2016-02-06 10:19:41', '', 'ofs_250', '', 'inherit', 'open', 'closed', '', 'ofs_250', '', '', '2016-02-06 10:19:41', '2016-02-06 10:19:41', '', 0, 'http://localhost/onefabshop/wp-content/uploads/2016/02/ofs_250.jpg', 0, 'attachment', 'image/jpeg', 0),
 (19, 1, '2016-02-06 10:19:53', '2016-02-06 10:19:53', 'http://localhost/onefabshop/wp-content/uploads/2016/02/cropped-ofs_250.jpg', 'cropped-ofs_250.jpg', '', 'inherit', 'open', 'closed', '', 'cropped-ofs_250-jpg', '', '', '2016-02-06 10:19:53', '2016-02-06 10:19:53', '', 0, 'http://localhost/onefabshop/wp-content/uploads/2016/02/cropped-ofs_250.jpg', 0, 'attachment', 'image/jpeg', 0),
@@ -2473,119 +2758,125 @@ INSERT INTO `ofs2616_posts` (`ID`, `post_author`, `post_date`, `post_date_gmt`, 
 (27, 1, '2013-06-07 10:45:27', '2013-06-07 10:45:27', '', 'T_3_front', '', 'inherit', 'open', 'open', '', 't_3_front', '', '', '2013-06-07 10:45:27', '2013-06-07 10:45:27', '', 104, 'http://localhost/onefabshop/wp-content/uploads/2013/06/T_3_front.jpg', 0, 'attachment', 'image/jpeg', 0),
 (28, 1, '2013-06-07 10:45:29', '2013-06-07 10:45:29', '', 'T_4_back', '', 'inherit', 'open', 'open', '', 't_4_back', '', '', '2013-06-07 10:45:29', '2013-06-07 10:45:29', '', 104, 'http://localhost/onefabshop/wp-content/uploads/2013/06/T_4_back.jpg', 0, 'attachment', 'image/jpeg', 0),
 (29, 1, '2013-06-07 10:45:30', '2013-06-07 10:45:30', '', 'T_4_front', '', 'inherit', 'open', 'open', '', 't_4_front-2', '', '', '2013-06-07 10:45:30', '2013-06-07 10:45:30', '', 104, 'http://localhost/onefabshop/wp-content/uploads/2013/06/T_4_front1.jpg', 0, 'attachment', 'image/jpeg', 0),
-(31, 1, '2013-06-07 10:49:51', '2013-06-07 10:49:51', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Ninja Silhouette', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'ninja-silhouette', '', '', '2013-06-07 10:49:51', '2013-06-07 10:49:51', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&amp;p=31', 21, 'product', '', 1),
+(31, 1, '2013-06-07 10:49:51', '2013-06-07 10:49:51', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Ninja Silhouette', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'ninja-silhouette', '', '', '2016-02-24 06:36:50', '2016-02-24 06:36:50', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&#038;p=31', 21, 'product', '', 1),
 (32, 1, '2013-06-07 10:49:13', '2013-06-07 10:49:13', '', 'T_5_front', '', 'inherit', 'open', 'open', '', 't_5_front', '', '', '2013-06-07 10:49:13', '2013-06-07 10:49:13', '', 31, 'http://localhost/onefabshop/wp-content/uploads/2013/06/T_5_front.jpg', 0, 'attachment', 'image/jpeg', 0),
 (33, 1, '2013-06-07 10:49:23', '2013-06-07 10:49:23', '', 'T_5_back', '', 'inherit', 'open', 'open', '', 't_5_back', '', '', '2013-06-07 10:49:23', '2013-06-07 10:49:23', '', 31, 'http://localhost/onefabshop/wp-content/uploads/2013/06/T_5_back.jpg', 0, 'attachment', 'image/jpeg', 0),
-(34, 1, '2013-06-07 10:52:06', '2013-06-07 10:52:06', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Woo Ninja', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'woo-ninja', '', '', '2013-06-07 10:52:06', '2013-06-07 10:52:06', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&amp;p=34', 20, 'product', '', 0),
+(34, 1, '2013-06-07 10:52:06', '2013-06-07 10:52:06', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Woo Ninja', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'woo-ninja', '', '', '2016-02-24 06:35:56', '2016-02-24 06:35:56', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&#038;p=34', 20, 'product', '', 0),
 (35, 1, '2013-06-07 10:51:51', '2013-06-07 10:51:51', '', 'T_6_front', '', 'inherit', 'open', 'open', '', 't_6_front', '', '', '2013-06-07 10:51:51', '2013-06-07 10:51:51', '', 34, 'http://localhost/onefabshop/wp-content/uploads/2013/06/T_6_front.jpg', 0, 'attachment', 'image/jpeg', 0),
 (36, 1, '2013-06-07 10:52:02', '2013-06-07 10:52:02', '', 'T_6_back', '', 'inherit', 'open', 'open', '', 't_6_back', '', '', '2013-06-07 10:52:02', '2013-06-07 10:52:02', '', 34, 'http://localhost/onefabshop/wp-content/uploads/2013/06/T_6_back.jpg', 0, 'attachment', 'image/jpeg', 0),
-(37, 1, '2013-06-07 10:53:15', '2013-06-07 10:53:15', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Happy Ninja', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'happy-ninja', '', '', '2013-06-07 10:53:15', '2013-06-07 10:53:15', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&amp;p=37', 19, 'product', '', 2),
+(37, 1, '2013-06-07 10:53:15', '2013-06-07 10:53:15', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Happy Ninja', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'happy-ninja', '', '', '2016-02-24 06:35:34', '2016-02-24 06:35:34', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&#038;p=37', 19, 'product', '', 2),
 (38, 1, '2013-06-07 10:52:55', '2013-06-07 10:52:55', '', 'T_7_front', '', 'inherit', 'open', 'open', '', 't_7_front', '', '', '2013-06-07 10:52:55', '2013-06-07 10:52:55', '', 37, 'http://localhost/onefabshop/wp-content/uploads/2013/06/T_7_front.jpg', 0, 'attachment', 'image/jpeg', 0),
 (39, 1, '2013-06-07 10:53:29', '2013-06-07 10:53:29', '', 'T_7_back', '', 'inherit', 'open', 'open', '', 't_7_back', '', '', '2013-06-07 10:53:29', '2013-06-07 10:53:29', '', 37, 'http://localhost/onefabshop/wp-content/uploads/2013/06/T_7_back.jpg', 0, 'attachment', 'image/jpeg', 0),
-(40, 1, '2013-06-07 11:00:28', '2013-06-07 11:00:28', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Ship Your Idea', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'ship-your-idea-2', '', '', '2013-06-07 11:00:28', '2013-06-07 11:00:28', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&amp;p=40', 18, 'product', '', 3),
+(40, 1, '2013-06-07 11:00:28', '2013-06-07 11:00:28', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Ship Your Idea', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'ship-your-idea-2', '', '', '2016-02-24 06:35:13', '2016-02-24 06:35:13', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&#038;p=40', 18, 'product', '', 3),
 (41, 1, '2013-06-07 10:59:15', '2013-06-07 10:59:15', '', 'Variation #41 of Ship Your Idea', '', 'publish', 'open', 'open', '', 'product-40-variation', '', '', '2013-06-07 10:59:15', '2013-06-07 10:59:15', '', 40, 'http://demo.woothemes.com/woocommerce/?product_variation=product-40-variation', 0, 'product_variation', '', 0),
 (42, 1, '2013-06-07 10:59:15', '2013-06-07 10:59:15', '', 'Variation #42 of Ship Your Idea', '', 'publish', 'open', 'open', '', 'product-40-variation-2', '', '', '2013-06-07 10:59:15', '2013-06-07 10:59:15', '', 40, 'http://demo.woothemes.com/woocommerce/?product_variation=product-40-variation-2', 1, 'product_variation', '', 0),
 (43, 1, '2013-06-07 10:59:40', '2013-06-07 10:59:40', '', 'hoodie_7_front', '', 'inherit', 'open', 'open', '', 'hoodie_7_front', '', '', '2013-06-07 10:59:40', '2013-06-07 10:59:40', '', 40, 'http://localhost/onefabshop/wp-content/uploads/2013/06/hoodie_7_front.jpg', 0, 'attachment', 'image/jpeg', 0),
 (44, 1, '2013-06-07 10:59:54', '2013-06-07 10:59:54', '', 'hoodie_7_back', '', 'inherit', 'open', 'open', '', 'hoodie_7_back', '', '', '2013-06-07 10:59:54', '2013-06-07 10:59:54', '', 40, 'http://localhost/onefabshop/wp-content/uploads/2013/06/hoodie_7_back.jpg', 0, 'attachment', 'image/jpeg', 0),
 (45, 1, '2013-06-07 11:00:00', '2013-06-07 11:00:00', '', 'hoodie_1_back', '', 'inherit', 'open', 'open', '', 'hoodie_1_back', '', '', '2013-06-07 11:00:00', '2013-06-07 11:00:00', '', 40, 'http://localhost/onefabshop/wp-content/uploads/2013/06/hoodie_1_back.jpg', 0, 'attachment', 'image/jpeg', 0),
 (46, 1, '2013-06-07 11:00:01', '2013-06-07 11:00:01', '', 'hoodie_1_front', '', 'inherit', 'open', 'open', '', 'hoodie_1_front', '', '', '2013-06-07 11:00:01', '2013-06-07 11:00:01', '', 40, 'http://localhost/onefabshop/wp-content/uploads/2013/06/hoodie_1_front.jpg', 0, 'attachment', 'image/jpeg', 0),
-(47, 1, '2013-06-07 11:02:31', '2013-06-07 11:02:31', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Woo Ninja', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'woo-ninja-2', '', '', '2013-06-07 11:02:31', '2013-06-07 11:02:31', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&amp;p=47', 17, 'product', '', 2),
+(47, 1, '2013-06-07 11:02:31', '2013-06-07 11:02:31', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Woo Ninja', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'woo-ninja-2', '', '', '2016-02-24 06:34:59', '2016-02-24 06:34:59', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&#038;p=47', 17, 'product', '', 2),
 (48, 1, '2013-06-07 11:01:23', '2013-06-07 11:01:23', '', 'hoodie_2_front', '', 'inherit', 'open', 'open', '', 'hoodie_2_front', '', '', '2013-06-07 11:01:23', '2013-06-07 11:01:23', '', 47, 'http://localhost/onefabshop/wp-content/uploads/2013/06/hoodie_2_front.jpg', 0, 'attachment', 'image/jpeg', 0),
 (49, 1, '2013-06-07 11:02:26', '2013-06-07 11:02:26', '', 'hoodie_2_back', '', 'inherit', 'open', 'open', '', 'hoodie_2_back', '', '', '2013-06-07 11:02:26', '2013-06-07 11:02:26', '', 47, 'http://localhost/onefabshop/wp-content/uploads/2013/06/hoodie_2_back.jpg', 0, 'attachment', 'image/jpeg', 0),
-(50, 1, '2013-06-07 11:03:56', '2013-06-07 11:03:56', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Patient Ninja', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'patient-ninja', '', '', '2013-06-07 11:03:56', '2013-06-07 11:03:56', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&amp;p=50', 16, 'product', '', 3),
+(50, 1, '2013-06-07 11:03:56', '2013-06-07 11:03:56', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Patient Ninja', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'patient-ninja', '', '', '2016-02-24 06:34:42', '2016-02-24 06:34:42', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&#038;p=50', 16, 'product', '', 3),
 (51, 1, '2013-06-07 11:03:16', '2013-06-07 11:03:16', '', 'hoodie_3_front', '', 'inherit', 'open', 'open', '', 'hoodie_3_front', '', '', '2013-06-07 11:03:16', '2013-06-07 11:03:16', '', 50, 'http://localhost/onefabshop/wp-content/uploads/2013/06/hoodie_3_front.jpg', 0, 'attachment', 'image/jpeg', 0),
 (52, 1, '2013-06-07 11:03:50', '2013-06-07 11:03:50', '', 'hoodie_3_back', '', 'inherit', 'open', 'open', '', 'hoodie_3_back', '', '', '2013-06-07 11:03:50', '2013-06-07 11:03:50', '', 50, 'http://localhost/onefabshop/wp-content/uploads/2013/06/hoodie_3_back.jpg', 0, 'attachment', 'image/jpeg', 0),
-(53, 1, '2013-06-07 11:05:37', '2013-06-07 11:05:37', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Happy Ninja', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'happy-ninja-2', '', '', '2013-06-07 11:05:37', '2013-06-07 11:05:37', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&amp;p=53', 15, 'product', '', 2),
+(53, 1, '2013-06-07 11:05:37', '2013-06-07 11:05:37', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Happy Ninja', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'happy-ninja-2', '', '', '2016-02-24 06:34:18', '2016-02-24 06:34:18', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&#038;p=53', 15, 'product', '', 2),
 (54, 1, '2013-06-07 11:05:03', '2013-06-07 11:05:03', '', 'hoodie_4_front', '', 'inherit', 'open', 'open', '', 'hoodie_4_front', '', '', '2013-06-07 11:05:03', '2013-06-07 11:05:03', '', 53, 'http://localhost/onefabshop/wp-content/uploads/2013/06/hoodie_4_front.jpg', 0, 'attachment', 'image/jpeg', 0),
 (55, 1, '2013-06-07 11:05:13', '2013-06-07 11:05:13', '', 'hoodie_4_back', '', 'inherit', 'open', 'open', '', 'hoodie_4_back', '', '', '2013-06-07 11:05:13', '2013-06-07 11:05:13', '', 53, 'http://localhost/onefabshop/wp-content/uploads/2013/06/hoodie_4_back.jpg', 0, 'attachment', 'image/jpeg', 0),
-(56, 1, '2013-06-07 11:07:19', '2013-06-07 11:07:19', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Ninja Silhouette', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'ninja-silhouette-2', '', '', '2013-06-07 11:07:19', '2013-06-07 11:07:19', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&amp;p=56', 14, 'product', '', 5),
+(56, 1, '2013-06-07 11:07:19', '2013-06-07 11:07:19', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Ninja Silhouette', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'ninja-silhouette-2', '', '', '2016-02-24 06:33:53', '2016-02-24 06:33:53', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&#038;p=56', 14, 'product', '', 5),
 (57, 1, '2013-06-07 11:06:32', '2013-06-07 11:06:32', '', 'hoodie_5_front', '', 'inherit', 'open', 'open', '', 'hoodie_5_front', '', '', '2013-06-07 11:06:32', '2013-06-07 11:06:32', '', 56, 'http://localhost/onefabshop/wp-content/uploads/2013/06/hoodie_5_front.jpg', 0, 'attachment', 'image/jpeg', 0),
 (58, 1, '2013-06-07 11:07:10', '2013-06-07 11:07:10', '', 'hoodie_5_back', '', 'inherit', 'open', 'open', '', 'hoodie_5_back', '', '', '2013-06-07 11:07:10', '2013-06-07 11:07:10', '', 56, 'http://localhost/onefabshop/wp-content/uploads/2013/06/hoodie_5_back.jpg', 0, 'attachment', 'image/jpeg', 0),
-(60, 1, '2013-06-07 11:12:55', '2013-06-07 11:12:55', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Woo Logo', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'woo-logo-2', '', '', '2013-06-07 11:12:55', '2013-06-07 11:12:55', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&amp;p=60', 13, 'product', '', 2),
+(60, 1, '2013-06-07 11:12:55', '2013-06-07 11:12:55', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Woo Logo', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'woo-logo-2', '', '', '2016-02-24 06:33:32', '2016-02-24 06:33:32', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&#038;p=60', 13, 'product', '', 2),
 (61, 1, '2013-06-07 11:12:02', '2013-06-07 11:12:02', '', 'hoodie_6_front', '', 'inherit', 'open', 'open', '', 'hoodie_6_front', '', '', '2013-06-07 11:12:02', '2013-06-07 11:12:02', '', 60, 'http://localhost/onefabshop/wp-content/uploads/2013/06/hoodie_6_front.jpg', 0, 'attachment', 'image/jpeg', 0),
 (62, 1, '2013-06-07 11:12:16', '2013-06-07 11:12:16', '', 'hoodie_6_back', '', 'inherit', 'open', 'open', '', 'hoodie_6_back', '', '', '2013-06-07 11:12:16', '2013-06-07 11:12:16', '', 60, 'http://localhost/onefabshop/wp-content/uploads/2013/06/hoodie_6_back.jpg', 0, 'attachment', 'image/jpeg', 0),
-(67, 1, '2013-06-07 11:22:50', '2013-06-07 11:22:50', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Ship Your Idea', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'ship-your-idea-3', '', '', '2013-06-07 11:22:50', '2013-06-07 11:22:50', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&amp;p=67', 12, 'product', '', 0),
+(67, 1, '2013-06-07 11:22:50', '2013-06-07 11:22:50', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Ship Your Idea', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'ship-your-idea-3', '', '', '2016-02-24 06:33:04', '2016-02-24 06:33:04', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&#038;p=67', 12, 'product', '', 0),
 (68, 1, '2013-06-07 11:21:34', '2013-06-07 11:21:34', '', 'poster_1_up', '', 'inherit', 'open', 'open', '', 'poster_1_up', '', '', '2013-06-07 11:21:34', '2013-06-07 11:21:34', '', 67, 'http://localhost/onefabshop/wp-content/uploads/2013/06/poster_1_up.jpg', 0, 'attachment', 'image/jpeg', 0),
 (69, 1, '2013-06-07 11:22:05', '2013-06-07 11:22:05', '', 'Poster_1_flat', '', 'inherit', 'open', 'open', '', 'poster_1_flat', '', '', '2013-06-07 11:22:05', '2013-06-07 11:22:05', '', 67, 'http://localhost/onefabshop/wp-content/uploads/2013/06/Poster_1_flat.jpg', 0, 'attachment', 'image/jpeg', 0),
-(70, 1, '2013-06-07 11:25:01', '2013-06-07 11:25:01', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Flying Ninja', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'flying-ninja', '', '', '2013-06-07 11:25:01', '2013-06-07 11:25:01', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&amp;p=70', 11, 'product', '', 4),
+(70, 1, '2013-06-07 11:25:01', '2013-06-07 11:25:01', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Flying Ninja', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'flying-ninja', '', '', '2016-02-24 06:32:04', '2016-02-24 06:32:04', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&#038;p=70', 11, 'product', '', 4),
 (71, 1, '2013-06-07 11:24:19', '2013-06-07 11:24:19', '', 'poster_2_up', '', 'inherit', 'open', 'open', '', 'poster_2_up', '', '', '2013-06-07 11:24:19', '2013-06-07 11:24:19', '', 70, 'http://localhost/onefabshop/wp-content/uploads/2013/06/poster_2_up.jpg', 0, 'attachment', 'image/jpeg', 0),
 (72, 1, '2013-06-07 11:24:47', '2013-06-07 11:24:47', '', 'Poster_2_flat', '', 'inherit', 'open', 'open', '', 'poster_2_flat', '', '', '2013-06-07 11:24:47', '2013-06-07 11:24:47', '', 70, 'http://localhost/onefabshop/wp-content/uploads/2013/06/Poster_2_flat.jpg', 0, 'attachment', 'image/jpeg', 0),
-(73, 1, '2013-06-07 11:27:38', '2013-06-07 11:27:38', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Premium Quality', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'premium-quality-2', '', '', '2013-06-07 11:27:38', '2013-06-07 11:27:38', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&amp;p=73', 10, 'product', '', 2),
+(73, 1, '2013-06-07 11:27:38', '2013-06-07 11:27:38', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Premium Quality', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'premium-quality-2', '', '', '2016-02-24 06:31:43', '2016-02-24 06:31:43', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&#038;p=73', 10, 'product', '', 2),
 (74, 1, '2013-06-07 11:26:47', '2013-06-07 11:26:47', '', 'poster_3_up', '', 'inherit', 'open', 'open', '', 'poster_3_up', '', '', '2013-06-07 11:26:47', '2013-06-07 11:26:47', '', 73, 'http://localhost/onefabshop/wp-content/uploads/2013/06/poster_3_up.jpg', 0, 'attachment', 'image/jpeg', 0),
 (75, 1, '2013-06-07 11:27:31', '2013-06-07 11:27:31', '', 'Poster_3_flat', '', 'inherit', 'open', 'open', '', 'poster_3_flat', '', '', '2013-06-07 11:27:31', '2013-06-07 11:27:31', '', 73, 'http://localhost/onefabshop/wp-content/uploads/2013/06/Poster_3_flat.jpg', 0, 'attachment', 'image/jpeg', 0),
-(76, 1, '2013-06-07 11:28:45', '2013-06-07 11:28:45', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Woo Ninja', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'woo-ninja-3', '', '', '2013-06-07 11:28:45', '2013-06-07 11:28:45', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&amp;p=76', 9, 'product', '', 1),
+(76, 1, '2013-06-07 11:28:45', '2013-06-07 11:28:45', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Woo Ninja', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'woo-ninja-3', '', '', '2016-02-24 06:31:23', '2016-02-24 06:31:23', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&#038;p=76', 9, 'product', '', 1),
 (77, 1, '2013-06-07 11:28:07', '2013-06-07 11:28:07', '', 'poster_4_up', '', 'inherit', 'open', 'open', '', 'poster_4_up', '', '', '2013-06-07 11:28:07', '2013-06-07 11:28:07', '', 76, 'http://localhost/onefabshop/wp-content/uploads/2013/06/poster_4_up.jpg', 0, 'attachment', 'image/jpeg', 0),
 (78, 1, '2013-06-07 11:28:20', '2013-06-07 11:28:20', '', 'Poster_4_flat', '', 'inherit', 'open', 'open', '', 'poster_4_flat', '', '', '2013-06-07 11:28:20', '2013-06-07 11:28:20', '', 76, 'http://localhost/onefabshop/wp-content/uploads/2013/06/Poster_4_flat.jpg', 0, 'attachment', 'image/jpeg', 0),
-(79, 1, '2013-06-07 11:29:44', '2013-06-07 11:29:44', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Woo Logo', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'woo-logo-3', '', '', '2013-06-07 11:29:44', '2013-06-07 11:29:44', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&amp;p=79', 8, 'product', '', 0),
+(79, 1, '2013-06-07 11:29:44', '2013-06-07 11:29:44', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Woo Logo', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'woo-logo-3', '', '', '2016-02-24 06:31:02', '2016-02-24 06:31:02', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&#038;p=79', 8, 'product', '', 0),
 (80, 1, '2013-06-07 11:29:26', '2013-06-07 11:29:26', '', 'poster_5_up', '', 'inherit', 'open', 'open', '', 'poster_5_up', '', '', '2013-06-07 11:29:26', '2013-06-07 11:29:26', '', 79, 'http://localhost/onefabshop/wp-content/uploads/2013/06/poster_5_up.jpg', 0, 'attachment', 'image/jpeg', 0),
 (81, 1, '2013-06-07 11:29:37', '2013-06-07 11:29:37', '', 'Poster_5_flat', '', 'inherit', 'open', 'open', '', 'poster_5_flat', '', '', '2013-06-07 11:29:37', '2013-06-07 11:29:37', '', 79, 'http://localhost/onefabshop/wp-content/uploads/2013/06/Poster_5_flat.jpg', 0, 'attachment', 'image/jpeg', 0),
-(83, 1, '2013-06-07 11:33:05', '2013-06-07 11:33:05', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Woo Album #1', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'woo-album-1', '', '', '2013-06-07 11:33:05', '2013-06-07 11:33:05', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&amp;p=83', 7, 'product', '', 0),
+(83, 1, '2013-06-07 11:33:05', '2013-06-07 11:33:05', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Woo Album #1', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'woo-album-1', '', '', '2016-02-24 06:30:05', '2016-02-24 06:30:05', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&#038;p=83', 7, 'product', '', 0),
 (84, 1, '2013-06-07 11:32:44', '2013-06-07 11:32:44', '', 'cd_1_angle', '', 'inherit', 'open', 'open', '', 'cd_1_angle', '', '', '2013-06-07 11:32:44', '2013-06-07 11:32:44', '', 83, 'http://localhost/onefabshop/wp-content/uploads/2013/06/cd_1_angle.jpg', 0, 'attachment', 'image/jpeg', 0),
 (85, 1, '2013-06-07 11:32:57', '2013-06-07 11:32:57', '', 'cd_1_flat', '', 'inherit', 'open', 'open', '', 'cd_1_flat', '', '', '2013-06-07 11:32:57', '2013-06-07 11:32:57', '', 83, 'http://localhost/onefabshop/wp-content/uploads/2013/06/cd_1_flat.jpg', 0, 'attachment', 'image/jpeg', 0),
-(87, 1, '2013-06-07 11:34:14', '2013-06-07 11:34:14', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Woo Album #2', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'woo-album-2', '', '', '2013-06-07 11:34:14', '2013-06-07 11:34:14', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&amp;p=87', 6, 'product', '', 1),
+(87, 1, '2013-06-07 11:34:14', '2013-06-07 11:34:14', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Woo Album #2', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'woo-album-2', '', '', '2016-02-24 06:30:39', '2016-02-24 06:30:39', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&#038;p=87', 6, 'product', '', 1),
 (88, 1, '2013-06-07 11:33:53', '2013-06-07 11:33:53', '', 'cd_2_angle', '', 'inherit', 'open', 'open', '', 'cd_2_angle', '', '', '2013-06-07 11:33:53', '2013-06-07 11:33:53', '', 87, 'http://localhost/onefabshop/wp-content/uploads/2013/06/cd_2_angle.jpg', 0, 'attachment', 'image/jpeg', 0),
 (89, 1, '2013-06-07 11:34:07', '2013-06-07 11:34:07', '', 'cd_2_flat', '', 'inherit', 'open', 'open', '', 'cd_2_flat', '', '', '2013-06-07 11:34:07', '2013-06-07 11:34:07', '', 87, 'http://localhost/onefabshop/wp-content/uploads/2013/06/cd_2_flat.jpg', 0, 'attachment', 'image/jpeg', 0),
-(90, 1, '2013-06-07 11:35:18', '2013-06-07 11:35:18', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Woo Album #3', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'woo-album-3', '', '', '2013-06-07 11:35:18', '2013-06-07 11:35:18', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&amp;p=90', 5, 'product', '', 1),
+(90, 1, '2013-06-07 11:35:18', '2013-06-07 11:35:18', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Woo Album #3', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'woo-album-3', '', '', '2016-02-24 06:29:42', '2016-02-24 06:29:42', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&#038;p=90', 5, 'product', '', 1),
 (91, 1, '2013-06-07 11:34:58', '2013-06-07 11:34:58', '', 'cd_3_angle', '', 'inherit', 'open', 'open', '', 'cd_3_angle', '', '', '2013-06-07 11:34:58', '2013-06-07 11:34:58', '', 90, 'http://localhost/onefabshop/wp-content/uploads/2013/06/cd_3_angle.jpg', 0, 'attachment', 'image/jpeg', 0),
 (92, 1, '2013-06-07 11:35:10', '2013-06-07 11:35:10', '', 'cd_3_flat', '', 'inherit', 'open', 'open', '', 'cd_3_flat', '', '', '2013-06-07 11:35:10', '2013-06-07 11:35:10', '', 90, 'http://localhost/onefabshop/wp-content/uploads/2013/06/cd_3_flat.jpg', 0, 'attachment', 'image/jpeg', 0),
-(93, 1, '2013-06-07 11:36:34', '2013-06-07 11:36:34', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Woo Single #1', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'woo-single-1', '', '', '2013-06-07 11:36:34', '2013-06-07 11:36:34', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&amp;p=93', 4, 'product', '', 0),
+(93, 1, '2013-06-07 11:36:34', '2013-06-07 11:36:34', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Woo Single #1', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'woo-single-1', '', '', '2016-02-24 06:29:14', '2016-02-24 06:29:14', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&#038;p=93', 4, 'product', '', 0),
 (94, 1, '2013-06-07 11:36:10', '2013-06-07 11:36:10', '', 'cd_4_flat', '', 'inherit', 'open', 'open', '', 'cd_4_flat', '', '', '2013-06-07 11:36:10', '2013-06-07 11:36:10', '', 93, 'http://localhost/onefabshop/wp-content/uploads/2013/06/cd_4_flat.jpg', 0, 'attachment', 'image/jpeg', 0),
 (95, 1, '2013-06-07 11:36:22', '2013-06-07 11:36:22', '', 'cd_4_angle', '', 'inherit', 'open', 'open', '', 'cd_4_angle', '', '', '2013-06-07 11:36:22', '2013-06-07 11:36:22', '', 93, 'http://localhost/onefabshop/wp-content/uploads/2013/06/cd_4_angle.jpg', 0, 'attachment', 'image/jpeg', 0),
-(96, 1, '2013-06-07 11:37:23', '2013-06-07 11:37:23', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Woo Album #4', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'woo-album-4', '', '', '2013-06-07 11:37:23', '2013-06-07 11:37:23', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&amp;p=96', 3, 'product', '', 2),
+(96, 1, '2013-06-07 11:37:23', '2013-06-07 11:37:23', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Woo Album #4', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'woo-album-4', '', '', '2016-02-24 06:28:59', '2016-02-24 06:28:59', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&#038;p=96', 3, 'product', '', 2),
 (97, 1, '2013-06-07 11:37:04', '2013-06-07 11:37:04', '', 'cd_5_angle', '', 'inherit', 'open', 'open', '', 'cd_5_angle', '', '', '2013-06-07 11:37:04', '2013-06-07 11:37:04', '', 96, 'http://localhost/onefabshop/wp-content/uploads/2013/06/cd_5_angle.jpg', 0, 'attachment', 'image/jpeg', 0),
 (98, 1, '2013-06-07 11:37:17', '2013-06-07 11:37:17', '', 'cd_5_flat', '', 'inherit', 'open', 'open', '', 'cd_5_flat', '', '', '2013-06-07 11:37:17', '2013-06-07 11:37:17', '', 96, 'http://localhost/onefabshop/wp-content/uploads/2013/06/cd_5_flat.jpg', 0, 'attachment', 'image/jpeg', 0),
-(99, 1, '2013-06-07 11:38:12', '2013-06-07 11:38:12', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Woo Single #2', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'woo-single-2', '', '', '2013-06-07 11:38:12', '2013-06-07 11:38:12', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&amp;p=99', 2, 'product', '', 2),
+(99, 1, '2013-06-07 11:38:12', '2013-06-07 11:38:12', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Woo Single #2', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'woo-single-2', '', '', '2016-02-24 06:28:07', '2016-02-24 06:28:07', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&#038;p=99', 2, 'product', '', 2),
 (100, 1, '2013-06-07 11:37:51', '2013-06-07 11:37:51', '', 'cd_6_angle', '', 'inherit', 'open', 'open', '', 'cd_6_angle', '', '', '2013-06-07 11:37:51', '2013-06-07 11:37:51', '', 99, 'http://localhost/onefabshop/wp-content/uploads/2013/06/cd_6_angle.jpg', 0, 'attachment', 'image/jpeg', 0),
 (101, 1, '2013-06-07 11:38:03', '2013-06-07 11:38:03', '', 'cd_6_flat', '', 'inherit', 'open', 'open', '', 'cd_6_flat', '', '', '2013-06-07 11:38:03', '2013-06-07 11:38:03', '', 99, 'http://localhost/onefabshop/wp-content/uploads/2013/06/cd_6_flat.jpg', 0, 'attachment', 'image/jpeg', 0),
-(102, 1, '2013-06-07 10:35:51', '2013-06-07 10:35:51', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Woo Logo', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'woo-logo', '', '', '2013-06-07 10:35:51', '2013-06-07 10:35:51', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&amp;p=15', 24, 'product', '', 1),
-(103, 1, '2013-06-07 10:41:52', '2013-06-07 10:41:52', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Premium Quality', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'premium-quality', '', '', '2013-06-07 10:41:52', '2013-06-07 10:41:52', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&amp;p=19', 23, 'product', '', 2),
-(104, 1, '2013-06-07 10:46:01', '2013-06-07 10:46:01', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Ship Your Idea', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'ship-your-idea', '', '', '2013-06-07 10:46:01', '2013-06-07 10:46:01', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&amp;p=22', 22, 'product', '', 3),
+(102, 1, '2013-06-07 10:35:51', '2013-06-07 10:35:51', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Woo Logo', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'woo-logo', '', '', '2016-02-24 06:40:39', '2016-02-24 06:40:39', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&#038;p=15', 24, 'product', '', 1),
+(103, 1, '2013-06-07 10:41:52', '2013-06-07 10:41:52', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Premium Quality', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'premium-quality', '', '', '2016-02-24 06:38:25', '2016-02-24 06:38:25', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&#038;p=19', 23, 'product', '', 2),
+(104, 1, '2013-06-07 10:46:01', '2013-06-07 10:46:01', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'Ship Your Idea', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.', 'publish', 'open', 'closed', '', 'ship-your-idea', '', '', '2016-02-24 06:37:54', '2016-02-24 06:37:54', '', 0, 'http://demo.woothemes.com/woocommerce/?post_type=product&#038;p=22', 22, 'product', '', 3),
 (105, 1, '2013-06-07 10:44:57', '2013-06-07 10:44:57', '', 'Variation #23 of Ship Your Idea', '', 'publish', 'open', 'open', '', 'product-22-variation', '', '', '2013-06-07 10:44:57', '2013-06-07 10:44:57', '', 104, 'http://demo.woothemes.com/woocommerce/?product_variation=product-22-variation', 0, 'product_variation', '', 0),
 (106, 1, '2013-06-07 10:44:58', '2013-06-07 10:44:58', '', 'Variation #24 of Ship Your Idea', '', 'publish', 'open', 'open', '', 'product-22-variation-2', '', '', '2013-06-07 10:44:58', '2013-06-07 10:44:58', '', 104, 'http://demo.woothemes.com/woocommerce/?product_variation=product-22-variation-2', 1, 'product_variation', '', 0),
 (107, 1, '2016-02-06 12:07:58', '2016-02-06 12:07:58', 'Welcome to WordPress. This is your first post. Edit or delete it, then start writing!', 'Hello world!', '', 'inherit', 'closed', 'closed', '', '1-revision-v1', '', '', '2016-02-06 12:07:58', '2016-02-06 12:07:58', '', 1, 'http://localhost/onefabshop/index.php/2016/02/06/1-revision-v1/', 0, 'revision', '', 0),
-(108, 1, '2016-02-06 12:08:34', '0000-00-00 00:00:00', '', 'Auto Draft', '', 'auto-draft', 'open', 'closed', '', '', '', '', '2016-02-06 12:08:34', '0000-00-00 00:00:00', '', 0, 'http://localhost/onefabshop/?post_type=product&p=108', 0, 'product', '', 0),
-(109, 1, '2016-02-06 12:17:16', '2016-02-06 12:17:16', 'Sample description here. Sample description here. <span style="line-height: 1.5;">Sample description here. Sample description here. </span>', 'POINTED CLOSED SHOES AVAILABLE NOW!', '', 'publish', 'open', 'open', '', 'title', '', '', '2016-02-07 08:16:09', '2016-02-07 08:16:09', '', 0, 'http://localhost/onefabshop/?p=109', 8, 'post', '', 0),
+(109, 1, '2016-02-06 12:17:16', '2016-02-06 12:17:16', 'Sample description here. Sample description here. <span style="line-height: 1.5;">Sample description here. Sample description here. </span>', 'POINTED CLOSED SHOES AVAILABLE NOW!', '', 'publish', 'open', 'open', '', 'title', '', '', '2016-02-07 08:16:09', '2016-02-07 08:16:09', '', 0, 'http://localhost/onefabshop/?p=109', 9, 'post', '', 0),
 (110, 1, '2016-02-06 12:17:16', '2016-02-06 12:17:16', 'description', 'Title', '', 'inherit', 'closed', 'closed', '', '109-revision-v1', '', '', '2016-02-06 12:17:16', '2016-02-06 12:17:16', '', 109, 'http://localhost/onefabshop/index.php/2016/02/06/109-revision-v1/', 0, 'revision', '', 0),
 (111, 1, '2016-02-06 12:31:29', '2016-02-06 12:31:29', '', 'Home', '', 'publish', 'closed', 'closed', '', 'home', '', '', '2016-02-06 12:31:29', '2016-02-06 12:31:29', '', 0, 'http://localhost/onefabshop/?page_id=111', 3, 'page', '', 0),
 (112, 1, '2016-02-06 12:31:29', '2016-02-06 12:31:29', '', 'Home', '', 'inherit', 'closed', 'closed', '', '111-revision-v1', '', '', '2016-02-06 12:31:29', '2016-02-06 12:31:29', '', 111, 'http://localhost/onefabshop/index.php/2016/02/06/111-revision-v1/', 0, 'revision', '', 0),
-(113, 1, '2016-02-06 12:33:21', '2016-02-06 12:33:21', ' ', '', '', 'publish', 'closed', 'closed', '', '113', '', '', '2016-02-07 08:46:37', '2016-02-07 08:46:37', '', 0, 'http://localhost/onefabshop/?p=113', 1, 'nav_menu_item', '', 0),
+(113, 1, '2016-02-06 12:33:21', '2016-02-06 12:33:21', ' ', '', '', 'publish', 'closed', 'closed', '', '113', '', '', '2016-02-23 06:41:56', '2016-02-23 06:41:56', '', 0, 'http://localhost/onefabshop/?p=113', 1, 'nav_menu_item', '', 0),
 (114, 1, '2016-02-06 12:39:29', '2016-02-06 12:39:29', '', 'Unknown-5', '', 'inherit', 'open', 'closed', '', 'unknown-5', '', '', '2016-02-06 12:39:29', '2016-02-06 12:39:29', '', 109, 'http://localhost/onefabshop/wp-content/uploads/2016/02/Unknown-5.jpg', 0, 'attachment', 'image/jpeg', 0),
 (115, 1, '2016-02-06 12:39:31', '2016-02-06 12:39:31', '', 'Unknown-6', '', 'inherit', 'open', 'closed', '', 'unknown-6', '', '', '2016-02-06 12:39:31', '2016-02-06 12:39:31', '', 109, 'http://localhost/onefabshop/wp-content/uploads/2016/02/Unknown-6.jpg', 0, 'attachment', 'image/jpeg', 0),
 (116, 1, '2016-02-06 12:39:31', '2016-02-06 12:39:31', '', 'Unknown-7', '', 'inherit', 'open', 'closed', '', 'unknown-7', '', '', '2016-02-06 12:39:31', '2016-02-06 12:39:31', '', 109, 'http://localhost/onefabshop/wp-content/uploads/2016/02/Unknown-7.jpg', 0, 'attachment', 'image/jpeg', 0),
 (117, 1, '2016-02-06 12:40:32', '2016-02-06 12:40:32', 'description', 'POINTED CLOSED SHOES', '', 'inherit', 'closed', 'closed', '', '109-revision-v1', '', '', '2016-02-06 12:40:32', '2016-02-06 12:40:32', '', 109, 'http://localhost/onefabshop/index.php/2016/02/06/109-revision-v1/', 0, 'revision', '', 0),
 (119, 1, '2016-02-06 12:41:59', '2016-02-06 12:41:59', 'Sample description here. Sample description here. <span style="line-height: 1.5;">Sample description here. Sample description here. </span>', 'POINTED CLOSED SHOES AVAILABLE NOW!', '', 'inherit', 'closed', 'closed', '', '109-revision-v1', '', '', '2016-02-06 12:41:59', '2016-02-06 12:41:59', '', 109, 'http://localhost/onefabshop/index.php/2016/02/06/109-revision-v1/', 0, 'revision', '', 0),
-(120, 1, '2016-02-06 12:43:26', '2016-02-06 12:43:26', '', 'Men', '', 'publish', 'open', 'open', '', 'men', '', '', '2016-02-06 12:43:26', '2016-02-06 12:43:26', '', 0, 'http://localhost/onefabshop/?p=120', 4, 'post', '', 0),
+(120, 1, '2016-02-06 12:43:26', '2016-02-06 12:43:26', '', 'Men', '', 'publish', 'open', 'open', '', 'men', '', '', '2016-02-24 06:54:13', '2016-02-24 06:54:13', '', 0, 'http://localhost/onefabshop/?p=120', 5, 'post', '', 0),
 (121, 1, '2016-02-06 12:43:26', '2016-02-06 12:43:26', '', 'Men', '', 'inherit', 'closed', 'closed', '', '120-revision-v1', '', '', '2016-02-06 12:43:26', '2016-02-06 12:43:26', '', 120, 'http://localhost/onefabshop/index.php/2016/02/06/120-revision-v1/', 0, 'revision', '', 0),
-(122, 1, '2016-02-06 12:44:14', '2016-02-06 12:44:14', '', 'Women', '', 'publish', 'open', 'open', '', 'women', '', '', '2016-02-06 12:44:14', '2016-02-06 12:44:14', '', 0, 'http://localhost/onefabshop/?p=122', 7, 'post', '', 0),
+(122, 1, '2016-02-06 12:44:14', '2016-02-06 12:44:14', '', 'Women', '', 'publish', 'open', 'open', '', 'women', '', '', '2016-02-06 12:44:14', '2016-02-06 12:44:14', '', 0, 'http://localhost/onefabshop/?p=122', 8, 'post', '', 0),
 (123, 1, '2016-02-06 12:44:14', '2016-02-06 12:44:14', '', 'Women', '', 'inherit', 'closed', 'closed', '', '122-revision-v1', '', '', '2016-02-06 12:44:14', '2016-02-06 12:44:14', '', 122, 'http://localhost/onefabshop/index.php/2016/02/06/122-revision-v1/', 0, 'revision', '', 0),
-(124, 1, '2016-02-06 12:47:10', '2016-02-06 12:47:10', '', 'Shoes 20% Off', '', 'publish', 'open', 'open', '', 'shoes-20-off', '', '', '2016-02-06 12:47:10', '2016-02-06 12:47:10', '', 0, 'http://localhost/onefabshop/?p=124', 5, 'post', '', 0),
+(124, 1, '2016-02-06 12:47:10', '2016-02-06 12:47:10', '', 'Shoes 20% Off', '', 'publish', 'open', 'open', '', 'shoes-20-off', '', '', '2016-02-06 12:47:10', '2016-02-06 12:47:10', '', 0, 'http://localhost/onefabshop/?p=124', 6, 'post', '', 0),
 (125, 1, '2016-02-06 12:47:01', '2016-02-06 12:47:01', '', 'Unknown-52', '', 'inherit', 'open', 'closed', '', 'unknown-52', '', '', '2016-02-06 12:47:01', '2016-02-06 12:47:01', '', 124, 'http://localhost/onefabshop/wp-content/uploads/2016/02/Unknown-52.jpg', 0, 'attachment', 'image/jpeg', 0),
 (126, 1, '2016-02-06 12:47:03', '2016-02-06 12:47:03', '', 'Unknown-62', '', 'inherit', 'open', 'closed', '', 'unknown-62', '', '', '2016-02-06 12:47:03', '2016-02-06 12:47:03', '', 124, 'http://localhost/onefabshop/wp-content/uploads/2016/02/Unknown-62.jpg', 0, 'attachment', 'image/jpeg', 0),
 (127, 1, '2016-02-06 12:47:10', '2016-02-06 12:47:10', '', 'Shoes 20% Off', '', 'inherit', 'closed', 'closed', '', '124-revision-v1', '', '', '2016-02-06 12:47:10', '2016-02-06 12:47:10', '', 124, 'http://localhost/onefabshop/index.php/2016/02/06/124-revision-v1/', 0, 'revision', '', 0),
-(128, 1, '2016-02-06 12:47:37', '2016-02-06 12:47:37', '', 'Watches 5% Off', '', 'publish', 'open', 'open', '', 'watches-5-off', '', '', '2016-02-06 12:47:37', '2016-02-06 12:47:37', '', 0, 'http://localhost/onefabshop/?p=128', 6, 'post', '', 0),
+(128, 1, '2016-02-06 12:47:37', '2016-02-06 12:47:37', '', 'Watches 5% Off', '', 'publish', 'open', 'open', '', 'watches-5-off', '', '', '2016-02-06 12:47:37', '2016-02-06 12:47:37', '', 0, 'http://localhost/onefabshop/?p=128', 7, 'post', '', 0),
 (129, 1, '2016-02-06 12:47:37', '2016-02-06 12:47:37', '', 'Watches 5% Off', '', 'inherit', 'closed', 'closed', '', '128-revision-v1', '', '', '2016-02-06 12:47:37', '2016-02-06 12:47:37', '', 128, 'http://localhost/onefabshop/index.php/2016/02/06/128-revision-v1/', 0, 'revision', '', 0),
-(130, 1, '2016-02-06 13:39:06', '2016-02-06 13:39:06', '', 'Our Special Offer 50% Off', '', 'publish', 'open', 'open', '', 'our-special-offer-50-off', '', '', '2016-02-07 08:54:30', '2016-02-07 08:54:30', '', 0, 'http://localhost/onefabshop/?p=130', 3, 'post', '', 0),
+(130, 1, '2016-02-06 13:39:06', '2016-02-06 13:39:06', '', 'Our Special Offer 50% Off', '', 'publish', 'open', 'open', '', 'our-special-offer-50-off', '', '', '2016-02-07 08:54:30', '2016-02-07 08:54:30', '', 0, 'http://localhost/onefabshop/?p=130', 4, 'post', '', 0),
 (131, 1, '2016-02-06 13:33:50', '2016-02-06 13:33:50', '', '8store-banner1', '', 'inherit', 'open', 'closed', '', '8store-banner1', '', '', '2016-02-06 13:33:50', '2016-02-06 13:33:50', '', 130, 'http://localhost/onefabshop/wp-content/uploads/2016/02/8store-banner1.jpg', 0, 'attachment', 'image/jpeg', 0),
 (132, 1, '2016-02-06 13:39:06', '2016-02-06 13:39:06', '', 'Our Special Offer 50% Off', '', 'inherit', 'closed', 'closed', '', '130-revision-v1', '', '', '2016-02-06 13:39:06', '2016-02-06 13:39:06', '', 130, 'http://localhost/onefabshop/index.php/2016/02/06/130-revision-v1/', 0, 'revision', '', 0),
-(133, 1, '2016-02-06 13:56:21', '2016-02-06 13:56:21', 'sample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample text', 'Sample Blog', '', 'publish', 'open', 'open', '', 'sample-blog', '', '', '2016-02-06 15:05:02', '2016-02-06 15:05:02', '', 0, 'http://localhost/onefabshop/?p=133', 2, 'post', '', 0);
+(133, 1, '2016-02-06 13:56:21', '2016-02-06 13:56:21', 'sample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample text', 'Sample Blog', '', 'publish', 'open', 'open', '', 'sample-blog', '', '', '2016-02-06 15:05:02', '2016-02-06 15:05:02', '', 0, 'http://localhost/onefabshop/?p=133', 3, 'post', '', 0),
+(134, 1, '2016-02-06 13:56:21', '2016-02-06 13:56:21', 'sample text sample text <span style="line-height: 1.5;">sample text sample text </span><span style="line-height: 1.5;">sample text sample text </span><span style="line-height: 1.5;">sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text <span style="line-height: 1.5;">sample text sample text </span><span style="line-height: 1.5;">sample text sample text </span><span style="line-height: 1.5;">sample text sample text sample text sample text sample text sample text sample text sample text sample text </span>sample text sample text <span style="line-height: 1.5;">sample text sample text </span><span style="line-height: 1.5;">sample text sample text </span><span style="line-height: 1.5;">sample text sample text sample text sample text sample text sample text sample text sample text sample text </span>sample text sample text <span style="line-height: 1.5;">sample text sample text </span><span style="line-height: 1.5;">sample text sample text </span><span style="line-height: 1.5;">sample text sample text sample text sample text sample text sample text sample text sample text sample text </span>sample text sample text <span style="line-height: 1.5;">sample text sample text </span><span style="line-height: 1.5;">sample text sample text </span><span style="line-height: 1.5;">sample text sample text sample text sample text sample text sample text sample text sample text sample text </span>sample text sample text <span style="line-height: 1.5;">sample text sample text </span><span style="line-height: 1.5;">sample text sample text </span><span style="line-height: 1.5;">sample text sample text sample text sample text sample text sample text sample text sample text sample text </span></span>', 'Sample Blog', '', 'inherit', 'closed', 'closed', '', '133-revision-v1', '', '', '2016-02-06 13:56:21', '2016-02-06 13:56:21', '', 133, 'http://localhost/onefabshop/133-revision-v1/', 0, 'revision', '', 0);
 INSERT INTO `ofs2616_posts` (`ID`, `post_author`, `post_date`, `post_date_gmt`, `post_content`, `post_title`, `post_excerpt`, `post_status`, `comment_status`, `ping_status`, `post_password`, `post_name`, `to_ping`, `pinged`, `post_modified`, `post_modified_gmt`, `post_content_filtered`, `post_parent`, `guid`, `menu_order`, `post_type`, `post_mime_type`, `comment_count`) VALUES
-(134, 1, '2016-02-06 13:56:21', '2016-02-06 13:56:21', 'sample text sample text <span style="line-height: 1.5;">sample text sample text </span><span style="line-height: 1.5;">sample text sample text </span><span style="line-height: 1.5;">sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text <span style="line-height: 1.5;">sample text sample text </span><span style="line-height: 1.5;">sample text sample text </span><span style="line-height: 1.5;">sample text sample text sample text sample text sample text sample text sample text sample text sample text </span>sample text sample text <span style="line-height: 1.5;">sample text sample text </span><span style="line-height: 1.5;">sample text sample text </span><span style="line-height: 1.5;">sample text sample text sample text sample text sample text sample text sample text sample text sample text </span>sample text sample text <span style="line-height: 1.5;">sample text sample text </span><span style="line-height: 1.5;">sample text sample text </span><span style="line-height: 1.5;">sample text sample text sample text sample text sample text sample text sample text sample text sample text </span>sample text sample text <span style="line-height: 1.5;">sample text sample text </span><span style="line-height: 1.5;">sample text sample text </span><span style="line-height: 1.5;">sample text sample text sample text sample text sample text sample text sample text sample text sample text </span>sample text sample text <span style="line-height: 1.5;">sample text sample text </span><span style="line-height: 1.5;">sample text sample text </span><span style="line-height: 1.5;">sample text sample text sample text sample text sample text sample text sample text sample text sample text </span></span>', 'Sample Blog', '', 'inherit', 'closed', 'closed', '', '133-revision-v1', '', '', '2016-02-06 13:56:21', '2016-02-06 13:56:21', '', 133, 'http://localhost/onefabshop/133-revision-v1/', 0, 'revision', '', 0),
-(135, 1, '2016-02-06 13:56:45', '0000-00-00 00:00:00', '', 'Auto Draft', '', 'auto-draft', 'open', 'open', '', '', '', '', '2016-02-06 13:56:45', '0000-00-00 00:00:00', '', 0, 'http://localhost/onefabshop/?p=135', 0, 'post', '', 0),
-(136, 1, '2016-02-06 13:57:29', '0000-00-00 00:00:00', '', 'Auto Draft', '', 'auto-draft', 'open', 'open', '', '', '', '', '2016-02-06 13:57:29', '0000-00-00 00:00:00', '', 0, 'http://localhost/onefabshop/?p=136', 0, 'post', '', 0),
 (137, 1, '2016-02-06 14:08:22', '2016-02-06 14:08:22', '', 'video-bkg', '', 'inherit', 'open', 'closed', '', 'video-bkg', '', '', '2016-02-06 14:08:22', '2016-02-06 14:08:22', '', 0, 'http://localhost/onefabshop/wp-content/uploads/2016/02/video-bkg.jpg', 0, 'attachment', 'image/jpeg', 0),
 (138, 1, '2016-02-06 14:12:51', '2016-02-06 14:12:51', '', '8degree-callto', '', 'inherit', 'open', 'closed', '', '8degree-callto', '', '', '2016-02-06 14:12:51', '2016-02-06 14:12:51', '', 0, 'http://localhost/onefabshop/wp-content/uploads/2016/02/8degree-callto.jpg', 0, 'attachment', 'image/jpeg', 0),
 (139, 1, '2016-02-06 14:26:21', '2016-02-06 14:26:21', '', 'denin-jens', '', 'inherit', 'open', 'closed', '', 'denin-jens', '', '', '2016-02-06 14:26:21', '2016-02-06 14:26:21', '', 0, 'http://localhost/onefabshop/wp-content/uploads/2016/02/denin-jens.jpg', 0, 'attachment', 'image/jpeg', 0),
-(140, 1, '2016-02-06 14:59:38', '2016-02-06 14:59:38', 'sample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample text', 'Sample Blog 2', '', 'publish', 'open', 'open', '', 'sample-blog-2', '', '', '2016-02-06 15:05:25', '2016-02-06 15:05:25', '', 0, 'http://localhost/onefabshop/?p=140', 1, 'post', '', 0),
+(140, 1, '2016-02-06 14:59:38', '2016-02-06 14:59:38', 'sample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample text', 'Sample Blog 2', '', 'publish', 'open', 'open', '', 'sample-blog-2', '', '', '2016-02-24 07:26:01', '2016-02-24 07:26:01', '', 0, 'http://localhost/onefabshop/?p=140', 2, 'post', '', 0),
 (141, 1, '2016-02-06 14:59:38', '2016-02-06 14:59:38', 'sample text here', 'Sample Blog 2', '', 'inherit', 'closed', 'closed', '', '140-revision-v1', '', '', '2016-02-06 14:59:38', '2016-02-06 14:59:38', '', 140, 'http://localhost/onefabshop/140-revision-v1/', 0, 'revision', '', 0),
 (142, 1, '2016-02-06 15:05:02', '2016-02-06 15:05:02', 'sample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample text', 'Sample Blog', '', 'inherit', 'closed', 'closed', '', '133-revision-v1', '', '', '2016-02-06 15:05:02', '2016-02-06 15:05:02', '', 133, 'http://localhost/onefabshop/133-revision-v1/', 0, 'revision', '', 0),
 (143, 1, '2016-02-06 15:05:25', '2016-02-06 15:05:25', 'sample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample textsample text', 'Sample Blog 2', '', 'inherit', 'closed', 'closed', '', '140-revision-v1', '', '', '2016-02-06 15:05:25', '2016-02-06 15:05:25', '', 140, 'http://localhost/onefabshop/140-revision-v1/', 0, 'revision', '', 0),
 (144, 1, '2016-02-06 18:46:02', '2016-02-06 18:46:02', '', 'ofs', '', 'inherit', 'open', 'closed', '', 'ofs', '', '', '2016-02-06 18:46:02', '2016-02-06 18:46:02', '', 0, 'http://localhost/onefabshop/wp-content/uploads/2016/02/ofs.png', 0, 'attachment', 'image/png', 0),
 (146, 1, '2016-02-07 03:00:32', '2016-02-07 03:00:32', '', 'ofslogo', '', 'inherit', 'open', 'closed', '', 'ofslogo', '', '', '2016-02-07 03:00:32', '2016-02-07 03:00:32', '', 0, 'http://localhost/onefabshop/wp-content/uploads/2016/02/ofslogo.png', 0, 'attachment', 'image/png', 0),
 (147, 1, '2016-02-07 08:13:34', '2016-02-07 08:13:34', '', 'banner-mk', '', 'inherit', 'open', 'closed', '', 'banner-mk', '', '', '2016-02-07 08:13:34', '2016-02-07 08:13:34', '', 109, 'http://localhost/onefabshop/wp-content/uploads/2016/02/banner-mk.jpg', 0, 'attachment', 'image/jpeg', 0),
-(148, 1, '2016-02-07 08:43:46', '0000-00-00 00:00:00', '', 'Auto Draft', '', 'auto-draft', 'closed', 'closed', '', '', '', '', '2016-02-07 08:43:46', '0000-00-00 00:00:00', '', 0, 'http://localhost/onefabshop/?page_id=148', 0, 'page', '', 0),
 (149, 1, '2016-02-07 08:45:27', '2016-02-07 08:45:27', 'This is an example page. It''s different from a blog post because it will stay in one place and will show up in your site navigation (in most themes). Most people start with an About page that introduces them to potential site visitors. It might say something like this:\r\n\r\n<blockquote>Hi there! I''m a bike messenger by day, aspiring actor by night, and this is my website. I live in Los Angeles, have a great dog named Jack, and I like pi&#241;a coladas. (And gettin'' caught in the rain.)</blockquote>\r\n\r\n...or something like this:\r\n\r\n<blockquote>The XYZ Doohickey Company was founded in 1971, and has been providing quality doohickeys to the public ever since. Located in Gotham City, XYZ employs over 2,000 people and does all kinds of awesome things for the Gotham community.</blockquote>\r\n\r\nAs a new WordPress user, you should go to <a href="http://localhost/onefabshop/wp-admin/">your dashboard</a> to delete this page and create new pages for your content. Have fun!', 'About', '', 'inherit', 'closed', 'closed', '', '2-revision-v1', '', '', '2016-02-07 08:45:27', '2016-02-07 08:45:27', '', 2, 'http://localhost/onefabshop/2-revision-v1/', 0, 'revision', '', 0),
-(150, 1, '2016-02-07 08:46:37', '2016-02-07 08:46:37', ' ', '', '', 'publish', 'closed', 'closed', '', '150', '', '', '2016-02-07 08:46:37', '2016-02-07 08:46:37', '', 0, 'http://localhost/onefabshop/?p=150', 4, 'nav_menu_item', '', 0),
-(151, 1, '2016-02-07 08:46:37', '2016-02-07 08:46:37', '', 'Blogs', '', 'publish', 'closed', 'closed', '', 'blogs', '', '', '2016-02-07 08:46:37', '2016-02-07 08:46:37', '', 0, 'http://localhost/onefabshop/?p=151', 3, 'nav_menu_item', '', 0);
+(150, 1, '2016-02-07 08:46:37', '2016-02-07 08:46:37', ' ', '', '', 'publish', 'closed', 'closed', '', '150', '', '', '2016-02-23 06:41:56', '2016-02-23 06:41:56', '', 0, 'http://localhost/onefabshop/?p=150', 4, 'nav_menu_item', '', 0),
+(151, 1, '2016-02-07 08:46:37', '2016-02-07 08:46:37', '', 'Blogs', '', 'publish', 'closed', 'closed', '', 'blogs', '', '', '2016-02-23 06:41:56', '2016-02-23 06:41:56', '', 0, 'http://localhost/onefabshop/?p=151', 3, 'nav_menu_item', '', 0),
+(152, 1, '2016-02-23 05:59:22', '0000-00-00 00:00:00', '', 'Auto Draft', '', 'auto-draft', 'open', 'open', '', '', '', '', '2016-02-23 05:59:22', '0000-00-00 00:00:00', '', 0, 'http://localhost/onefabshop/?p=152', 0, 'post', '', 0),
+(153, 1, '2016-02-24 05:45:56', '2016-02-24 05:45:56', ' ', '', '', 'publish', 'closed', 'closed', '', '153', '', '', '2016-02-24 07:18:56', '2016-02-24 07:18:56', '', 0, 'http://localhost/onefabshop/?p=153', 1, 'nav_menu_item', '', 0),
+(154, 1, '2016-02-24 05:45:57', '2016-02-24 05:45:57', ' ', '', '', 'publish', 'closed', 'closed', '', '154', '', '', '2016-02-24 07:18:57', '2016-02-24 07:18:57', '', 0, 'http://localhost/onefabshop/?p=154', 5, 'nav_menu_item', '', 0),
+(156, 1, '2016-02-24 05:49:28', '2016-02-24 05:49:28', 'asdasdadada', 'asd', '', 'publish', 'open', 'open', '', 'asd', '', '', '2016-02-24 05:49:28', '2016-02-24 05:49:28', '', 0, 'http://localhost/onefabshop/?p=156', 1, 'post', '', 0),
+(157, 1, '2016-02-24 05:49:28', '2016-02-24 05:49:28', 'asdasdadada', 'asd', '', 'inherit', 'closed', 'closed', '', '156-revision-v1', '', '', '2016-02-24 05:49:28', '2016-02-24 05:49:28', '', 156, 'http://localhost/onefabshop/blog/2016/02/24/156-revision-v1/', 0, 'revision', '', 0),
+(158, 1, '2016-02-24 05:55:13', '2016-02-24 05:55:13', '', 'Blog', '', 'trash', 'closed', 'closed', '', 'blog', '', '', '2016-02-24 06:02:18', '2016-02-24 06:02:18', '', 0, 'http://localhost/onefabshop/?page_id=158', 0, 'page', '', 0),
+(159, 1, '2016-02-24 05:55:13', '2016-02-24 05:55:13', '', 'Blog', '', 'inherit', 'closed', 'closed', '', '158-revision-v1', '', '', '2016-02-24 05:55:13', '2016-02-24 05:55:13', '', 158, 'http://localhost/onefabshop/blog/158-revision-v1/', 0, 'revision', '', 0),
+(160, 1, '2016-02-24 07:18:56', '2016-02-24 07:18:56', '', 'Women', '', 'publish', 'closed', 'closed', '', 'women', '', '', '2016-02-24 07:18:56', '2016-02-24 07:18:56', '', 0, 'http://localhost/onefabshop/?p=160', 2, 'nav_menu_item', '', 0),
+(161, 1, '2016-02-24 07:18:57', '2016-02-24 07:18:57', ' ', '', '', 'publish', 'closed', 'closed', '', '161', '', '', '2016-02-24 07:18:57', '2016-02-24 07:18:57', '', 0, 'http://localhost/onefabshop/?p=161', 4, 'nav_menu_item', '', 0),
+(162, 1, '2016-02-24 07:18:56', '2016-02-24 07:18:56', '', 'Men', '', 'publish', 'closed', 'closed', '', 'men', '', '', '2016-02-24 07:18:56', '2016-02-24 07:18:56', '', 0, 'http://localhost/onefabshop/?p=162', 3, 'nav_menu_item', '', 0);
 
 -- --------------------------------------------------------
 
@@ -2594,12 +2885,14 @@ INSERT INTO `ofs2616_posts` (`ID`, `post_author`, `post_date`, `post_date_gmt`, 
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_registration_log` (
-`ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `IP` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `blog_id` bigint(20) NOT NULL DEFAULT '0',
-  `date_registered` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `date_registered` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`ID`),
+  KEY `IP` (`IP`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `ofs2616_registration_log`
@@ -2615,7 +2908,7 @@ INSERT INTO `ofs2616_registration_log` (`ID`, `email`, `IP`, `blog_id`, `date_re
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_signups` (
-`signup_id` bigint(20) NOT NULL,
+  `signup_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `domain` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `path` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `title` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -2625,8 +2918,18 @@ CREATE TABLE IF NOT EXISTS `ofs2616_signups` (
   `activated` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `active` tinyint(1) NOT NULL DEFAULT '0',
   `activation_key` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `meta` longtext COLLATE utf8mb4_unicode_ci
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `meta` longtext COLLATE utf8mb4_unicode_ci,
+  PRIMARY KEY (`signup_id`),
+  KEY `activation_key` (`activation_key`),
+  KEY `user_email` (`user_email`),
+  KEY `user_login_email` (`user_login`,`user_email`),
+  KEY `domain_path` (`domain`(140),`path`(51))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `ofs2616_signups`
+--
+
 
 -- --------------------------------------------------------
 
@@ -2635,10 +2938,12 @@ CREATE TABLE IF NOT EXISTS `ofs2616_signups` (
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_site` (
-`id` bigint(20) NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `domain` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `path` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `path` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `domain` (`domain`(140),`path`(51))
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `ofs2616_site`
@@ -2654,11 +2959,14 @@ INSERT INTO `ofs2616_site` (`id`, `domain`, `path`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_sitemeta` (
-`meta_id` bigint(20) NOT NULL,
+  `meta_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `site_id` bigint(20) NOT NULL DEFAULT '0',
   `meta_key` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `meta_value` longtext COLLATE utf8mb4_unicode_ci
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `meta_value` longtext COLLATE utf8mb4_unicode_ci,
+  PRIMARY KEY (`meta_id`),
+  KEY `meta_key` (`meta_key`(191)),
+  KEY `site_id` (`site_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=59 ;
 
 --
 -- Dumping data for table `ofs2616_sitemeta`
@@ -2687,17 +2995,21 @@ INSERT INTO `ofs2616_sitemeta` (`meta_id`, `site_id`, `meta_key`, `meta_value`) 
 (20, 1, 'initial_db_version', '33056'),
 (21, 1, 'active_sitewide_plugins', 'a:4:{s:59:"intuitive-custom-post-order/intuitive-custom-post-order.php";i:1454847864;s:57:"ultimate-form-builder-lite/ultimate-form-builder-lite.php";i:1454847973;s:27:"woocommerce/woocommerce.php";i:1454847974;s:41:"wordpress-importer/wordpress-importer.php";i:1454847974;}'),
 (22, 1, 'WPLANG', 'en_US'),
-(23, 1, '_site_transient_update_core', 'O:8:"stdClass":3:{s:7:"updates";a:0:{}s:15:"version_checked";s:5:"4.4.2";s:12:"last_checked";i:1454847125;}'),
-(24, 1, '_site_transient_update_plugins', 'O:8:"stdClass":5:{s:12:"last_checked";i:1454847858;s:7:"checked";a:5:{s:59:"intuitive-custom-post-order/intuitive-custom-post-order.php";s:5:"3.0.7";s:57:"ultimate-form-builder-lite/ultimate-form-builder-lite.php";s:5:"1.1.3";s:27:"woocommerce/woocommerce.php";s:5:"2.5.2";s:41:"wordpress-importer/wordpress-importer.php";s:5:"0.6.1";s:45:"wp-admin-bar-removal/wp-admin-bar-removal.php";s:14:"2014.0707.0383";}s:8:"response";a:1:{s:57:"ultimate-form-builder-lite/ultimate-form-builder-lite.php";O:8:"stdClass":6:{s:2:"id";s:5:"64085";s:4:"slug";s:26:"ultimate-form-builder-lite";s:6:"plugin";s:57:"ultimate-form-builder-lite/ultimate-form-builder-lite.php";s:11:"new_version";s:5:"1.1.4";s:3:"url";s:57:"https://wordpress.org/plugins/ultimate-form-builder-lite/";s:7:"package";s:74:"http://downloads.wordpress.org/plugin/ultimate-form-builder-lite.1.1.4.zip";}}s:12:"translations";a:0:{}s:9:"no_update";a:4:{s:59:"intuitive-custom-post-order/intuitive-custom-post-order.php";O:8:"stdClass":6:{s:2:"id";s:5:"35583";s:4:"slug";s:27:"intuitive-custom-post-order";s:6:"plugin";s:59:"intuitive-custom-post-order/intuitive-custom-post-order.php";s:11:"new_version";s:5:"3.0.7";s:3:"url";s:58:"https://wordpress.org/plugins/intuitive-custom-post-order/";s:7:"package";s:75:"http://downloads.wordpress.org/plugin/intuitive-custom-post-order.3.0.7.zip";}s:27:"woocommerce/woocommerce.php";O:8:"stdClass":6:{s:2:"id";s:5:"25331";s:4:"slug";s:11:"woocommerce";s:6:"plugin";s:27:"woocommerce/woocommerce.php";s:11:"new_version";s:5:"2.5.2";s:3:"url";s:42:"https://wordpress.org/plugins/woocommerce/";s:7:"package";s:59:"http://downloads.wordpress.org/plugin/woocommerce.2.5.2.zip";}s:41:"wordpress-importer/wordpress-importer.php";O:8:"stdClass":6:{s:2:"id";s:5:"14975";s:4:"slug";s:18:"wordpress-importer";s:6:"plugin";s:41:"wordpress-importer/wordpress-importer.php";s:11:"new_version";s:5:"0.6.1";s:3:"url";s:49:"https://wordpress.org/plugins/wordpress-importer/";s:7:"package";s:66:"http://downloads.wordpress.org/plugin/wordpress-importer.0.6.1.zip";}s:45:"wp-admin-bar-removal/wp-admin-bar-removal.php";O:8:"stdClass":7:{s:2:"id";s:5:"18320";s:4:"slug";s:20:"wp-admin-bar-removal";s:6:"plugin";s:45:"wp-admin-bar-removal/wp-admin-bar-removal.php";s:11:"new_version";s:14:"2014.0707.0383";s:3:"url";s:51:"https://wordpress.org/plugins/wp-admin-bar-removal/";s:7:"package";s:77:"http://downloads.wordpress.org/plugin/wp-admin-bar-removal.2014.0707.0383.zip";s:14:"upgrade_notice";s:252:"Major Update [CERTIFIED] Disable WordPress Admin Bar and Toolbar and Remove Code Completely on WP 3.1+ or later for Minimal Memory Load, and Dashboard Speedup, with new Unified Coding Approach without loosing Logout and Network MultiSite functionality!";}}}'),
-(27, 1, '_site_transient_update_themes', 'O:8:"stdClass":4:{s:12:"last_checked";i:1454847758;s:7:"checked";a:2:{s:21:"eightstore-lite-child";s:5:"1.0.0";s:15:"eightstore-lite";s:6:"1.0.53";}s:8:"response";a:0:{}s:12:"translations";a:0:{}}'),
+(23, 1, '_site_transient_update_core', 'O:8:"stdClass":4:{s:7:"updates";a:1:{i:0;O:8:"stdClass":10:{s:8:"response";s:6:"latest";s:8:"download";s:58:"http://downloads.wordpress.org/release/wordpress-4.4.2.zip";s:6:"locale";s:5:"en_US";s:8:"packages";O:8:"stdClass":5:{s:4:"full";s:58:"http://downloads.wordpress.org/release/wordpress-4.4.2.zip";s:10:"no_content";s:69:"http://downloads.wordpress.org/release/wordpress-4.4.2-no-content.zip";s:11:"new_bundled";s:70:"http://downloads.wordpress.org/release/wordpress-4.4.2-new-bundled.zip";s:7:"partial";b:0;s:8:"rollback";b:0;}s:7:"current";s:5:"4.4.2";s:7:"version";s:5:"4.4.2";s:11:"php_version";s:5:"5.2.4";s:13:"mysql_version";s:3:"5.0";s:11:"new_bundled";s:3:"4.4";s:15:"partial_version";s:0:"";}}s:12:"last_checked";i:1456290578;s:15:"version_checked";s:5:"4.4.2";s:12:"translations";a:0:{}}'),
 (28, 1, '_site_transient_timeout_browser_09405e74b30b86007210b586b2ddc252', '1455451980'),
 (29, 1, '_site_transient_browser_09405e74b30b86007210b586b2ddc252', 'a:9:{s:8:"platform";s:9:"Macintosh";s:4:"name";s:6:"Chrome";s:7:"version";s:13:"48.0.2564.103";s:10:"update_url";s:28:"http://www.google.com/chrome";s:7:"img_src";s:49:"http://s.wordpress.org/images/browsers/chrome.png";s:11:"img_src_ssl";s:48:"https://wordpress.org/images/browsers/chrome.png";s:15:"current_version";s:2:"18";s:7:"upgrade";b:0;s:8:"insecure";b:0;}'),
 (30, 1, 'can_compress_scripts', '1'),
 (31, 1, 'blog_count', '2'),
 (32, 1, 'user_count', '1'),
 (33, 1, 'recently_activated', 'a:0:{}'),
-(36, 1, '_site_transient_timeout_theme_roots', '1454854474'),
-(37, 1, '_site_transient_theme_roots', 'a:2:{s:21:"eightstore-lite-child";s:7:"/themes";s:15:"eightstore-lite";s:7:"/themes";}');
+(49, 1, '_site_transient_update_themes', 'O:8:"stdClass":4:{s:12:"last_checked";i:1456298489;s:7:"checked";a:2:{s:21:"eightstore-lite-child";s:5:"1.0.0";s:15:"eightstore-lite";s:6:"1.0.53";}s:8:"response";a:1:{s:15:"eightstore-lite";a:4:{s:5:"theme";s:15:"eightstore-lite";s:11:"new_version";s:6:"1.0.56";s:3:"url";s:45:"https://wordpress.org/themes/eightstore-lite/";s:7:"package";s:63:"http://downloads.wordpress.org/theme/eightstore-lite.1.0.56.zip";}}s:12:"translations";a:0:{}}'),
+(50, 1, '_site_transient_update_plugins', 'O:8:"stdClass":5:{s:12:"last_checked";i:1456298664;s:7:"checked";a:6:{s:39:"custom-permalinks/custom-permalinks.php";s:6:"0.7.21";s:59:"intuitive-custom-post-order/intuitive-custom-post-order.php";s:5:"3.0.7";s:57:"ultimate-form-builder-lite/ultimate-form-builder-lite.php";s:5:"1.1.3";s:27:"woocommerce/woocommerce.php";s:5:"2.5.2";s:41:"wordpress-importer/wordpress-importer.php";s:5:"0.6.1";s:45:"wp-admin-bar-removal/wp-admin-bar-removal.php";s:14:"2014.0707.0383";}s:8:"response";a:1:{s:57:"ultimate-form-builder-lite/ultimate-form-builder-lite.php";O:8:"stdClass":6:{s:2:"id";s:5:"64085";s:4:"slug";s:26:"ultimate-form-builder-lite";s:6:"plugin";s:57:"ultimate-form-builder-lite/ultimate-form-builder-lite.php";s:11:"new_version";s:5:"1.1.5";s:3:"url";s:57:"https://wordpress.org/plugins/ultimate-form-builder-lite/";s:7:"package";s:74:"http://downloads.wordpress.org/plugin/ultimate-form-builder-lite.1.1.5.zip";}}s:12:"translations";a:0:{}s:9:"no_update";a:5:{s:39:"custom-permalinks/custom-permalinks.php";O:8:"stdClass":6:{s:2:"id";s:4:"5158";s:4:"slug";s:17:"custom-permalinks";s:6:"plugin";s:39:"custom-permalinks/custom-permalinks.php";s:11:"new_version";s:6:"0.7.21";s:3:"url";s:48:"https://wordpress.org/plugins/custom-permalinks/";s:7:"package";s:66:"http://downloads.wordpress.org/plugin/custom-permalinks.0.7.21.zip";}s:59:"intuitive-custom-post-order/intuitive-custom-post-order.php";O:8:"stdClass":6:{s:2:"id";s:5:"35583";s:4:"slug";s:27:"intuitive-custom-post-order";s:6:"plugin";s:59:"intuitive-custom-post-order/intuitive-custom-post-order.php";s:11:"new_version";s:5:"3.0.7";s:3:"url";s:58:"https://wordpress.org/plugins/intuitive-custom-post-order/";s:7:"package";s:75:"http://downloads.wordpress.org/plugin/intuitive-custom-post-order.3.0.7.zip";}s:27:"woocommerce/woocommerce.php";O:8:"stdClass":6:{s:2:"id";s:5:"25331";s:4:"slug";s:11:"woocommerce";s:6:"plugin";s:27:"woocommerce/woocommerce.php";s:11:"new_version";s:5:"2.5.2";s:3:"url";s:42:"https://wordpress.org/plugins/woocommerce/";s:7:"package";s:59:"http://downloads.wordpress.org/plugin/woocommerce.2.5.2.zip";}s:41:"wordpress-importer/wordpress-importer.php";O:8:"stdClass":6:{s:2:"id";s:5:"14975";s:4:"slug";s:18:"wordpress-importer";s:6:"plugin";s:41:"wordpress-importer/wordpress-importer.php";s:11:"new_version";s:5:"0.6.1";s:3:"url";s:49:"https://wordpress.org/plugins/wordpress-importer/";s:7:"package";s:66:"http://downloads.wordpress.org/plugin/wordpress-importer.0.6.1.zip";}s:45:"wp-admin-bar-removal/wp-admin-bar-removal.php";O:8:"stdClass":7:{s:2:"id";s:5:"18320";s:4:"slug";s:20:"wp-admin-bar-removal";s:6:"plugin";s:45:"wp-admin-bar-removal/wp-admin-bar-removal.php";s:11:"new_version";s:14:"2014.0707.0383";s:3:"url";s:51:"https://wordpress.org/plugins/wp-admin-bar-removal/";s:7:"package";s:77:"http://downloads.wordpress.org/plugin/wp-admin-bar-removal.2014.0707.0383.zip";s:14:"upgrade_notice";s:252:"Major Update [CERTIFIED] Disable WordPress Admin Bar and Toolbar and Remove Code Completely on WP 3.1+ or later for Minimal Memory Load, and Dashboard Speedup, with new Unified Coding Approach without loosing Logout and Network MultiSite functionality!";}}}'),
+(53, 1, '_site_transient_timeout_browser_dee24e1cb8ffa5ebe8021356c173956d', '1456903234'),
+(54, 1, '_site_transient_browser_dee24e1cb8ffa5ebe8021356c173956d', 'a:9:{s:8:"platform";s:7:"Windows";s:4:"name";s:6:"Chrome";s:7:"version";s:13:"48.0.2564.116";s:10:"update_url";s:28:"http://www.google.com/chrome";s:7:"img_src";s:49:"http://s.wordpress.org/images/browsers/chrome.png";s:11:"img_src_ssl";s:48:"https://wordpress.org/images/browsers/chrome.png";s:15:"current_version";s:2:"18";s:7:"upgrade";b:0;s:8:"insecure";b:0;}'),
+(55, 1, '_site_transient_timeout_poptags_40cd750bba9870f18aada2478b24840a', '1456309247'),
+(56, 1, '_site_transient_poptags_40cd750bba9870f18aada2478b24840a', 'a:100:{s:6:"widget";a:3:{s:4:"name";s:6:"widget";s:4:"slug";s:6:"widget";s:5:"count";s:4:"5703";}s:4:"post";a:3:{s:4:"name";s:4:"Post";s:4:"slug";s:4:"post";s:5:"count";s:4:"3563";}s:6:"plugin";a:3:{s:4:"name";s:6:"plugin";s:4:"slug";s:6:"plugin";s:5:"count";s:4:"3517";}s:5:"admin";a:3:{s:4:"name";s:5:"admin";s:4:"slug";s:5:"admin";s:5:"count";s:4:"3018";}s:5:"posts";a:3:{s:4:"name";s:5:"posts";s:4:"slug";s:5:"posts";s:5:"count";s:4:"2749";}s:9:"shortcode";a:3:{s:4:"name";s:9:"shortcode";s:4:"slug";s:9:"shortcode";s:5:"count";s:4:"2246";}s:7:"sidebar";a:3:{s:4:"name";s:7:"sidebar";s:4:"slug";s:7:"sidebar";s:5:"count";s:4:"2172";}s:6:"google";a:3:{s:4:"name";s:6:"google";s:4:"slug";s:6:"google";s:5:"count";s:4:"2019";}s:7:"twitter";a:3:{s:4:"name";s:7:"twitter";s:4:"slug";s:7:"twitter";s:5:"count";s:4:"1970";}s:4:"page";a:3:{s:4:"name";s:4:"page";s:4:"slug";s:4:"page";s:5:"count";s:4:"1955";}s:6:"images";a:3:{s:4:"name";s:6:"images";s:4:"slug";s:6:"images";s:5:"count";s:4:"1952";}s:8:"comments";a:3:{s:4:"name";s:8:"comments";s:4:"slug";s:8:"comments";s:5:"count";s:4:"1904";}s:5:"image";a:3:{s:4:"name";s:5:"image";s:4:"slug";s:5:"image";s:5:"count";s:4:"1805";}s:8:"facebook";a:3:{s:4:"name";s:8:"Facebook";s:4:"slug";s:8:"facebook";s:5:"count";s:4:"1608";}s:3:"seo";a:3:{s:4:"name";s:3:"seo";s:4:"slug";s:3:"seo";s:5:"count";s:4:"1521";}s:9:"wordpress";a:3:{s:4:"name";s:9:"wordpress";s:4:"slug";s:9:"wordpress";s:5:"count";s:4:"1504";}s:11:"woocommerce";a:3:{s:4:"name";s:11:"woocommerce";s:4:"slug";s:11:"woocommerce";s:5:"count";s:4:"1477";}s:6:"social";a:3:{s:4:"name";s:6:"social";s:4:"slug";s:6:"social";s:5:"count";s:4:"1318";}s:5:"links";a:3:{s:4:"name";s:5:"links";s:4:"slug";s:5:"links";s:5:"count";s:4:"1267";}s:7:"gallery";a:3:{s:4:"name";s:7:"gallery";s:4:"slug";s:7:"gallery";s:5:"count";s:4:"1256";}s:5:"email";a:3:{s:4:"name";s:5:"email";s:4:"slug";s:5:"email";s:5:"count";s:4:"1158";}s:7:"widgets";a:3:{s:4:"name";s:7:"widgets";s:4:"slug";s:7:"widgets";s:5:"count";s:4:"1075";}s:5:"pages";a:3:{s:4:"name";s:5:"pages";s:4:"slug";s:5:"pages";s:5:"count";s:4:"1053";}s:6:"jquery";a:3:{s:4:"name";s:6:"jquery";s:4:"slug";s:6:"jquery";s:5:"count";s:3:"984";}s:5:"media";a:3:{s:4:"name";s:5:"media";s:4:"slug";s:5:"media";s:5:"count";s:3:"948";}s:3:"rss";a:3:{s:4:"name";s:3:"rss";s:4:"slug";s:3:"rss";s:5:"count";s:3:"904";}s:9:"ecommerce";a:3:{s:4:"name";s:9:"ecommerce";s:4:"slug";s:9:"ecommerce";s:5:"count";s:3:"900";}s:4:"ajax";a:3:{s:4:"name";s:4:"AJAX";s:4:"slug";s:4:"ajax";s:5:"count";s:3:"888";}s:5:"video";a:3:{s:4:"name";s:5:"video";s:4:"slug";s:5:"video";s:5:"count";s:3:"881";}s:7:"content";a:3:{s:4:"name";s:7:"content";s:4:"slug";s:7:"content";s:5:"count";s:3:"872";}s:5:"login";a:3:{s:4:"name";s:5:"login";s:4:"slug";s:5:"login";s:5:"count";s:3:"864";}s:10:"javascript";a:3:{s:4:"name";s:10:"javascript";s:4:"slug";s:10:"javascript";s:5:"count";s:3:"814";}s:10:"buddypress";a:3:{s:4:"name";s:10:"buddypress";s:4:"slug";s:10:"buddypress";s:5:"count";s:3:"767";}s:10:"responsive";a:3:{s:4:"name";s:10:"responsive";s:4:"slug";s:10:"responsive";s:5:"count";s:3:"766";}s:8:"security";a:3:{s:4:"name";s:8:"security";s:4:"slug";s:8:"security";s:5:"count";s:3:"752";}s:5:"photo";a:3:{s:4:"name";s:5:"photo";s:4:"slug";s:5:"photo";s:5:"count";s:3:"735";}s:4:"feed";a:3:{s:4:"name";s:4:"feed";s:4:"slug";s:4:"feed";s:5:"count";s:3:"730";}s:4:"spam";a:3:{s:4:"name";s:4:"spam";s:4:"slug";s:4:"spam";s:5:"count";s:3:"729";}s:7:"youtube";a:3:{s:4:"name";s:7:"youtube";s:4:"slug";s:7:"youtube";s:5:"count";s:3:"726";}s:4:"link";a:3:{s:4:"name";s:4:"link";s:4:"slug";s:4:"link";s:5:"count";s:3:"721";}s:5:"share";a:3:{s:4:"name";s:5:"Share";s:4:"slug";s:5:"share";s:5:"count";s:3:"710";}s:10:"e-commerce";a:3:{s:4:"name";s:10:"e-commerce";s:4:"slug";s:10:"e-commerce";s:5:"count";s:3:"709";}s:6:"photos";a:3:{s:4:"name";s:6:"photos";s:4:"slug";s:6:"photos";s:5:"count";s:3:"680";}s:8:"category";a:3:{s:4:"name";s:8:"category";s:4:"slug";s:8:"category";s:5:"count";s:3:"678";}s:9:"analytics";a:3:{s:4:"name";s:9:"analytics";s:4:"slug";s:9:"analytics";s:5:"count";s:3:"662";}s:5:"embed";a:3:{s:4:"name";s:5:"embed";s:4:"slug";s:5:"embed";s:5:"count";s:3:"657";}s:4:"form";a:3:{s:4:"name";s:4:"form";s:4:"slug";s:4:"form";s:5:"count";s:3:"656";}s:3:"css";a:3:{s:4:"name";s:3:"CSS";s:4:"slug";s:3:"css";s:5:"count";s:3:"645";}s:6:"search";a:3:{s:4:"name";s:6:"search";s:4:"slug";s:6:"search";s:5:"count";s:3:"640";}s:9:"slideshow";a:3:{s:4:"name";s:9:"slideshow";s:4:"slug";s:9:"slideshow";s:5:"count";s:3:"631";}s:6:"custom";a:3:{s:4:"name";s:6:"custom";s:4:"slug";s:6:"custom";s:5:"count";s:3:"617";}s:6:"slider";a:3:{s:4:"name";s:6:"slider";s:4:"slug";s:6:"slider";s:5:"count";s:3:"610";}s:5:"stats";a:3:{s:4:"name";s:5:"stats";s:4:"slug";s:5:"stats";s:5:"count";s:3:"599";}s:6:"button";a:3:{s:4:"name";s:6:"button";s:4:"slug";s:6:"button";s:5:"count";s:3:"593";}s:7:"comment";a:3:{s:4:"name";s:7:"comment";s:4:"slug";s:7:"comment";s:5:"count";s:3:"591";}s:5:"theme";a:3:{s:4:"name";s:5:"theme";s:4:"slug";s:5:"theme";s:5:"count";s:3:"583";}s:4:"menu";a:3:{s:4:"name";s:4:"menu";s:4:"slug";s:4:"menu";s:5:"count";s:3:"577";}s:4:"tags";a:3:{s:4:"name";s:4:"tags";s:4:"slug";s:4:"tags";s:5:"count";s:3:"576";}s:9:"dashboard";a:3:{s:4:"name";s:9:"dashboard";s:4:"slug";s:9:"dashboard";s:5:"count";s:3:"570";}s:10:"categories";a:3:{s:4:"name";s:10:"categories";s:4:"slug";s:10:"categories";s:5:"count";s:3:"560";}s:10:"statistics";a:3:{s:4:"name";s:10:"statistics";s:4:"slug";s:10:"statistics";s:5:"count";s:3:"549";}s:6:"mobile";a:3:{s:4:"name";s:6:"mobile";s:4:"slug";s:6:"mobile";s:5:"count";s:3:"541";}s:3:"ads";a:3:{s:4:"name";s:3:"ads";s:4:"slug";s:3:"ads";s:5:"count";s:3:"541";}s:6:"editor";a:3:{s:4:"name";s:6:"editor";s:4:"slug";s:6:"editor";s:5:"count";s:3:"526";}s:4:"user";a:3:{s:4:"name";s:4:"user";s:4:"slug";s:4:"user";s:5:"count";s:3:"526";}s:5:"users";a:3:{s:4:"name";s:5:"users";s:4:"slug";s:5:"users";s:5:"count";s:3:"515";}s:7:"picture";a:3:{s:4:"name";s:7:"picture";s:4:"slug";s:7:"picture";s:5:"count";s:3:"507";}s:4:"list";a:3:{s:4:"name";s:4:"list";s:4:"slug";s:4:"list";s:5:"count";s:3:"503";}s:7:"plugins";a:3:{s:4:"name";s:7:"plugins";s:4:"slug";s:7:"plugins";s:5:"count";s:3:"502";}s:9:"affiliate";a:3:{s:4:"name";s:9:"affiliate";s:4:"slug";s:9:"affiliate";s:5:"count";s:3:"500";}s:6:"simple";a:3:{s:4:"name";s:6:"simple";s:4:"slug";s:6:"simple";s:5:"count";s:3:"483";}s:9:"multisite";a:3:{s:4:"name";s:9:"multisite";s:4:"slug";s:9:"multisite";s:5:"count";s:3:"483";}s:12:"contact-form";a:3:{s:4:"name";s:12:"contact form";s:4:"slug";s:12:"contact-form";s:5:"count";s:3:"477";}s:12:"social-media";a:3:{s:4:"name";s:12:"social media";s:4:"slug";s:12:"social-media";s:5:"count";s:3:"468";}s:8:"pictures";a:3:{s:4:"name";s:8:"pictures";s:4:"slug";s:8:"pictures";s:5:"count";s:3:"458";}s:7:"contact";a:3:{s:4:"name";s:7:"contact";s:4:"slug";s:7:"contact";s:5:"count";s:3:"457";}s:10:"navigation";a:3:{s:4:"name";s:10:"navigation";s:4:"slug";s:10:"navigation";s:5:"count";s:3:"432";}s:3:"url";a:3:{s:4:"name";s:3:"url";s:4:"slug";s:3:"url";s:5:"count";s:3:"432";}s:4:"html";a:3:{s:4:"name";s:4:"html";s:4:"slug";s:4:"html";s:5:"count";s:3:"426";}s:4:"shop";a:3:{s:4:"name";s:4:"shop";s:4:"slug";s:4:"shop";s:5:"count";s:3:"426";}s:5:"flash";a:3:{s:4:"name";s:5:"flash";s:4:"slug";s:5:"flash";s:5:"count";s:3:"425";}s:3:"api";a:3:{s:4:"name";s:3:"api";s:4:"slug";s:3:"api";s:5:"count";s:3:"418";}s:10:"newsletter";a:3:{s:4:"name";s:10:"newsletter";s:4:"slug";s:10:"newsletter";s:5:"count";s:3:"413";}s:9:"marketing";a:3:{s:4:"name";s:9:"marketing";s:4:"slug";s:9:"marketing";s:5:"count";s:3:"411";}s:4:"meta";a:3:{s:4:"name";s:4:"meta";s:4:"slug";s:4:"meta";s:5:"count";s:3:"409";}s:8:"calendar";a:3:{s:4:"name";s:8:"calendar";s:4:"slug";s:8:"calendar";s:5:"count";s:3:"406";}s:6:"events";a:3:{s:4:"name";s:6:"events";s:4:"slug";s:6:"events";s:5:"count";s:3:"401";}s:3:"tag";a:3:{s:4:"name";s:3:"tag";s:4:"slug";s:3:"tag";s:5:"count";s:3:"400";}s:4:"news";a:3:{s:4:"name";s:4:"News";s:4:"slug";s:4:"news";s:5:"count";s:3:"398";}s:8:"tracking";a:3:{s:4:"name";s:8:"tracking";s:4:"slug";s:8:"tracking";s:5:"count";s:3:"393";}s:10:"shortcodes";a:3:{s:4:"name";s:10:"shortcodes";s:4:"slug";s:10:"shortcodes";s:5:"count";s:3:"391";}s:11:"advertising";a:3:{s:4:"name";s:11:"advertising";s:4:"slug";s:11:"advertising";s:5:"count";s:3:"389";}s:9:"thumbnail";a:3:{s:4:"name";s:9:"thumbnail";s:4:"slug";s:9:"thumbnail";s:5:"count";s:3:"388";}s:4:"text";a:3:{s:4:"name";s:4:"text";s:4:"slug";s:4:"text";s:5:"count";s:3:"384";}s:6:"upload";a:3:{s:4:"name";s:6:"upload";s:4:"slug";s:6:"upload";s:5:"count";s:3:"381";}s:4:"code";a:3:{s:4:"name";s:4:"code";s:4:"slug";s:4:"code";s:5:"count";s:3:"381";}s:9:"automatic";a:3:{s:4:"name";s:9:"automatic";s:4:"slug";s:9:"automatic";s:5:"count";s:3:"378";}s:8:"lightbox";a:3:{s:4:"name";s:8:"lightbox";s:4:"slug";s:8:"lightbox";s:5:"count";s:3:"376";}s:6:"paypal";a:3:{s:4:"name";s:6:"paypal";s:4:"slug";s:6:"paypal";s:5:"count";s:3:"375";}s:7:"sharing";a:3:{s:4:"name";s:7:"sharing";s:4:"slug";s:7:"sharing";s:5:"count";s:3:"374";}}'),
+(57, 1, '_site_transient_timeout_theme_roots', '1456300289'),
+(58, 1, '_site_transient_theme_roots', 'a:2:{s:21:"eightstore-lite-child";s:7:"/themes";s:15:"eightstore-lite";s:7:"/themes";}');
 
 -- --------------------------------------------------------
 
@@ -2706,11 +3018,19 @@ INSERT INTO `ofs2616_sitemeta` (`meta_id`, `site_id`, `meta_key`, `meta_value`) 
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_termmeta` (
-`meta_id` bigint(20) unsigned NOT NULL,
+  `meta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `term_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `meta_key` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `meta_value` longtext COLLATE utf8mb4_unicode_ci
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `meta_value` longtext COLLATE utf8mb4_unicode_ci,
+  PRIMARY KEY (`meta_id`),
+  KEY `term_id` (`term_id`),
+  KEY `meta_key` (`meta_key`(191))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `ofs2616_termmeta`
+--
+
 
 -- --------------------------------------------------------
 
@@ -2719,12 +3039,15 @@ CREATE TABLE IF NOT EXISTS `ofs2616_termmeta` (
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_terms` (
-`term_id` bigint(20) unsigned NOT NULL,
+  `term_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `slug` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `term_group` bigint(10) NOT NULL DEFAULT '0',
-  `term_order` int(4) DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `term_order` int(4) DEFAULT '0',
+  PRIMARY KEY (`term_id`),
+  KEY `slug` (`slug`(191)),
+  KEY `name` (`name`(191))
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=34 ;
 
 --
 -- Dumping data for table `ofs2616_terms`
@@ -2746,23 +3069,17 @@ INSERT INTO `ofs2616_terms` (`term_id`, `name`, `slug`, `term_group`, `term_orde
 (13, 'Bags', 'bags-men', 0, 0),
 (14, 'Apparels', 'apparels-men', 0, 0),
 (15, 'Accessories', 'accessories-men', 0, 0),
-(16, 'Menu 1', 'menu-1', 0, 0),
+(16, 'Custom Footer Menu', 'custom-footer-menu', 0, 0),
 (17, 'Black', 'black', 0, 0),
 (18, 'Blue', 'blue', 0, 0),
 (19, 'Green', 'green', 0, 0),
-(20, 'Clothing', 'clothing', 0, 0),
-(21, 'Hoodies', 'hoodies', 0, 0),
-(22, 'Music', 'music', 0, 0),
-(23, 'Posters', 'posters', 0, 0),
-(24, 'Singles', 'singles', 0, 0),
-(25, 'T-shirts', 't-shirts', 0, 0),
-(26, 'Albums', 'albums', 0, 0),
 (27, 'Slider', 'slider', 0, 0),
 (28, 'Blog', 'blog', 0, 0),
 (29, 'Ticker', 'ticker', 0, 0),
 (30, 'Promotional', 'promotional', 0, 0),
 (31, 'Testimonial', 'testimonial', 0, 0),
-(32, 'post-format-image', 'post-format-image', 0, 0);
+(32, 'post-format-image', 'post-format-image', 0, 0),
+(33, 'Main Menu', 'main-menu', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -2773,7 +3090,9 @@ INSERT INTO `ofs2616_terms` (`term_id`, `name`, `slug`, `term_group`, `term_orde
 CREATE TABLE IF NOT EXISTS `ofs2616_term_relationships` (
   `object_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `term_taxonomy_id` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `term_order` int(11) NOT NULL DEFAULT '0'
+  `term_order` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`object_id`,`term_taxonomy_id`),
+  KEY `term_taxonomy_id` (`term_taxonomy_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -2787,73 +3106,78 @@ INSERT INTO `ofs2616_term_relationships` (`object_id`, `term_taxonomy_id`, `term
 (8, 8, 0),
 (16, 16, 0),
 (31, 2, 0),
-(31, 20, 0),
-(31, 25, 0),
+(31, 6, 0),
+(31, 13, 0),
 (34, 2, 0),
-(34, 20, 0),
-(34, 25, 0),
+(34, 6, 0),
+(34, 14, 0),
 (37, 2, 0),
-(37, 20, 0),
-(37, 25, 0),
+(37, 6, 0),
+(37, 14, 0),
 (40, 4, 0),
+(40, 6, 0),
+(40, 14, 0),
 (40, 17, 0),
 (40, 18, 0),
-(40, 20, 0),
-(40, 21, 0),
 (47, 2, 0),
-(47, 20, 0),
-(47, 21, 0),
+(47, 6, 0),
+(47, 12, 0),
 (50, 2, 0),
-(50, 20, 0),
-(50, 21, 0),
+(50, 6, 0),
+(50, 12, 0),
 (53, 2, 0),
-(53, 20, 0),
-(53, 21, 0),
+(53, 6, 0),
+(53, 12, 0),
 (56, 2, 0),
-(56, 20, 0),
-(56, 21, 0),
+(56, 7, 0),
+(56, 11, 0),
 (60, 2, 0),
-(60, 20, 0),
-(60, 21, 0),
+(60, 7, 0),
+(60, 11, 0),
 (67, 2, 0),
-(67, 23, 0),
+(67, 7, 0),
+(67, 11, 0),
 (70, 2, 0),
-(70, 23, 0),
+(70, 7, 0),
+(70, 10, 0),
 (73, 2, 0),
-(73, 23, 0),
+(73, 7, 0),
+(73, 10, 0),
 (76, 2, 0),
-(76, 23, 0),
+(76, 7, 0),
+(76, 10, 0),
 (79, 2, 0),
-(79, 23, 0),
+(79, 7, 0),
+(79, 9, 0),
 (83, 2, 0),
-(83, 22, 0),
-(83, 26, 0),
+(83, 7, 0),
+(83, 9, 0),
 (87, 2, 0),
-(87, 22, 0),
-(87, 26, 0),
+(87, 7, 0),
+(87, 9, 0),
 (90, 2, 0),
-(90, 22, 0),
-(90, 26, 0),
+(90, 7, 0),
+(90, 8, 0),
 (93, 2, 0),
-(93, 22, 0),
-(93, 24, 0),
+(93, 7, 0),
+(93, 9, 0),
 (96, 2, 0),
-(96, 22, 0),
-(96, 26, 0),
+(96, 7, 0),
+(96, 8, 0),
 (99, 2, 0),
-(99, 22, 0),
-(99, 24, 0),
+(99, 7, 0),
+(99, 8, 0),
 (102, 2, 0),
-(102, 20, 0),
-(102, 25, 0),
+(102, 6, 0),
+(102, 15, 0),
 (103, 2, 0),
-(103, 20, 0),
-(103, 25, 0),
+(103, 6, 0),
+(103, 13, 0),
 (104, 4, 0),
+(104, 6, 0),
+(104, 13, 0),
 (104, 17, 0),
 (104, 19, 0),
-(104, 20, 0),
-(104, 25, 0),
 (109, 27, 0),
 (109, 32, 0),
 (113, 16, 0),
@@ -2872,7 +3196,13 @@ INSERT INTO `ofs2616_term_relationships` (`object_id`, `term_taxonomy_id`, `term
 (140, 28, 0),
 (140, 31, 0),
 (150, 16, 0),
-(151, 16, 0);
+(151, 16, 0),
+(153, 33, 0),
+(154, 33, 0),
+(156, 28, 0),
+(160, 33, 0),
+(161, 33, 0),
+(162, 33, 0);
 
 -- --------------------------------------------------------
 
@@ -2881,13 +3211,16 @@ INSERT INTO `ofs2616_term_relationships` (`object_id`, `term_taxonomy_id`, `term
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_term_taxonomy` (
-`term_taxonomy_id` bigint(20) unsigned NOT NULL,
+  `term_taxonomy_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `term_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `taxonomy` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `parent` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `count` bigint(20) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `count` bigint(20) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`term_taxonomy_id`),
+  UNIQUE KEY `term_id_taxonomy` (`term_id`,`taxonomy`),
+  KEY `taxonomy` (`taxonomy`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=34 ;
 
 --
 -- Dumping data for table `ofs2616_term_taxonomy`
@@ -2899,33 +3232,27 @@ INSERT INTO `ofs2616_term_taxonomy` (`term_taxonomy_id`, `term_id`, `taxonomy`, 
 (3, 3, 'product_type', '', 0, 0),
 (4, 4, 'product_type', '', 0, 2),
 (5, 5, 'product_type', '', 0, 0),
-(6, 6, 'product_cat', '', 0, 0),
-(7, 7, 'product_cat', '', 0, 1),
-(8, 8, 'product_cat', '', 7, 1),
-(9, 9, 'product_cat', '', 7, 0),
-(10, 10, 'product_cat', '', 7, 0),
-(11, 11, 'product_cat', '', 7, 0),
-(12, 12, 'product_cat', '', 6, 0),
-(13, 13, 'product_cat', '', 6, 0),
-(14, 14, 'product_cat', '', 6, 0),
-(15, 15, 'product_cat', '', 6, 0),
+(6, 6, 'product_cat', '', 0, 10),
+(7, 7, 'product_cat', '', 0, 14),
+(8, 8, 'product_cat', '', 7, 4),
+(9, 9, 'product_cat', '', 7, 4),
+(10, 10, 'product_cat', '', 7, 3),
+(11, 11, 'product_cat', '', 7, 3),
+(12, 12, 'product_cat', '', 6, 3),
+(13, 13, 'product_cat', '', 6, 3),
+(14, 14, 'product_cat', '', 6, 3),
+(15, 15, 'product_cat', '', 6, 1),
 (16, 16, 'nav_menu', '', 0, 4),
 (17, 17, 'pa_color', '', 0, 2),
 (18, 18, 'pa_color', '', 0, 1),
 (19, 19, 'pa_color', '', 0, 1),
-(20, 20, 'product_cat', '', 0, 12),
-(21, 21, 'product_cat', '', 20, 6),
-(22, 22, 'product_cat', '', 0, 6),
-(23, 23, 'product_cat', '', 0, 5),
-(24, 24, 'product_cat', '', 22, 2),
-(25, 25, 'product_cat', '', 20, 6),
-(26, 26, 'product_cat', '', 22, 4),
 (27, 27, 'category', '', 0, 2),
-(28, 28, 'category', '', 0, 2),
+(28, 28, 'category', '', 0, 3),
 (29, 29, 'category', '', 0, 0),
 (30, 30, 'category', '', 0, 4),
 (31, 31, 'category', '', 0, 2),
-(32, 32, 'post_format', '', 0, 6);
+(32, 32, 'post_format', '', 0, 6),
+(33, 33, 'nav_menu', '', 0, 5);
 
 -- --------------------------------------------------------
 
@@ -2934,11 +3261,17 @@ INSERT INTO `ofs2616_term_taxonomy` (`term_taxonomy_id`, `term_id`, `taxonomy`, 
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_ufbl_entries` (
-`entry_id` mediumint(9) NOT NULL,
+  `entry_id` mediumint(9) NOT NULL AUTO_INCREMENT,
   `form_id` mediumint(9) DEFAULT NULL,
   `entry_detail` text COLLATE utf8mb4_unicode_ci,
-  `entry_created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `entry_created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  UNIQUE KEY `entry_id` (`entry_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `ofs2616_ufbl_entries`
+--
+
 
 -- --------------------------------------------------------
 
@@ -2947,13 +3280,14 @@ CREATE TABLE IF NOT EXISTS `ofs2616_ufbl_entries` (
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_ufbl_forms` (
-`form_id` mediumint(9) NOT NULL,
+  `form_id` mediumint(9) NOT NULL AUTO_INCREMENT,
   `form_title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `form_detail` text COLLATE utf8mb4_unicode_ci,
   `form_status` int(11) DEFAULT NULL,
   `form_created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `form_modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `form_modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  UNIQUE KEY `form_id` (`form_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `ofs2616_ufbl_forms`
@@ -2969,11 +3303,14 @@ INSERT INTO `ofs2616_ufbl_forms` (`form_id`, `form_title`, `form_detail`, `form_
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_usermeta` (
-`umeta_id` bigint(20) unsigned NOT NULL,
+  `umeta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `meta_key` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `meta_value` longtext COLLATE utf8mb4_unicode_ci
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `meta_value` longtext COLLATE utf8mb4_unicode_ci,
+  PRIMARY KEY (`umeta_id`),
+  KEY `user_id` (`user_id`),
+  KEY `meta_key` (`meta_key`(191))
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=34 ;
 
 --
 -- Dumping data for table `ofs2616_usermeta`
@@ -2993,8 +3330,7 @@ INSERT INTO `ofs2616_usermeta` (`umeta_id`, `user_id`, `meta_key`, `meta_value`)
 (11, 1, 'ofs2616_user_level', '10'),
 (12, 1, 'dismissed_wp_pointers', ''),
 (13, 1, 'show_welcome_panel', '1'),
-(14, 1, 'session_tokens', 'a:2:{s:64:"5470d360a17d595e1668bbbfaba6b913a9cf625d2354cd967a6a66174f59f86b";a:4:{s:10:"expiration";i:1455953720;s:2:"ip";s:3:"::1";s:2:"ua";s:120:"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.103 Safari/537.36";s:5:"login";i:1454744120;}s:64:"8c2187ef4bf79b84d82824041d9eed4ca745b62a09b1f1b77e3dc1263204ad6a";a:4:{s:10:"expiration";i:1455019923;s:2:"ip";s:3:"::1";s:2:"ua";s:120:"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.103 Safari/537.36";s:5:"login";i:1454847123;}}'),
-(15, 1, 'ofs2616_dashboard_quick_press_last_post_id', '3'),
+(15, 1, 'ofs2616_dashboard_quick_press_last_post_id', '152'),
 (16, 1, 'manageedit-shop_ordercolumnshidden', 'a:1:{i:0;s:15:"billing_address";}'),
 (17, 1, 'ofs2616_user-settings', 'libraryContent=browse&editor=html'),
 (18, 1, 'ofs2616_user-settings-time', '1454771098'),
@@ -3002,7 +3338,7 @@ INSERT INTO `ofs2616_usermeta` (`umeta_id`, `user_id`, `meta_key`, `meta_value`)
 (20, 1, '_woocommerce_persistent_cart', 'a:1:{s:4:"cart";a:0:{}}'),
 (21, 1, 'managenav-menuscolumnshidden', 'a:5:{i:0;s:11:"link-target";i:1;s:11:"css-classes";i:2;s:3:"xfn";i:3;s:11:"description";i:4;s:15:"title-attribute";}'),
 (22, 1, 'metaboxhidden_nav-menus', 'a:6:{i:0;s:30:"woocommerce_endpoints_nav_link";i:1;s:21:"add-post-type-product";i:2;s:12:"add-post_tag";i:3;s:15:"add-post_format";i:4;s:15:"add-product_cat";i:5;s:15:"add-product_tag";}'),
-(23, 1, 'nav_menu_recently_edited', '16'),
+(23, 1, 'nav_menu_recently_edited', '33'),
 (24, 1, 'closedpostboxes_post', 'a:0:{}'),
 (25, 1, 'metaboxhidden_post', 'a:7:{i:0;s:11:"postexcerpt";i:1;s:13:"trackbacksdiv";i:2;s:10:"postcustom";i:3;s:16:"commentstatusdiv";i:4;s:11:"commentsdiv";i:5;s:7:"slugdiv";i:6;s:9:"authordiv";}'),
 (26, 1, 'source_domain', 'localhost'),
@@ -3011,7 +3347,8 @@ INSERT INTO `ofs2616_usermeta` (`umeta_id`, `user_id`, `meta_key`, `meta_value`)
 (29, 1, 'ofs2616_2_user_level', '10'),
 (30, 1, 'ofs2616_2_user-settings', 'libraryContent=browse&editor=html'),
 (31, 1, 'ofs2616_2_user-settings-time', '1454847882'),
-(32, 1, 'ofs2616_2_dashboard_quick_press_last_post_id', '3');
+(32, 1, 'ofs2616_2_dashboard_quick_press_last_post_id', '3'),
+(33, 1, 'session_tokens', 'a:1:{s:64:"fc7948d96c03d715c7fcc6ce09f7c257d7182ffc26d33e9512e0e51e9b4221df";a:4:{s:10:"expiration";i:1457501647;s:2:"ip";s:9:"127.0.0.1";s:2:"ua";s:102:"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36";s:5:"login";i:1456292047;}}');
 
 -- --------------------------------------------------------
 
@@ -3020,7 +3357,7 @@ INSERT INTO `ofs2616_usermeta` (`umeta_id`, `user_id`, `meta_key`, `meta_value`)
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_users` (
-`ID` bigint(20) unsigned NOT NULL,
+  `ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user_login` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `user_pass` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `user_nicename` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
@@ -3031,8 +3368,11 @@ CREATE TABLE IF NOT EXISTS `ofs2616_users` (
   `user_status` int(11) NOT NULL DEFAULT '0',
   `display_name` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `spam` tinyint(2) NOT NULL DEFAULT '0',
-  `deleted` tinyint(2) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `deleted` tinyint(2) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ID`),
+  KEY `user_login_key` (`user_login`),
+  KEY `user_nicename` (`user_nicename`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `ofs2616_users`
@@ -3048,7 +3388,7 @@ INSERT INTO `ofs2616_users` (`ID`, `user_login`, `user_pass`, `user_nicename`, `
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_woocommerce_api_keys` (
-`key_id` bigint(20) NOT NULL,
+  `key_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) NOT NULL,
   `description` longtext COLLATE utf8mb4_unicode_ci,
   `permissions` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -3056,8 +3396,16 @@ CREATE TABLE IF NOT EXISTS `ofs2616_woocommerce_api_keys` (
   `consumer_secret` char(43) COLLATE utf8mb4_unicode_ci NOT NULL,
   `nonces` longtext COLLATE utf8mb4_unicode_ci,
   `truncated_key` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `last_access` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `last_access` datetime DEFAULT NULL,
+  PRIMARY KEY (`key_id`),
+  KEY `consumer_key` (`consumer_key`),
+  KEY `consumer_secret` (`consumer_secret`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `ofs2616_woocommerce_api_keys`
+--
+
 
 -- --------------------------------------------------------
 
@@ -3066,13 +3414,15 @@ CREATE TABLE IF NOT EXISTS `ofs2616_woocommerce_api_keys` (
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_woocommerce_attribute_taxonomies` (
-`attribute_id` bigint(20) NOT NULL,
+  `attribute_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `attribute_name` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute_label` longtext COLLATE utf8mb4_unicode_ci,
   `attribute_type` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute_orderby` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `attribute_public` int(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `attribute_public` int(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`attribute_id`),
+  KEY `attribute_name` (`attribute_name`(191))
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `ofs2616_woocommerce_attribute_taxonomies`
@@ -3088,7 +3438,7 @@ INSERT INTO `ofs2616_woocommerce_attribute_taxonomies` (`attribute_id`, `attribu
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_woocommerce_downloadable_product_permissions` (
-`permission_id` bigint(20) NOT NULL,
+  `permission_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `download_id` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
   `product_id` bigint(20) NOT NULL,
   `order_id` bigint(20) NOT NULL DEFAULT '0',
@@ -3098,8 +3448,16 @@ CREATE TABLE IF NOT EXISTS `ofs2616_woocommerce_downloadable_product_permissions
   `downloads_remaining` varchar(9) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `access_granted` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `access_expires` datetime DEFAULT NULL,
-  `download_count` bigint(20) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `download_count` bigint(20) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`permission_id`),
+  KEY `download_order_key_product` (`product_id`,`order_id`,`order_key`(191),`download_id`),
+  KEY `download_order_product` (`download_id`,`order_id`,`product_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `ofs2616_woocommerce_downloadable_product_permissions`
+--
+
 
 -- --------------------------------------------------------
 
@@ -3108,11 +3466,19 @@ CREATE TABLE IF NOT EXISTS `ofs2616_woocommerce_downloadable_product_permissions
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_woocommerce_order_itemmeta` (
-`meta_id` bigint(20) NOT NULL,
+  `meta_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `order_item_id` bigint(20) NOT NULL,
   `meta_key` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `meta_value` longtext COLLATE utf8mb4_unicode_ci
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `meta_value` longtext COLLATE utf8mb4_unicode_ci,
+  PRIMARY KEY (`meta_id`),
+  KEY `order_item_id` (`order_item_id`),
+  KEY `meta_key` (`meta_key`(191))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `ofs2616_woocommerce_order_itemmeta`
+--
+
 
 -- --------------------------------------------------------
 
@@ -3121,11 +3487,18 @@ CREATE TABLE IF NOT EXISTS `ofs2616_woocommerce_order_itemmeta` (
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_woocommerce_order_items` (
-`order_item_id` bigint(20) NOT NULL,
+  `order_item_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `order_item_name` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `order_item_type` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `order_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `order_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`order_item_id`),
+  KEY `order_id` (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `ofs2616_woocommerce_order_items`
+--
+
 
 -- --------------------------------------------------------
 
@@ -3134,18 +3507,20 @@ CREATE TABLE IF NOT EXISTS `ofs2616_woocommerce_order_items` (
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_woocommerce_sessions` (
-`session_id` bigint(20) NOT NULL,
+  `session_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `session_key` char(32) COLLATE utf8mb4_unicode_ci NOT NULL,
   `session_value` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `session_expiry` bigint(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `session_expiry` bigint(20) NOT NULL,
+  PRIMARY KEY (`session_key`),
+  UNIQUE KEY `session_id` (`session_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `ofs2616_woocommerce_sessions`
 --
 
 INSERT INTO `ofs2616_woocommerce_sessions` (`session_id`, `session_key`, `session_value`, `session_expiry`) VALUES
-(1, '1', 'a:21:{s:4:"cart";s:601:"a:2:{s:32:"c9f0f895fb98ab9159f51fd0297e236d";a:9:{s:10:"product_id";i:8;s:12:"variation_id";i:0;s:9:"variation";a:0:{}s:8:"quantity";i:1;s:10:"line_total";d:4000;s:8:"line_tax";i:0;s:13:"line_subtotal";i:4000;s:17:"line_subtotal_tax";i:0;s:13:"line_tax_data";a:2:{s:5:"total";a:0:{}s:8:"subtotal";a:0:{}}}s:32:"ac627ab1ccbdb62ec96e702f07f6425b";a:9:{s:10:"product_id";i:99;s:12:"variation_id";i:0;s:9:"variation";a:0:{}s:8:"quantity";i:1;s:10:"line_total";d:2;s:8:"line_tax";i:0;s:13:"line_subtotal";i:2;s:17:"line_subtotal_tax";i:0;s:13:"line_tax_data";a:2:{s:5:"total";a:0:{}s:8:"subtotal";a:0:{}}}}";s:15:"applied_coupons";s:6:"a:0:{}";s:23:"coupon_discount_amounts";s:6:"a:0:{}";s:27:"coupon_discount_tax_amounts";s:6:"a:0:{}";s:21:"removed_cart_contents";s:6:"a:0:{}";s:19:"cart_contents_total";d:4002;s:5:"total";d:4002;s:8:"subtotal";i:4002;s:15:"subtotal_ex_tax";i:4002;s:9:"tax_total";i:0;s:5:"taxes";s:6:"a:0:{}";s:14:"shipping_taxes";s:6:"a:0:{}";s:13:"discount_cart";i:0;s:17:"discount_cart_tax";i:0;s:14:"shipping_total";N;s:18:"shipping_tax_total";i:0;s:9:"fee_total";i:0;s:4:"fees";s:6:"a:0:{}";s:20:"shipping_for_package";s:92:"a:2:{s:12:"package_hash";s:40:"wc_ship_e7b58d5719bcc9f920a46e6a93de247a";s:5:"rates";a:0:{}}";s:21:"chosen_payment_method";s:0:"";s:8:"customer";s:383:"a:14:{s:8:"postcode";s:0:"";s:4:"city";s:0:"";s:9:"address_1";s:0:"";s:9:"address_2";s:0:"";s:5:"state";s:2:"00";s:7:"country";s:2:"PH";s:17:"shipping_postcode";s:0:"";s:13:"shipping_city";s:0:"";s:18:"shipping_address_1";s:0:"";s:18:"shipping_address_2";s:0:"";s:14:"shipping_state";s:2:"00";s:16:"shipping_country";s:2:"PH";s:13:"is_vat_exempt";b:0;s:19:"calculated_shipping";b:1;}";}', 1455002988);
+(2, '1', 'a:18:{s:4:"cart";s:6:"a:0:{}";s:15:"applied_coupons";s:6:"a:0:{}";s:23:"coupon_discount_amounts";s:6:"a:0:{}";s:27:"coupon_discount_tax_amounts";s:6:"a:0:{}";s:21:"removed_cart_contents";s:6:"a:0:{}";s:19:"cart_contents_total";i:0;s:5:"total";i:0;s:8:"subtotal";i:0;s:15:"subtotal_ex_tax";i:0;s:9:"tax_total";i:0;s:5:"taxes";s:6:"a:0:{}";s:14:"shipping_taxes";s:6:"a:0:{}";s:13:"discount_cart";i:0;s:17:"discount_cart_tax";i:0;s:14:"shipping_total";i:0;s:18:"shipping_tax_total";i:0;s:9:"fee_total";i:0;s:4:"fees";s:6:"a:0:{}";}', 1456464880);
 
 -- --------------------------------------------------------
 
@@ -3154,7 +3529,7 @@ INSERT INTO `ofs2616_woocommerce_sessions` (`session_id`, `session_key`, `sessio
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_woocommerce_tax_rates` (
-`tax_rate_id` bigint(20) NOT NULL,
+  `tax_rate_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `tax_rate_country` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `tax_rate_state` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `tax_rate` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
@@ -3163,8 +3538,18 @@ CREATE TABLE IF NOT EXISTS `ofs2616_woocommerce_tax_rates` (
   `tax_rate_compound` int(1) NOT NULL DEFAULT '0',
   `tax_rate_shipping` int(1) NOT NULL DEFAULT '1',
   `tax_rate_order` bigint(20) NOT NULL,
-  `tax_rate_class` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `tax_rate_class` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`tax_rate_id`),
+  KEY `tax_rate_country` (`tax_rate_country`(191)),
+  KEY `tax_rate_state` (`tax_rate_state`(191)),
+  KEY `tax_rate_class` (`tax_rate_class`(191)),
+  KEY `tax_rate_priority` (`tax_rate_priority`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `ofs2616_woocommerce_tax_rates`
+--
+
 
 -- --------------------------------------------------------
 
@@ -3173,11 +3558,20 @@ CREATE TABLE IF NOT EXISTS `ofs2616_woocommerce_tax_rates` (
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_woocommerce_tax_rate_locations` (
-`location_id` bigint(20) NOT NULL,
+  `location_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `location_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tax_rate_id` bigint(20) NOT NULL,
-  `location_type` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `location_type` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`location_id`),
+  KEY `tax_rate_id` (`tax_rate_id`),
+  KEY `location_type` (`location_type`),
+  KEY `location_type_code` (`location_type`,`location_code`(90))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `ofs2616_woocommerce_tax_rate_locations`
+--
+
 
 -- --------------------------------------------------------
 
@@ -3186,11 +3580,14 @@ CREATE TABLE IF NOT EXISTS `ofs2616_woocommerce_tax_rate_locations` (
 --
 
 CREATE TABLE IF NOT EXISTS `ofs2616_woocommerce_termmeta` (
-`meta_id` bigint(20) NOT NULL,
+  `meta_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `woocommerce_term_id` bigint(20) NOT NULL,
   `meta_key` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `meta_value` longtext COLLATE utf8mb4_unicode_ci
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `meta_value` longtext COLLATE utf8mb4_unicode_ci,
+  PRIMARY KEY (`meta_id`),
+  KEY `woocommerce_term_id` (`woocommerce_term_id`),
+  KEY `meta_key` (`meta_key`(191))
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=52 ;
 
 --
 -- Dumping data for table `ofs2616_woocommerce_termmeta`
@@ -3200,8 +3597,8 @@ INSERT INTO `ofs2616_woocommerce_termmeta` (`meta_id`, `woocommerce_term_id`, `m
 (1, 6, 'order', '1'),
 (2, 7, 'order', '6'),
 (3, 8, 'order', '9'),
-(4, 7, 'product_count_product_cat', '1'),
-(5, 8, 'product_count_product_cat', '1'),
+(4, 7, 'product_count_product_cat', '14'),
+(5, 8, 'product_count_product_cat', '4'),
 (6, 9, 'order', '7'),
 (7, 9, 'display_type', ''),
 (8, 9, 'thumbnail_id', '0'),
@@ -3223,567 +3620,14 @@ INSERT INTO `ofs2616_woocommerce_termmeta` (`meta_id`, `woocommerce_term_id`, `m
 (24, 15, 'order', '5'),
 (25, 15, 'display_type', ''),
 (26, 15, 'thumbnail_id', '0'),
-(27, 20, 'order', '0'),
-(28, 21, 'order', '0'),
-(29, 22, 'order', '0'),
-(30, 23, 'order', '0'),
-(31, 24, 'order', '0'),
-(32, 25, 'order', '0'),
-(33, 26, 'order', '0'),
-(34, 20, 'product_count_product_cat', '12'),
-(35, 25, 'product_count_product_cat', '6'),
-(36, 21, 'product_count_product_cat', '6'),
-(37, 23, 'product_count_product_cat', '5'),
-(38, 26, 'product_count_product_cat', '4'),
-(39, 22, 'product_count_product_cat', '6'),
-(40, 24, 'product_count_product_cat', '2'),
 (41, 17, 'product_ids', 'a:2:{i:0;s:2:"40";i:1;s:3:"104";}'),
 (42, 18, 'product_ids', 'a:1:{i:0;s:2:"40";}'),
-(43, 19, 'product_ids', 'a:1:{i:0;s:3:"104";}');
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `ofs2616_2_commentmeta`
---
-ALTER TABLE `ofs2616_2_commentmeta`
- ADD PRIMARY KEY (`meta_id`), ADD KEY `comment_id` (`comment_id`), ADD KEY `meta_key` (`meta_key`(191));
-
---
--- Indexes for table `ofs2616_2_comments`
---
-ALTER TABLE `ofs2616_2_comments`
- ADD PRIMARY KEY (`comment_ID`), ADD KEY `comment_post_ID` (`comment_post_ID`), ADD KEY `comment_approved_date_gmt` (`comment_approved`,`comment_date_gmt`), ADD KEY `comment_date_gmt` (`comment_date_gmt`), ADD KEY `comment_parent` (`comment_parent`), ADD KEY `comment_author_email` (`comment_author_email`(10));
-
---
--- Indexes for table `ofs2616_2_links`
---
-ALTER TABLE `ofs2616_2_links`
- ADD PRIMARY KEY (`link_id`), ADD KEY `link_visible` (`link_visible`);
-
---
--- Indexes for table `ofs2616_2_options`
---
-ALTER TABLE `ofs2616_2_options`
- ADD PRIMARY KEY (`option_id`), ADD UNIQUE KEY `option_name` (`option_name`);
-
---
--- Indexes for table `ofs2616_2_postmeta`
---
-ALTER TABLE `ofs2616_2_postmeta`
- ADD PRIMARY KEY (`meta_id`), ADD KEY `post_id` (`post_id`), ADD KEY `meta_key` (`meta_key`(191));
-
---
--- Indexes for table `ofs2616_2_posts`
---
-ALTER TABLE `ofs2616_2_posts`
- ADD PRIMARY KEY (`ID`), ADD KEY `post_name` (`post_name`(191)), ADD KEY `type_status_date` (`post_type`,`post_status`,`post_date`,`ID`), ADD KEY `post_parent` (`post_parent`), ADD KEY `post_author` (`post_author`);
-
---
--- Indexes for table `ofs2616_2_termmeta`
---
-ALTER TABLE `ofs2616_2_termmeta`
- ADD PRIMARY KEY (`meta_id`), ADD KEY `term_id` (`term_id`), ADD KEY `meta_key` (`meta_key`(191));
-
---
--- Indexes for table `ofs2616_2_terms`
---
-ALTER TABLE `ofs2616_2_terms`
- ADD PRIMARY KEY (`term_id`), ADD KEY `slug` (`slug`(191)), ADD KEY `name` (`name`(191));
-
---
--- Indexes for table `ofs2616_2_term_relationships`
---
-ALTER TABLE `ofs2616_2_term_relationships`
- ADD PRIMARY KEY (`object_id`,`term_taxonomy_id`), ADD KEY `term_taxonomy_id` (`term_taxonomy_id`);
-
---
--- Indexes for table `ofs2616_2_term_taxonomy`
---
-ALTER TABLE `ofs2616_2_term_taxonomy`
- ADD PRIMARY KEY (`term_taxonomy_id`), ADD UNIQUE KEY `term_id_taxonomy` (`term_id`,`taxonomy`), ADD KEY `taxonomy` (`taxonomy`);
-
---
--- Indexes for table `ofs2616_2_ufbl_entries`
---
-ALTER TABLE `ofs2616_2_ufbl_entries`
- ADD UNIQUE KEY `entry_id` (`entry_id`);
-
---
--- Indexes for table `ofs2616_2_ufbl_forms`
---
-ALTER TABLE `ofs2616_2_ufbl_forms`
- ADD UNIQUE KEY `form_id` (`form_id`);
-
---
--- Indexes for table `ofs2616_2_woocommerce_api_keys`
---
-ALTER TABLE `ofs2616_2_woocommerce_api_keys`
- ADD PRIMARY KEY (`key_id`), ADD KEY `consumer_key` (`consumer_key`), ADD KEY `consumer_secret` (`consumer_secret`);
-
---
--- Indexes for table `ofs2616_2_woocommerce_attribute_taxonomies`
---
-ALTER TABLE `ofs2616_2_woocommerce_attribute_taxonomies`
- ADD PRIMARY KEY (`attribute_id`), ADD KEY `attribute_name` (`attribute_name`(191));
-
---
--- Indexes for table `ofs2616_2_woocommerce_downloadable_product_permissions`
---
-ALTER TABLE `ofs2616_2_woocommerce_downloadable_product_permissions`
- ADD PRIMARY KEY (`permission_id`), ADD KEY `download_order_key_product` (`product_id`,`order_id`,`order_key`(191),`download_id`), ADD KEY `download_order_product` (`download_id`,`order_id`,`product_id`);
-
---
--- Indexes for table `ofs2616_2_woocommerce_order_itemmeta`
---
-ALTER TABLE `ofs2616_2_woocommerce_order_itemmeta`
- ADD PRIMARY KEY (`meta_id`), ADD KEY `order_item_id` (`order_item_id`), ADD KEY `meta_key` (`meta_key`(191));
-
---
--- Indexes for table `ofs2616_2_woocommerce_order_items`
---
-ALTER TABLE `ofs2616_2_woocommerce_order_items`
- ADD PRIMARY KEY (`order_item_id`), ADD KEY `order_id` (`order_id`);
-
---
--- Indexes for table `ofs2616_2_woocommerce_sessions`
---
-ALTER TABLE `ofs2616_2_woocommerce_sessions`
- ADD PRIMARY KEY (`session_key`), ADD UNIQUE KEY `session_id` (`session_id`);
-
---
--- Indexes for table `ofs2616_2_woocommerce_tax_rates`
---
-ALTER TABLE `ofs2616_2_woocommerce_tax_rates`
- ADD PRIMARY KEY (`tax_rate_id`), ADD KEY `tax_rate_country` (`tax_rate_country`(191)), ADD KEY `tax_rate_state` (`tax_rate_state`(191)), ADD KEY `tax_rate_class` (`tax_rate_class`(191)), ADD KEY `tax_rate_priority` (`tax_rate_priority`);
-
---
--- Indexes for table `ofs2616_2_woocommerce_tax_rate_locations`
---
-ALTER TABLE `ofs2616_2_woocommerce_tax_rate_locations`
- ADD PRIMARY KEY (`location_id`), ADD KEY `tax_rate_id` (`tax_rate_id`), ADD KEY `location_type` (`location_type`), ADD KEY `location_type_code` (`location_type`,`location_code`(90));
-
---
--- Indexes for table `ofs2616_2_woocommerce_termmeta`
---
-ALTER TABLE `ofs2616_2_woocommerce_termmeta`
- ADD PRIMARY KEY (`meta_id`), ADD KEY `woocommerce_term_id` (`woocommerce_term_id`), ADD KEY `meta_key` (`meta_key`(191));
-
---
--- Indexes for table `ofs2616_blogs`
---
-ALTER TABLE `ofs2616_blogs`
- ADD PRIMARY KEY (`blog_id`), ADD KEY `domain` (`domain`(50),`path`(5)), ADD KEY `lang_id` (`lang_id`);
-
---
--- Indexes for table `ofs2616_blog_versions`
---
-ALTER TABLE `ofs2616_blog_versions`
- ADD PRIMARY KEY (`blog_id`), ADD KEY `db_version` (`db_version`);
-
---
--- Indexes for table `ofs2616_commentmeta`
---
-ALTER TABLE `ofs2616_commentmeta`
- ADD PRIMARY KEY (`meta_id`), ADD KEY `comment_id` (`comment_id`), ADD KEY `meta_key` (`meta_key`(191));
-
---
--- Indexes for table `ofs2616_comments`
---
-ALTER TABLE `ofs2616_comments`
- ADD PRIMARY KEY (`comment_ID`), ADD KEY `comment_post_ID` (`comment_post_ID`), ADD KEY `comment_approved_date_gmt` (`comment_approved`,`comment_date_gmt`), ADD KEY `comment_date_gmt` (`comment_date_gmt`), ADD KEY `comment_parent` (`comment_parent`), ADD KEY `comment_author_email` (`comment_author_email`(10));
-
---
--- Indexes for table `ofs2616_links`
---
-ALTER TABLE `ofs2616_links`
- ADD PRIMARY KEY (`link_id`), ADD KEY `link_visible` (`link_visible`);
-
---
--- Indexes for table `ofs2616_options`
---
-ALTER TABLE `ofs2616_options`
- ADD PRIMARY KEY (`option_id`), ADD UNIQUE KEY `option_name` (`option_name`);
-
---
--- Indexes for table `ofs2616_postmeta`
---
-ALTER TABLE `ofs2616_postmeta`
- ADD PRIMARY KEY (`meta_id`), ADD KEY `post_id` (`post_id`), ADD KEY `meta_key` (`meta_key`(191));
-
---
--- Indexes for table `ofs2616_posts`
---
-ALTER TABLE `ofs2616_posts`
- ADD PRIMARY KEY (`ID`), ADD KEY `post_name` (`post_name`(191)), ADD KEY `type_status_date` (`post_type`,`post_status`,`post_date`,`ID`), ADD KEY `post_parent` (`post_parent`), ADD KEY `post_author` (`post_author`);
-
---
--- Indexes for table `ofs2616_registration_log`
---
-ALTER TABLE `ofs2616_registration_log`
- ADD PRIMARY KEY (`ID`), ADD KEY `IP` (`IP`);
-
---
--- Indexes for table `ofs2616_signups`
---
-ALTER TABLE `ofs2616_signups`
- ADD PRIMARY KEY (`signup_id`), ADD KEY `activation_key` (`activation_key`), ADD KEY `user_email` (`user_email`), ADD KEY `user_login_email` (`user_login`,`user_email`), ADD KEY `domain_path` (`domain`(140),`path`(51));
-
---
--- Indexes for table `ofs2616_site`
---
-ALTER TABLE `ofs2616_site`
- ADD PRIMARY KEY (`id`), ADD KEY `domain` (`domain`(140),`path`(51));
-
---
--- Indexes for table `ofs2616_sitemeta`
---
-ALTER TABLE `ofs2616_sitemeta`
- ADD PRIMARY KEY (`meta_id`), ADD KEY `meta_key` (`meta_key`(191)), ADD KEY `site_id` (`site_id`);
-
---
--- Indexes for table `ofs2616_termmeta`
---
-ALTER TABLE `ofs2616_termmeta`
- ADD PRIMARY KEY (`meta_id`), ADD KEY `term_id` (`term_id`), ADD KEY `meta_key` (`meta_key`(191));
-
---
--- Indexes for table `ofs2616_terms`
---
-ALTER TABLE `ofs2616_terms`
- ADD PRIMARY KEY (`term_id`), ADD KEY `slug` (`slug`(191)), ADD KEY `name` (`name`(191));
-
---
--- Indexes for table `ofs2616_term_relationships`
---
-ALTER TABLE `ofs2616_term_relationships`
- ADD PRIMARY KEY (`object_id`,`term_taxonomy_id`), ADD KEY `term_taxonomy_id` (`term_taxonomy_id`);
-
---
--- Indexes for table `ofs2616_term_taxonomy`
---
-ALTER TABLE `ofs2616_term_taxonomy`
- ADD PRIMARY KEY (`term_taxonomy_id`), ADD UNIQUE KEY `term_id_taxonomy` (`term_id`,`taxonomy`), ADD KEY `taxonomy` (`taxonomy`);
-
---
--- Indexes for table `ofs2616_ufbl_entries`
---
-ALTER TABLE `ofs2616_ufbl_entries`
- ADD UNIQUE KEY `entry_id` (`entry_id`);
-
---
--- Indexes for table `ofs2616_ufbl_forms`
---
-ALTER TABLE `ofs2616_ufbl_forms`
- ADD UNIQUE KEY `form_id` (`form_id`);
-
---
--- Indexes for table `ofs2616_usermeta`
---
-ALTER TABLE `ofs2616_usermeta`
- ADD PRIMARY KEY (`umeta_id`), ADD KEY `user_id` (`user_id`), ADD KEY `meta_key` (`meta_key`(191));
-
---
--- Indexes for table `ofs2616_users`
---
-ALTER TABLE `ofs2616_users`
- ADD PRIMARY KEY (`ID`), ADD KEY `user_login_key` (`user_login`), ADD KEY `user_nicename` (`user_nicename`);
-
---
--- Indexes for table `ofs2616_woocommerce_api_keys`
---
-ALTER TABLE `ofs2616_woocommerce_api_keys`
- ADD PRIMARY KEY (`key_id`), ADD KEY `consumer_key` (`consumer_key`), ADD KEY `consumer_secret` (`consumer_secret`);
-
---
--- Indexes for table `ofs2616_woocommerce_attribute_taxonomies`
---
-ALTER TABLE `ofs2616_woocommerce_attribute_taxonomies`
- ADD PRIMARY KEY (`attribute_id`), ADD KEY `attribute_name` (`attribute_name`(191));
-
---
--- Indexes for table `ofs2616_woocommerce_downloadable_product_permissions`
---
-ALTER TABLE `ofs2616_woocommerce_downloadable_product_permissions`
- ADD PRIMARY KEY (`permission_id`), ADD KEY `download_order_key_product` (`product_id`,`order_id`,`order_key`(191),`download_id`), ADD KEY `download_order_product` (`download_id`,`order_id`,`product_id`);
-
---
--- Indexes for table `ofs2616_woocommerce_order_itemmeta`
---
-ALTER TABLE `ofs2616_woocommerce_order_itemmeta`
- ADD PRIMARY KEY (`meta_id`), ADD KEY `order_item_id` (`order_item_id`), ADD KEY `meta_key` (`meta_key`(191));
-
---
--- Indexes for table `ofs2616_woocommerce_order_items`
---
-ALTER TABLE `ofs2616_woocommerce_order_items`
- ADD PRIMARY KEY (`order_item_id`), ADD KEY `order_id` (`order_id`);
-
---
--- Indexes for table `ofs2616_woocommerce_sessions`
---
-ALTER TABLE `ofs2616_woocommerce_sessions`
- ADD PRIMARY KEY (`session_key`), ADD UNIQUE KEY `session_id` (`session_id`);
-
---
--- Indexes for table `ofs2616_woocommerce_tax_rates`
---
-ALTER TABLE `ofs2616_woocommerce_tax_rates`
- ADD PRIMARY KEY (`tax_rate_id`), ADD KEY `tax_rate_country` (`tax_rate_country`(191)), ADD KEY `tax_rate_state` (`tax_rate_state`(191)), ADD KEY `tax_rate_class` (`tax_rate_class`(191)), ADD KEY `tax_rate_priority` (`tax_rate_priority`);
-
---
--- Indexes for table `ofs2616_woocommerce_tax_rate_locations`
---
-ALTER TABLE `ofs2616_woocommerce_tax_rate_locations`
- ADD PRIMARY KEY (`location_id`), ADD KEY `tax_rate_id` (`tax_rate_id`), ADD KEY `location_type` (`location_type`), ADD KEY `location_type_code` (`location_type`,`location_code`(90));
-
---
--- Indexes for table `ofs2616_woocommerce_termmeta`
---
-ALTER TABLE `ofs2616_woocommerce_termmeta`
- ADD PRIMARY KEY (`meta_id`), ADD KEY `woocommerce_term_id` (`woocommerce_term_id`), ADD KEY `meta_key` (`meta_key`(191));
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `ofs2616_2_commentmeta`
---
-ALTER TABLE `ofs2616_2_commentmeta`
-MODIFY `meta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `ofs2616_2_comments`
---
-ALTER TABLE `ofs2616_2_comments`
-MODIFY `comment_ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `ofs2616_2_links`
---
-ALTER TABLE `ofs2616_2_links`
-MODIFY `link_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `ofs2616_2_options`
---
-ALTER TABLE `ofs2616_2_options`
-MODIFY `option_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=264;
---
--- AUTO_INCREMENT for table `ofs2616_2_postmeta`
---
-ALTER TABLE `ofs2616_2_postmeta`
-MODIFY `meta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=36;
---
--- AUTO_INCREMENT for table `ofs2616_2_posts`
---
-ALTER TABLE `ofs2616_2_posts`
-MODIFY `ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
---
--- AUTO_INCREMENT for table `ofs2616_2_termmeta`
---
-ALTER TABLE `ofs2616_2_termmeta`
-MODIFY `meta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `ofs2616_2_terms`
---
-ALTER TABLE `ofs2616_2_terms`
-MODIFY `term_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
---
--- AUTO_INCREMENT for table `ofs2616_2_term_taxonomy`
---
-ALTER TABLE `ofs2616_2_term_taxonomy`
-MODIFY `term_taxonomy_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
---
--- AUTO_INCREMENT for table `ofs2616_2_ufbl_entries`
---
-ALTER TABLE `ofs2616_2_ufbl_entries`
-MODIFY `entry_id` mediumint(9) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `ofs2616_2_ufbl_forms`
---
-ALTER TABLE `ofs2616_2_ufbl_forms`
-MODIFY `form_id` mediumint(9) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `ofs2616_2_woocommerce_api_keys`
---
-ALTER TABLE `ofs2616_2_woocommerce_api_keys`
-MODIFY `key_id` bigint(20) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `ofs2616_2_woocommerce_attribute_taxonomies`
---
-ALTER TABLE `ofs2616_2_woocommerce_attribute_taxonomies`
-MODIFY `attribute_id` bigint(20) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `ofs2616_2_woocommerce_downloadable_product_permissions`
---
-ALTER TABLE `ofs2616_2_woocommerce_downloadable_product_permissions`
-MODIFY `permission_id` bigint(20) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `ofs2616_2_woocommerce_order_itemmeta`
---
-ALTER TABLE `ofs2616_2_woocommerce_order_itemmeta`
-MODIFY `meta_id` bigint(20) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `ofs2616_2_woocommerce_order_items`
---
-ALTER TABLE `ofs2616_2_woocommerce_order_items`
-MODIFY `order_item_id` bigint(20) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `ofs2616_2_woocommerce_sessions`
---
-ALTER TABLE `ofs2616_2_woocommerce_sessions`
-MODIFY `session_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `ofs2616_2_woocommerce_tax_rates`
---
-ALTER TABLE `ofs2616_2_woocommerce_tax_rates`
-MODIFY `tax_rate_id` bigint(20) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `ofs2616_2_woocommerce_tax_rate_locations`
---
-ALTER TABLE `ofs2616_2_woocommerce_tax_rate_locations`
-MODIFY `location_id` bigint(20) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `ofs2616_2_woocommerce_termmeta`
---
-ALTER TABLE `ofs2616_2_woocommerce_termmeta`
-MODIFY `meta_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
---
--- AUTO_INCREMENT for table `ofs2616_blogs`
---
-ALTER TABLE `ofs2616_blogs`
-MODIFY `blog_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `ofs2616_commentmeta`
---
-ALTER TABLE `ofs2616_commentmeta`
-MODIFY `meta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=206;
---
--- AUTO_INCREMENT for table `ofs2616_comments`
---
-ALTER TABLE `ofs2616_comments`
-MODIFY `comment_ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=42;
---
--- AUTO_INCREMENT for table `ofs2616_links`
---
-ALTER TABLE `ofs2616_links`
-MODIFY `link_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `ofs2616_options`
---
-ALTER TABLE `ofs2616_options`
-MODIFY `option_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=506;
---
--- AUTO_INCREMENT for table `ofs2616_postmeta`
---
-ALTER TABLE `ofs2616_postmeta`
-MODIFY `meta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1075;
---
--- AUTO_INCREMENT for table `ofs2616_posts`
---
-ALTER TABLE `ofs2616_posts`
-MODIFY `ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=152;
---
--- AUTO_INCREMENT for table `ofs2616_registration_log`
---
-ALTER TABLE `ofs2616_registration_log`
-MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `ofs2616_signups`
---
-ALTER TABLE `ofs2616_signups`
-MODIFY `signup_id` bigint(20) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `ofs2616_site`
---
-ALTER TABLE `ofs2616_site`
-MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `ofs2616_sitemeta`
---
-ALTER TABLE `ofs2616_sitemeta`
-MODIFY `meta_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=38;
---
--- AUTO_INCREMENT for table `ofs2616_termmeta`
---
-ALTER TABLE `ofs2616_termmeta`
-MODIFY `meta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `ofs2616_terms`
---
-ALTER TABLE `ofs2616_terms`
-MODIFY `term_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=33;
---
--- AUTO_INCREMENT for table `ofs2616_term_taxonomy`
---
-ALTER TABLE `ofs2616_term_taxonomy`
-MODIFY `term_taxonomy_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=33;
---
--- AUTO_INCREMENT for table `ofs2616_ufbl_entries`
---
-ALTER TABLE `ofs2616_ufbl_entries`
-MODIFY `entry_id` mediumint(9) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `ofs2616_ufbl_forms`
---
-ALTER TABLE `ofs2616_ufbl_forms`
-MODIFY `form_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `ofs2616_usermeta`
---
-ALTER TABLE `ofs2616_usermeta`
-MODIFY `umeta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=33;
---
--- AUTO_INCREMENT for table `ofs2616_users`
---
-ALTER TABLE `ofs2616_users`
-MODIFY `ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `ofs2616_woocommerce_api_keys`
---
-ALTER TABLE `ofs2616_woocommerce_api_keys`
-MODIFY `key_id` bigint(20) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `ofs2616_woocommerce_attribute_taxonomies`
---
-ALTER TABLE `ofs2616_woocommerce_attribute_taxonomies`
-MODIFY `attribute_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `ofs2616_woocommerce_downloadable_product_permissions`
---
-ALTER TABLE `ofs2616_woocommerce_downloadable_product_permissions`
-MODIFY `permission_id` bigint(20) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `ofs2616_woocommerce_order_itemmeta`
---
-ALTER TABLE `ofs2616_woocommerce_order_itemmeta`
-MODIFY `meta_id` bigint(20) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `ofs2616_woocommerce_order_items`
---
-ALTER TABLE `ofs2616_woocommerce_order_items`
-MODIFY `order_item_id` bigint(20) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `ofs2616_woocommerce_sessions`
---
-ALTER TABLE `ofs2616_woocommerce_sessions`
-MODIFY `session_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `ofs2616_woocommerce_tax_rates`
---
-ALTER TABLE `ofs2616_woocommerce_tax_rates`
-MODIFY `tax_rate_id` bigint(20) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `ofs2616_woocommerce_tax_rate_locations`
---
-ALTER TABLE `ofs2616_woocommerce_tax_rate_locations`
-MODIFY `location_id` bigint(20) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `ofs2616_woocommerce_termmeta`
---
-ALTER TABLE `ofs2616_woocommerce_termmeta`
-MODIFY `meta_id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=44;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+(43, 19, 'product_ids', 'a:1:{i:0;s:3:"104";}'),
+(44, 9, 'product_count_product_cat', '4'),
+(45, 10, 'product_count_product_cat', '3'),
+(46, 11, 'product_count_product_cat', '3'),
+(47, 6, 'product_count_product_cat', '10'),
+(48, 12, 'product_count_product_cat', '3'),
+(49, 14, 'product_count_product_cat', '3'),
+(50, 13, 'product_count_product_cat', '3'),
+(51, 15, 'product_count_product_cat', '1');
