@@ -20,6 +20,7 @@ article a {
 /* Header BG */
 .site-header {
 	background: url('images/header-bg-combine.jpg') no-repeat 0 0;
+    background-size: 100%;
 }
 .top-header {
     background: rgba(203, 60, 131, 0.23) none repeat scroll 0 0;

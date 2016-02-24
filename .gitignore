@@ -36,3 +36,6 @@ Thumbs.db
 
 # ignore uploaded files
 wp-content/uploads
+
+#Mac generated files
+.DS_Store
