@@ -19,17 +19,19 @@ article a {
 
 /* Header BG */
 .site-header {
-	background: url('images/header-bg-combine.jpg') no-repeat 0 0;
+    /*background: url('images/header-bg-combine.jpg') no-repeat 0 0;*/
+	background: url('images/header-bg-medium.jpg') no-repeat 0 0;
     background-size: 100%;
 }
 .top-header {
-    background: rgba(203, 60, 131, 0.23) none repeat scroll 0 0;
+    /*background: rgba(203, 60, 131, 0.23) none repeat scroll 0 0;*/
+    background: none;
 }
 .social-icons .fa {
     background: #AC0472 none repeat scroll 0 0;
 }
 .social-icons .fa::after {
-    border-top: 10px solid rgb(236, 194, 213) !important;
+    border-top: 10px solid #ffffff !important;
 }
 .social-icons .fa:hover {
 	background: #cb3c83;
@@ -51,7 +53,7 @@ article a {
 }
 .site-branding a.header-image {
     display: inline-block;
-    width: 10%;
+    width: 9%;
     max-width: 90px;
 }
 .site-titles {
@@ -64,32 +66,46 @@ article a {
 .site-branding h1.site-title {
 	color: #ac0472;
     font-family: mistral;
-    font-size: 82px;
+    font-size: 75px;
     font-weight: 100;
     text-transform: capitalize;
-    line-height: 0.8;
+    line-height: 1;
 }
 .site-description {
-	/*color: #AC0472;
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: 12px;*/
     color: #AC0472;
-    font-weight: bold;
+    font-weight: normal;
     text-transform: none;
-    font-size: 17px;
+    font-size: 16px;
     font-family: "Roboto Condensed";
 }
 /** Menu */
 .store-menu {
     background: #cb3c83 none repeat scroll 0 0;
 }
-.main-navigation .current_page_item > a, .main-navigation .current-menu-item > a, .main-navigation .current_page_ancestor > a {
+.main-navigation .current_page_item > a, 
+.main-navigation .current-menu-item > a, 
+.main-navigation .current_page_ancestor > a {
     background: #AC0472;
     color: #fff;
 }
-.nav-menu > li a:hover{
+.main-navigation li {
+    font-size: 14px;
+}
+.main-navigation ul ul.sub-menu li a {
+    font-size: 13px;
+}
+.main-navigation ul ul.sub-menu li {
+    border-bottom: 1px solid #CB3C83;
+}
+.main-navigation ul ul.sub-menu li:hover {
+    border-bottom: 1px solid #CB3C83;
     background: #ba2871;
+
+}
+.main-navigation > ul.nav-menu > li a:hover {
+    color: red;
+}
+.nav-menu > li a:hover{
     color: #fff;
 }
 .main-navigation ul.menu li::before {
@@ -98,10 +114,22 @@ article a {
 .main-navigation li {
 	margin-left: -3px;
 }
+.main-navigation li a {
+    color: #FDCACA;
+}
+.main-navigation ul#primary-menu > li:last-child {
+    /*float: right;*/
+}
 .main-navigation ul ul {
 	background: #ac0472;
 	overflow: hidden;
 }
+
+/* Banner */
+#home-slider img {
+    min-width: 100%;
+}
+
 
 /** Search Box Styling */
 .main-header .fa {
@@ -120,6 +148,19 @@ article a {
 .view-cart:hover .cart-count{
 	border-color: #cb3c83;
 	color: #cb3c83;
+}
+.search-box {
+    background: rgba(203, 65, 133, 0.8) none repeat scroll 0 0;
+}
+.search-in-select select.select-search-type {
+    border: 1px solid #ac0472;
+}
+.search-box .searchform .searchsubmit .fa:hover, 
+.page-content .searchform .searchsubmit .fa:hover {
+    background: #ac0472;
+}
+.close:hover {
+    color: #ac0472;
 }
 
 /* Account Sub Menu */
@@ -140,7 +181,23 @@ article a {
 .welcome-user > h2 {
 	border-bottom: 1px solid #ac0472;
 }
-
+.right-links .form-row.form-row-wide input[type="text"], 
+.right-links .form-row.form-row-wide input[type="password"] {
+    background: #E19EBF;
+    border: 1px solid #F71B88;
+}
+.main-header .right-links .my-account form.login .button, 
+.main-header .right-links .my-account a.register {
+    background: #cb4185;
+    border: none;
+    color: #FFFFFF;
+}
+.main-header .right-links .my-account form.login .button:hover, 
+.main-header .right-links .my-account a.register:hover {
+    border: none;
+    background: #f5d5f0;
+    color: #ac0472; 
+}
 /* Cart Box */
 .main-header .right-links .cart-box .view-cart .sub-menu{
 	background-color: #ac0472;
@@ -157,13 +214,12 @@ article a {
 }
 .view-cart a.remove:hover {
 	background: #f5d5f0;
-	color: #ac0472; 
+	color: #ac0472 !important; 
 }
 .view-cart .btn.quick-checkout {
 	background: #cb4185 none repeat scroll 0 0;
 }
 .view-cart .btn.quick-checkout:hover {
-	background: #007371;
 	background: #f5d5f0;
 	color: #ac0472; 
 }
@@ -271,6 +327,9 @@ div#es-top:hover {
 .woocommerce .widget_price_filter .ui-slider .ui-slider-handle {
     background-color: #AC0472;
 }
+.woocommerce .widget_price_filter .ui-slider .ui-slider-handle:hover {
+    background-color: #CB3C83;
+}
 .woocommerce .widget_price_filter .ui-slider .ui-slider-range {
     background-color: #CB3C83;
 }
@@ -296,6 +355,35 @@ div#es-top:hover {
 .woocommerce #secondary ul li ul.children li {
 	background: #CB3C83;
 }
+.woocommerce .star-rating span::before {
+    color: #AC0472;
+}
+
+/* Catalog Page */
+.item-img, .item-prod-wrap {
+    padding-top: 0;
+}
+
+/* Product page */
+.single-product .woocommerce-review-link {
+    color: #AC0472;
+}
+.single-product .woocommerce-review-link:hover {
+    color: #CB3C83;
+}
+.woocommerce .woocommerce-tabs ul.tabs.wc-tabs li.active a, .woocommerce .woocommerce-tabs ul.tabs.wc-tabs li:hover a {
+    background-color: #CB3C83;
+    border: 1px solid #CB3C83;
+}
+.product_meta {
+    clear: both;
+}
+.woocommerce .summary.entry-summary table.variations tr td a:hover,
+.woocommerce .product_meta .posted_in a:hover, 
+.woocommerce .product_meta .tagged_as a:hover {
+    color: #AC0472;
+}
+
 
 
 /** Sidebar title */
@@ -370,7 +458,8 @@ div#es-top:hover {
 	border-bottom: 1px solid #AC0472 !important;
 }
 
-/** Blogs and Testimonialssam */
+/** Blogs and Testimonials */
+#primary .entry-header h1.entry-title a:hover,
 .blog-comment a:hover,
 .testimonial-content > span a:hover {
     color: #AC0472;
@@ -379,13 +468,14 @@ div#es-top:hover {
 .single .entry-footer a, 
 .single .entry-footer span, 
 .search .entry-footer span.edit-link a,
-.comment-list a {
+.comment-list .comment-metadata a {
     color: #CB3C83;
 }
+.blog-author:hover,
 .entry-meta a:hover,
 .single .entry-footer a:hover, 
 .search .entry-footer span.edit-link a:hover,
-.comment-list a:hover {
+.comment-list .comment-metadata a:hover {
 	color: #AC0472;
 }
 .nav-previous a, .nav-next a {
@@ -411,6 +501,18 @@ a.comment-reply-link:hover,
 }
 h3.comment-reply-title {
     background-color: #949494;
+}
+.read-more, 
+.read-more:visited,
+.archive .entry-footer a {
+    color: #CB3C83;
+}
+.read-more:hover,
+.archive .entry-footer a:hover{
+    color: #AC0472;
+}
+.archive .comments-link {
+    border-left: 1px solid #AC0472;
 }
 
 
