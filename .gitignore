@@ -35,7 +35,7 @@ Thumbs.db
 *.zip
 
 # ignore uploaded files
-wp-content/uploads
+# wp-content/uploads
 
 #Mac generated files
 .DS_Store

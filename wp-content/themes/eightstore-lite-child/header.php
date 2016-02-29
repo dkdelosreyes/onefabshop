@@ -48,7 +48,9 @@
 						<?php
 					}
 					?>
-					<?php eightstore_ticker_header_customizer(); ?>
+					<!-- <a href="#"> -->
+						<?php eightstore_ticker_header_customizer(); ?>
+					<!-- </a> -->
 					<div class="header-callto">
 						<?php
 						//call to section
