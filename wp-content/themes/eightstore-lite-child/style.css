@@ -561,18 +561,26 @@ h3.comment-reply-title {
 
     /* NAVIGATION */
     .main-navigation .menu {
-        background: rgba(172, 4, 114, 0.81) !important;
+        background: rgba(203, 65, 133, 0.8) !important;
     }
     .main-navigation li {
         border-bottom: 1px solid #AC0472 !important;
     }
     .main-navigation.toggled .current_page_item > a, .main-navigation .current-menu-item > a {
-            background: transparent;
+        background: transparent;
     }
     .main-navigation ul ul {
-        background: rgba(172, 4, 114, 0.66);
+        background: rgba(203, 65, 133, 0.8);
         overflow: hidden;
     }
+    button.menu-toggle:hover {
+        color: #ffffff !important;
+    }
+    .main-navigation.toggled button.menu-toggle:hover::after {
+        color: #ffffff !important;
+    }
+
+    /* FOOTER */
 }
 
 
