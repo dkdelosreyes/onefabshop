@@ -526,6 +526,17 @@ h3.comment-reply-title {
     border-left: 1px solid #AC0472;
 }
 
+/* MY ACCOUNTS */
+.track-button {
+    height: 30px !important;
+}
+.track-button img {
+    height: 30px !important;
+}
+.order-actions a:nth-child(2){
+    float: right;
+}
+
 
 @media(min-width:768px) and (max-width:991px){
 
