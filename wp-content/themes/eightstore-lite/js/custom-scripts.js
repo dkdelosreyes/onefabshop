@@ -115,7 +115,11 @@ jQuery(document).ready(function($) {
 	});
 
 	$('.cat-parent').hover(function(){
-		$(this).children('ul.children').slideToggle(500);
+		$(this).children('ul.children').stop().slideToggle(500);
 	});
+	
+	$('.cat-parent>a').click(function(e){
+		e.preventDefault();
+	})
 	
 });//document.ready close
