@@ -13,8 +13,21 @@
 
 
 /** Generics*/
+html,body {
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden; 
+}
+
 article a {
     color: #AC0472;
+}
+
+/* TOP HEADER */
+.top-ticker .slick-track,
+.top-ticker .slick-slide {
+    width: 100% !important;
 }
 
 /* Header BG */
@@ -405,17 +418,6 @@ div#es-top:hover {
 #primary h1.entry-title:after, #secondary h1.widget-title:after, .page-title:after {
     border-top: 20px solid #AC0472;
 }
-
-/** Cart */
-/*.shipping-calculator-button:hover {
-    background: #F2D1EC none repeat scroll 0 0;
-    color: #ac0472
-}*/
-
-/*.woocommerce-cart a.remove:hover{
-	background: #f5d5f0 none repeat scroll 0 0;
-	color: #AC0472 !important;
-}*/
 .woocommerce-cart .product-remove a.remove{
 	background: #CB3C83 none repeat scroll 0 0;
 }
@@ -537,7 +539,35 @@ h3.comment-reply-title {
     float: right;
 }
 
+/*  WIDGETS */
+#secondary ul li a:hover {
+    color: #ac0472;
+}
 
+/* FOR TAB AND PHONE ==================================================================================== */
+@media(max-width: 991px) {
+    .main-navigation .menu {
+        background: rgba(203, 65, 133, 0.8) !important;
+    }
+    .main-navigation li {
+        border-bottom: 1px solid #AC0472 !important;
+    }
+    .main-navigation.toggled .current_page_item > a, .main-navigation .current-menu-item > a {
+        background: transparent;
+    }
+    .main-navigation ul ul {
+        background: rgba(203, 65, 133, 0.8);
+        overflow: hidden;
+    }
+    button.menu-toggle:hover {
+        color: #ffffff !important;
+    }
+    .main-navigation.toggled button.menu-toggle:hover::after {
+        color: #ffffff !important;
+    }
+}
+
+/* FOR TAB ==================================================================================== */
 @media(min-width:768px) and (max-width:991px){
 
     /* TOP HEADER */
@@ -570,31 +600,90 @@ h3.comment-reply-title {
         width: 20%;
     }
 
-    /* NAVIGATION */
-    .main-navigation .menu {
-        background: rgba(203, 65, 133, 0.8) !important;
+    /* MY ACCOUNTS */
+    .track-button {
+        float: left !important;
     }
-    .main-navigation li {
-        border-bottom: 1px solid #AC0472 !important;
-    }
-    .main-navigation.toggled .current_page_item > a, .main-navigation .current-menu-item > a {
-        background: transparent;
-    }
-    .main-navigation ul ul {
-        background: rgba(203, 65, 133, 0.8);
-        overflow: hidden;
-    }
-    button.menu-toggle:hover {
-        color: #ffffff !important;
-    }
-    .main-navigation.toggled button.menu-toggle:hover::after {
-        color: #ffffff !important;
-    }
-
-    /* FOOTER */
 }
 
+/* FOR PHONE ==================================================================================== */
+@media(max-width:767px){
+    /* TOP HEADER */
+    .top-header {
+        background: rgba(203, 60, 131, 0.1);
+    }
+    .top-ticker {
+        margin: 0 !important;
+    }
+    .ticker-title {
+        font-size: 12px !important;
+    }
+    h5.ticker_tick {
+        font-size: 12px !important;
+    }
+    .header-callto {
+        display: none;
+    }
 
+    /* HEADER */
+    .main-header {
+        padding-top: 10px;
+    }
+    .site-header {
+        background-size: cover;
+    }
+    .site-branding a.header-image {
+        width: 23%;
+        margin-right: 5px;
+    }
+    .site-branding a.header-image img {
+        max-width: 69px;
+    }
+    .site-titles {
+        width: 74%;
+    }
+    .site-branding h1.site-title {
+        font-size: 36px;
+    }
+    .site-description {
+        font-size: 12px;
+    }
+    .right-links {
+        text-align: center !important;
+    }
+
+    /* RIGHT LINKS */
+    .welcome-user {
+        width: 225px;
+        margin-right: 50px;
+        font-size: 12px;
+    }
+    .main-header .right-links .cart-box .view-cart:hover .sub-menu {
+        font-size: 12px;
+        margin-right: 78px;
+    }
+
+    /* BLOG */
+    .hentry {
+        padding: 0 10px;
+    }
+
+    /* MY ACCOUNTS */
+    .track-button {
+        float: left !important;
+    }
+    .woocommerce table.my_account_orders tr td.order-actions::before{
+        display: none !important;
+    }
+    .woocommerce table.shop_table.customer_details {
+        font-size: 11px !important;
+    }
+
+    /* CART */
+    .shipping-calculator-button {
+        font-size: 9px;
+    }
+}
 
 
 
