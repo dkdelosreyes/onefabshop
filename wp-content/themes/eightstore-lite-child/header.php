@@ -14,7 +14,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="profile" href="http://gmpg.org/xfn/11">
 	<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>">
-
+	<!-- <link href='https://fonts.googleapis.com/css?family=Alex+Brush|Yellowtail|Leckerli+One|Lobster|Pacifico|Qwigley|Mountains+of+Christmas:400,700' rel='stylesheet' type='text/css'> -->
+	<link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
 	<?php wp_head(); ?>
 </head>
 

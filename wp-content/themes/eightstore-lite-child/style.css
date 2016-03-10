@@ -87,9 +87,10 @@ article a {
 }
 .site-branding h1.site-title {
 	color: #ac0472;
-    font-family: mistral;
-    font-size: 75px;
-    font-weight: 100;
+    /*font-family: mistral;*/
+    font-family: 'Pacifico', cursive;
+    font-size: 60px;
+    font-weight: lighter;
     text-transform: capitalize;
     line-height: 1;
 }
@@ -591,7 +592,7 @@ h3.comment-reply-title {
         width: 12%;
     }
     .site-branding h1.site-title {
-        font-size: 60px;
+        font-size: 50px;
     }
     .site-description {
         font-size: 13px;
@@ -643,7 +644,7 @@ h3.comment-reply-title {
         width: 74%;
     }
     .site-branding h1.site-title {
-        font-size: 36px;
+        font-size: 30px;
     }
     .site-description {
         font-size: 12px;
