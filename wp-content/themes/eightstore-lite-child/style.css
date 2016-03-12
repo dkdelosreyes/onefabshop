@@ -40,8 +40,20 @@ article a {
     /*background: rgba(203, 60, 131, 0.23) none repeat scroll 0 0;*/
     background: none;
 }
+a.store-switcher:hover {
+    opacity: .75; 
+}
+.store-country-flag {
+    width: 25px;
+    margin-bottom: -2px;
+}
+#ticker {
+    display: none;
+}
 .ticker-title {
     background: rgba(0, 0, 0, 0) url("images/latest-mid-bg.png") ;
+    line-height: 32px;
+    font-size: 12px;
 }
 .ticker-title::before {
     background: rgba(0, 0, 0, 0) url("images/latest-before-bg.png") no-repeat scroll 0 0;
@@ -86,16 +98,15 @@ article a {
     text-align: right;
 }
 .site-branding h1.site-title {
-	color: #ac0472;
-    /*font-family: mistral;*/
-    font-family: 'Pacifico', cursive;
+	color: #cb3c83;
+    font-family: 'Dancing Script', cursive;
     font-size: 60px;
     font-weight: lighter;
     text-transform: capitalize;
     line-height: 1;
 }
 .site-description {
-    color: #AC0472;
+    color: #CB3C83;
     font-weight: normal;
     text-transform: none;
     font-size: 16px;
