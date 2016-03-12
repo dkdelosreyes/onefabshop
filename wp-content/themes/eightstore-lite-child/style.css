@@ -159,6 +159,13 @@ a.store-switcher:hover {
 	overflow: hidden;
 }
 
+.store-menu.store-menu-sticky {
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    width: 100%;
+}
+
 /* Banner */
 #home-slider img {
     min-width: 100%;
