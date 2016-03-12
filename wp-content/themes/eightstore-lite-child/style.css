@@ -308,6 +308,16 @@ a.store-switcher:hover {
 .title-cart a:hover{
 	color: #ac0472;
 }
+.woocommerce a.added_to_cart:before, 
+.home a.added_to_cart:before {
+    background: #CB3C83 none repeat scroll 0 0;
+}
+.woocommerce a.added_to_cart, .home a.added_to_cart{
+    background: url(images/view-cart-icon.jpg) no-repeat;
+}
+.woocommerce a.added_to_cart::after, .home a.added_to_cart::after {
+    border-top: 7px solid #CB3C83 ;
+}
 
 /** Promotional section  */
 #section-below-slider .block-large .block-title,

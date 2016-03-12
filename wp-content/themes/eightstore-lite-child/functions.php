@@ -33,7 +33,7 @@ function eightstore_ticker_header_customizer_custom(){
 							$loop->the_post();
 							$i++;
 							?>
-							<a class="store-switcher" href="<?php echo get_post_permalink();?>">
+							<a class="store-switcher" href="<?php echo get_field('redirect_url');?>">
 							<div class="top-ticker">
 								<script>
 									jQuery(document).ready(function($){

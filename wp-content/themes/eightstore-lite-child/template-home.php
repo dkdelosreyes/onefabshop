@@ -161,7 +161,9 @@ get_header(); ?>
 
 				<section class="blogs" data-wow-delay="0.8s">
 					<div class="ed-container">
-						<h2 class="home-title wow flipInX"><b><?php echo esc_attr(get_theme_mod('eightstore_blog_title')); ?></b></h2><div class="title-border"></div>
+						<!-- <h2 class="home-title wow flipInX"><b><?php //echo esc_attr(get_theme_mod('eightstore_blog_title')); ?></b></h2> -->
+						<h2 class="home-title wow flipInX"><b>Our Blogs</b></h2>
+						<div class="title-border"></div>
 						<div class="blog-wrap wow fadeInRight clearfix">
 							<?php
 							$blog_args      =   array('cat'=>$wl_blog_cat, 'post_status'=>'publish', 'posts_per_page'=>-1);
@@ -224,7 +226,9 @@ get_header(); ?>
 
 				<section class="testimonials" data-wow-delay="0.8s">
 					<div class="ed-container">
-						<h2 class="home-title wow flipInX"><b><?php echo esc_attr(get_theme_mod('eightstore_testimonial_title')); ?></b></h2><div class="title-border"></div>
+						<!-- <h2 class="home-title wow flipInX"><b><?php //echo esc_attr(get_theme_mod('eightstore_testimonial_title')); ?></b></h2> -->
+						<h2 class="home-title wow flipInX"><b>Our Testimonials</b></h2>
+						<div class="title-border"></div>
 						<div class="testimonial-wrap wow fadeInRight clearfix">
 							<?php
 							$testimonial_args      =   array('cat'=>$wl_testimonial_cat, 'post_status'=>'publish', 'posts_per_page'=>-1);
