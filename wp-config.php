@@ -88,6 +88,7 @@ define('DOMAIN_CURRENT_SITE', 'localhost');
 define('PATH_CURRENT_SITE', '/onefabshop/');
 define('SITE_ID_CURRENT_SITE', 1);
 define('BLOG_ID_CURRENT_SITE', 1);
+define('FS_METHOD','direct'); /* remove in production mode */
 
 /* That's all, stop editing! Happy blogging. */
 

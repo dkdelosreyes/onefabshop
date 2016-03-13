@@ -29,12 +29,39 @@ article a {
 .top-ticker .slick-slide {
     width: 100% !important;
 }
+a.top-contact {
+    display: inline-block;
+    text-align: center;
+    line-height: .9;
+}
+a.top-phone {
+    width: 140px;
+}
+a.top-phone-uae {
+    width: 195px;
+}
+a.top-mail {
+    width: 227px;
+}
+a.top-contact span.caption {
+    font-size: 11px;
+    padding-left: 22px;
+}
+a.top-phone-uae span.caption {
+    padding-left: 0;
+}
+.es-social-header {
+    float: right;
+}
 
 /* Header BG */
 .site-header {
     /*background: url('images/header-bg-combine.jpg') no-repeat 0 0;*/
 	background: url('images/header-bg-medium.jpg') no-repeat 0 0;
     background-size: 100%;
+}
+.site-content {
+    margin-bottom: 50px;
 }
 .top-header {
     /*background: rgba(203, 60, 131, 0.23) none repeat scroll 0 0;*/
@@ -481,6 +508,85 @@ div#es-top:hover {
 .woocommerce input.button.alt:hover {
     background-color: #AC0472;
 }
+.price_label {
+    font-size: 12px;
+}
+
+/** Sidebar filters - added support for AE filters */
+.woocommerce #woocommerce_layered_nav-4 .widget-title::before,
+.woocommerce #woocommerce_layered_nav-9 .widget-title::before{
+    background: url(images/hanger.jpg) no-repeat;
+    content: "";
+    width: 23px;
+    height: 20px;
+    position: absolute;
+    left: 0;
+}
+.woocommerce #woocommerce_layered_nav-5 .widget-title,
+.woocommerce #woocommerce_layered_nav-9 .widget-title,
+.woocommerce #woocommerce_layered_nav-10 .widget-title{
+    position: relative;
+    padding-left: 35px;
+}
+.woocommerce #secondary #woocommerce_layered_nav-9 ul li,
+.woocommerce #secondary #woocommerce_layered_nav-10 ul li  {
+    display: inline-block;
+}
+.woocommerce #secondary #woocommerce_layered_nav-8 ul li span, 
+.woocommerce #secondary #woocommerce_layered_nav-9 ul li span,
+.woocommerce #secondary #woocommerce_layered_nav-10 ul li span{
+    display: none;
+}
+.woocommerce #secondary #woocommerce_layered_nav-9 ul li a,
+.woocommerce #secondary #woocommerce_layered_nav-10 ul li a,
+#woocommerce_layered_nav-8.woocommerce ul li a {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    padding: 0;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    background-color: #d9d9dd;
+    color: #323c3f;
+    border-radius: 3px;
+    margin: 0 10px 10px 0;
+    transition: all ease 0.3s;
+    -webkit-transition: all ease 0.3s;
+    -moz-transition: all ease 0.3s;
+}
+.woocommerce #woocommerce_layered_nav-5 .widget-title::before, 
+.woocommerce #woocommerce_layered_nav-10 .widget-title::before {
+    background: url(images/shop.png) no-repeat;
+    content: "";
+    width: 23px;
+    height: 24px;
+    position: absolute;
+    left: 0;
+}
+.woocommerce #secondary #woocommerce_layered_nav-3 ul li {
+    margin-right: 0;
+    margin-bottom: 0;
+}
+.woocommerce #woocommerce_layered_nav-8 .widget-title::before {
+    content: "";
+    font-family: fontawesome;
+    font-size: 20px;
+    margin-right: 10px;
+}
+#woocommerce_layered_nav-8.woocommerce ul li{
+    display: inline-block;
+}
+#woocommerce_layered_nav-8.woocommerce ul li a{
+    padding: 0;
+}
+#woocommerce_layered_nav-8.woocommerce ul li a{
+    padding: 10px 20px;
+    line-height: 20px;
+    width: auto;
+    height: auto;
+}
 
 /** Checkout */
 .woocommerce .woocommerce-error, 
@@ -601,14 +707,45 @@ h3.comment-reply-title {
 
     /* TOP HEADER */
     .top-header {
-        padding: 0 10px 0 !important;
+        padding: 0 5px 0 !important;
     }
     .top-ticker {
-        width: 235px;
+        width: auto;
         margin-left: 0px !important;
         font-size: 14px;
     }
     ul#ticker {
+        display: none;
+    }
+    .header-callto {
+        float: right;
+    }
+    .header-callto > a {
+        font-size: 14px;
+    }
+    a.top-contact {
+        display: inline-block;
+        text-align: center;
+        line-height: .9;
+    }
+    a.top-phone {
+        width: 121px;
+    }
+    a.top-phone-uae {
+        width: 185px;
+    }
+    a.top-mail {
+        width: 191px;
+    }
+    a.top-contact span.caption {
+        font-size: 10px;
+        padding-left: 13px;
+    }
+    a.top-phone-uae span.caption {
+        font-size: 10px;
+        padding-left: 0;
+    }
+    .es-social-header {
         display: none;
     }
 
