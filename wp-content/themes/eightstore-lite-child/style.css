@@ -139,6 +139,21 @@ a.store-switcher:hover {
     font-size: 16px;
     font-family: "Roboto Condensed";
 }
+/** Banner */
+.es-slider .slick-prev,
+.es-slider .slick-next,
+.banner-caption {
+    top: 25%;
+}
+.banner-caption {
+    width: 25%;
+}
+.caption-title p {
+    font-size: 30px;
+}
+.caption-title p.other-all {
+    font-size: 45px;
+}
 /** Menu */
 .store-menu {
     background: #cb3c83 none repeat scroll 0 0;
@@ -679,6 +694,23 @@ h3.comment-reply-title {
     color: #ac0472;
 }
 
+/* CONTACT */
+.contact-form-button {
+    padding: 15px !important;
+    box-shadow: none !important;
+    border: none !important;
+    font-size: 16px !important;
+    text-shadow: none !important;
+    background: #CB3C83 !important;
+    color: #fff !important;
+    width: 100px !important;
+    transition: all ease 0.3s !important;
+    -webkit-transition: all ease 0.3s !important;
+}
+.contact-form-button:hover {
+    background: #AC0472 !important;
+}
+
 /* FOR TAB AND PHONE ==================================================================================== */
 @media(max-width: 991px) {
     .main-navigation .menu {
@@ -816,6 +848,12 @@ h3.comment-reply-title {
     }
     .right-links {
         text-align: center !important;
+    }
+
+    /* BANNER */
+    .es-slider .slick-prev, 
+    .es-slider .slick-next {
+        height: 67px !important;
     }
 
     /* RIGHT LINKS */
