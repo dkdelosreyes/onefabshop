@@ -343,6 +343,8 @@ class WC_Gateway_BACS extends WC_Payment_Gateway {
 		// Remove cart
 		WC()->cart->empty_cart();
 
+		$order->add_order_note( $this->description, 1 );
+
 		// Return thankyou redirect
 		return array(
 			'result'    => 'success',

@@ -16,7 +16,8 @@ class WC_Custom_Payment_Gateway_2 extends WC_Payment_Gateway {
         $this->id             = 'wcCpg2';
         $this->icon           = apply_filters( 'woocommerce_wcCpg2_icon', '' );
         $this->has_fields     = false;
-        $this->method_title   = __( 'Custom Payment Gateways 2', 'wcwcCpg2' );
+        $this->method_title   = __( 'LBC', 'wcwcCpg2' );
+        // $this->method_title   = __( 'Custom Payment Gateways 2', 'wcwcCpg2' );
 
         // Load the form fields.
         $this->init_form_fields();
@@ -36,7 +37,9 @@ class WC_Custom_Payment_Gateway_2 extends WC_Payment_Gateway {
         else
             add_action( 'woocommerce_update_options_payment_gateways', array( &$this, 'process_admin_options' ) );
 
-
+        add_action( 'woocommerce_thankyou_wcCpg2', array( $this, 'thankyou_page' ) );
+        // Customer Emails
+        add_action( 'woocommerce_email_before_order_table', array( $this, 'email_instructions' ), 10, 3 );
     }
 
 
@@ -64,7 +67,8 @@ class WC_Custom_Payment_Gateway_2 extends WC_Payment_Gateway {
             'enabled' => array(
                 'title' => __( 'Enable/Disable', 'wcwcCpg2' ),
                 'type' => 'checkbox',
-                'label' => __( 'Enable Custom Payment Gateways 2', 'wcwcCpg2' ),
+                'label' => __( 'LBC', 'wcwcCpg2' ),
+                // 'label' => __( 'Enable Custom Payment Gateways 2', 'wcwcCpg2' ),
                 'default' => 'no'
             ),
             'title' => array(
@@ -72,7 +76,8 @@ class WC_Custom_Payment_Gateway_2 extends WC_Payment_Gateway {
                 'type' => 'text',
                 'description' => __( 'This controls the title which the user sees during checkout.', 'wcwcCpg2' ),
                 'desc_tip' => true,
-                'default' => __( 'Custom Payment Gateways 2', 'wcwcCpg2' )
+                'default' => __( 'LBC', 'wcwcCpg2' )
+                // 'default' => __( 'Custom Payment Gateways 2', 'wcwcCpg2' )
             ),
             'description' => array(
                 'title' => __( 'Description', 'wcwcCpg2' ),
@@ -118,19 +123,34 @@ class WC_Custom_Payment_Gateway_2 extends WC_Payment_Gateway {
 		// Remove cart
 		$woocommerce->cart->empty_cart();
 
+        $order->add_order_note( $this->instructions, 1 );
+
 		// Return thankyou redirect
 		return array(
 			'result' 	=> 'success',
-			'redirect'	=> add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink(woocommerce_get_page_id('thanks'))))
+            'redirect'  => $this->get_return_url( $order )
 		);
 	}
 
 
     /* Output for the order received page.   */
-	function thankyou() {
-		echo $this->instructions != '' ? wpautop( $this->instructions ) : '';
-	}
+	public function thankyou_page() {
+        if ( $this->instructions )
+            echo wpautop( wptexturize( $this->instructions ) );
+    }
 
-
+    /**
+     * Add content to the WC emails.
+     *
+     * @access public
+     * @param WC_Order $order
+     * @param bool $sent_to_admin
+     * @param bool $plain_text
+     */
+    public function email_instructions( $order, $sent_to_admin, $plain_text = false ) {
+        if ( $this->instructions && ! $sent_to_admin && 'wcCpg2' === $order->payment_method && $order->has_status( 'on-hold' ) ) {
+            echo wpautop( wptexturize( $this->instructions ) ) . PHP_EOL;
+        }
+    }
 
 }
