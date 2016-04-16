@@ -456,6 +456,9 @@ div#es-top:hover {
 .item-img, .item-prod-wrap {
     padding-top: 0;
 }
+span.onsale {
+    display: none;
+}
 
 /* Product page */
 .single-product .woocommerce-review-link {
