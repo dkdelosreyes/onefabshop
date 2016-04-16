@@ -1,6 +1,6 @@
 jQuery(document).ready(function() {
 
-	jQuery('.item-prod-wrap').matchHeight({
+	jQuery('.item-prod-wrap .item-img').matchHeight({
 	    property: 'min-height'
 	});
 
