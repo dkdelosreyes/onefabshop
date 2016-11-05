@@ -16,7 +16,7 @@ jQuery(document).ready(function() {
 
 	jQuery('.cat-parent').hover(function(){
 		// comment out the overriden function of this in parent theme after theme updates
-		jQuery(this).children('ul.children').stop().slideToggle(500);
+		// jQuery(this).children('ul.children').stop().slideToggle(500);
 	});
 	
 	jQuery('.cat-parent>a').click(function(e){

@@ -5,9 +5,9 @@
  *
  * @package 8Store Lite
  */
-add_action('widgets_init', 'register_cta_simple_widget');
+add_action('widgets_init', 'eightstore_lite_register_cta_simple_widget');
 
-function register_cta_simple_widget() {
+function eightstore_lite_register_cta_simple_widget() {
     register_widget('eightstore_lite_cta_simple');
 }
 

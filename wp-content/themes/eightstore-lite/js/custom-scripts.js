@@ -69,7 +69,6 @@ jQuery(document).ready(function($) {
 		speed: 300,
 		slidesToShow: 3,
 		slidesToScroll: 1,
-		initialSlide: 3,
 		responsive: [
 		{
 			breakpoint: 600,
@@ -114,8 +113,9 @@ jQuery(document).ready(function($) {
 		'transitionOut'	: 'none',
 	});
 
-	$('.cat-parent').hover(function(){
-		// $(this).children('ul.children').slideToggle(500);
+	
+	$('.cat-parent').hover(function() {
+		$(this).children('ul.children').stop(true, false, true).slideToggle(300);
 	});
 	
 });//document.ready close

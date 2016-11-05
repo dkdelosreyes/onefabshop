@@ -5,9 +5,9 @@
  *
  * @package 8Store Lite
  */
-add_action('widgets_init', 'register_promo_widget');
+add_action('widgets_init', 'eightstore_lite_register_promo_widget');
 
-function register_promo_widget() {
+function eightstore_lite_register_promo_widget() {
     register_widget('eightstore_lite_promo');
 }
 
@@ -64,8 +64,8 @@ class Eightstore_lite_promo extends WP_Widget {
             
             );
 
-return $fields;
-}
+        return $fields;
+    }
 
     /**
      * Front-end display of widget.
@@ -77,7 +77,7 @@ return $fields;
      */
     public function widget($args, $instance) {
         extract($args);
-
+        if($instance==null){return false;}
         $promo_title = $instance['promo_title'];
         $promo = $instance['promo_image'];
         if(isset($instance['promo_btn_text'])){
@@ -91,12 +91,12 @@ return $fields;
         echo $before_widget; ?>
         <div class="promo-widget-wrap">
             <a href="<?php echo  $promo_link?> ">
+                <?php
+                if (!empty($promo)){ ?>
                 <div class="promo-image">
-                    <?php
-                    if (!empty($promo)){ ?>
                     <img src = "<?php echo $promo; ?>" />
-                    <?php } ?>
                 </div>
+                <?php } ?>
                 <div class="caption">
                     <?php
                     if (!empty($promo_title)){ ?>

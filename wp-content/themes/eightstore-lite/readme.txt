@@ -51,6 +51,61 @@ Images
     License Url : https://creativecommons.org/publicdomain/zero/1.0/
 
 == Changelog ==
+= 1.0.74 =
+** Design Issue fixed for promo widget in sidebars.
+
+= 1.0.73 =
+** Minor Design Fixes
+** Promotion moved in a panel 
+
+= 1.0.72 =
+** Removed Outdated woocommerce files.
+
+= 1.0.71 =
+**Product name overlap fix on category widget
+**widget prefixings updated
+
+= 1.0.70 =
+**Sale Flash Fix in details and slider pages
+**Add to cart icon fix on all pages
+
+= 1.0.69 =
+**Wishlist plugin support for catalog pages.
+
+= 1.0.67 =
+**Woocommerce New Version 2.6.1 compatible shop page layouts.
+**Major Css and Responsive Fixes
+
+= 1.0.66 =
+**Woocommerce New Version 2.6 compatible shop page layouts.
+**Major Css and Responsive Fixes for product listing and detail pages
+
+= 1.0.65 =
+**Out of stock products Icon Fixes
+**Minor Css Fixes
+
+= 1.0.64 =
+**Css Bug Fixes
+
+= 1.0.63 =
+**Product detail page button overlap fix
+**Search sidebar fix
+
+= 1.0.62 =
+**Fixes for variant product icons
+**Fixed Logo Overflow issue.
+**Fixed Category Number double line issue
+
+= 1.0.61 =
+**Fixes for boxed layout responsive css
+
+= 1.0.60 =
+**Fixes for translations with updated .pot file
+
+= 1.0.59 =
+**Added link to post on slider image and custom button link on content designed
+**Fixed Minor bugs related to product slider when less number of slides in it.
+
 = 1.0.58 =
 **Fixed Minor bugs.
 

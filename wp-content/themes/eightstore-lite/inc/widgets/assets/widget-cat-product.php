@@ -6,9 +6,9 @@
 * @package 8Store Lite
 */
 if(is_woocommerce_available()):
-  add_action('widgets_init', 'register_cat_product_widget');
+  add_action('widgets_init', 'eightstore_lite_register_cat_product_widget');
 
-  function register_cat_product_widget(){ //functions start from here
+  function eightstore_lite_register_cat_product_widget(){ //functions start from here
     register_widget('eightstore_lite_cat_product');
   }
 
@@ -116,7 +116,7 @@ if(is_woocommerce_available()):
                   }
                   else{ 
                     ?>
-                    <img src="<?php echo get_template_directory_uri().'../images/dummy-cat.jpg'?>"/>
+                    <img src="<?php echo get_template_directory_uri().'/images/dummy-cat.jpg'?>"/>
                     <?php 
                   } ?>
                   <div class="product-cat-desc">

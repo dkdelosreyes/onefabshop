@@ -73,7 +73,7 @@
 							<a href="javascript:void(0)"><i class="fa fa-search"></i></a>
 							<div class="search-box">
 								<div class="close"> &times; </div>
-								<?php get_search_form(); ?>
+								<?php get_template_part('searchform-header'); ?>
 							</div>
 						</div> <!--  search-form-->
 						<?php } ?>
@@ -85,9 +85,9 @@
 								//if user is logged in
 								if(is_user_logged_in()){
 									global $current_user;
-									get_currentuserinfo();
+									wp_get_current_user();
 									?>
-									<?php _e('Welcome ', 'eightstore-lite');?>
+									<?php _e('Welcome', 'eightstore-lite')." ";?>
 									<a href="<?php echo esc_url(get_permalink( get_option('woocommerce_myaccount_page_id') )); ?>">
 										<span class="user-name">
 											<?php echo $current_user->display_name; ?>

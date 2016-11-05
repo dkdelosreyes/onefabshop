@@ -41,28 +41,24 @@
 					<?php
 					if(get_theme_mod('footer_copyright_text') && get_theme_mod('footer_copyright_text')!=""){
 						echo wp_kses_post(get_theme_mod('footer_copyright_text'));
-					} else {
-						?>
-						<a href="<?php echo 'http://wordpress.org/'; ?>"><?php printf( esc_html__( 'Proudly powered by %s', 'eightstore-lite' ), 'WordPress' ); ?></a>
-						<span class="sep"> | </span>
-						<?php printf( esc_html__( 'Theme: %1$s by %2$s.', 'eightstore-lite' ), '8store Lite', '<a href="http://8degreethemes.com" rel="designer">8DegreeThemes</a>' );
-					}
-					?>
+					}?>
+					<?php _e( 'WordPress Theme : ', 'eightstore-lite' );  ?><a  title="<?php echo __('Free WordPress Theme','eightstore-lite');?>" href="<?php echo esc_url( __( 'https://8degreethemes.com/wordpress-themes/eightstore-lite/', 'eightstore-lite' ) ); ?>"><?php _e( 'EightStore Lite', 'eightstore-lite' ); ?> </a>
+					<span><?php echo __(' by 8Degree Themes','eightstore-lite');?></span>
 				</div><!-- .site-info -->
 
 				<!-- Social Icons -->
 				<?php if(get_theme_mod('social_icons_in_footer') && get_theme_mod('social_icons_in_footer')!='0'){ ?>
-				<div class="es-social-footer">
-					<?php do_action('eightstore_lite_social_links'); ?>
-				</div>
-				<?php } ?>
+					<div class="es-social-footer">
+						<?php do_action('eightstore_lite_social_links'); ?>
+					</div>
+					<?php } ?>
 
-				<!-- Payment Partner Logos -->
-				<?php do_action('eightstore_lite_payment_partner_logos');?>
+					<!-- Payment Partner Logos -->
+					<?php do_action('eightstore_lite_payment_partner_logos');?>
+				</div>
 			</div>
 		</div>
-	</div>
-</footer><!-- #colophon -->
+	</footer><!-- #colophon -->
 </div><!-- #page -->
 <div id="es-top"></div>
 <?php wp_footer(); ?>

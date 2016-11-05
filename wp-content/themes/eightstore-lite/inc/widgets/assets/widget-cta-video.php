@@ -5,9 +5,9 @@
  *
  * @package 8Store Lite
  */
-add_action('widgets_init', 'register_cta_video_widget');
+add_action('widgets_init', 'eightstore_lite_register_cta_video_widget');
 
-function register_cta_video_widget() {
+function eightstore_lite_register_cta_video_widget() {
     register_widget('eightstore_lite_cta_video');
 }
 
@@ -51,19 +51,7 @@ class Eightstore_lite_cta_video extends WP_Widget {
                 'eightstore_lite_widgets_title' => __('Video Iframe Url only without tags', 'eightstore-lite'),
                 'eightstore_lite_widgets_field_type' => 'iframe_textarea',
                 'eightstore_lite_widgets_row' => '4'
-                )
-            // 'cta_video_website' => array(
-            //     'eightstore_lite_widgets_name' => 'cta_video_btn_text',
-            //     'eightstore_lite_widgets_title' => __('Button Text', 'eightstore-lite'),
-            //     'eightstore_lite_widgets_field_type' => 'text',
-            //     ),
-            // 'cta_video_address' => array(
-            //     'eightstore_lite_widgets_name' => 'cta_video_btn_url',
-            //     'eightstore_lite_widgets_title' => __('Button Url', 'eightstore-lite'),
-            //     'eightstore_lite_widgets_field_type' => 'text'
-
-            //     )
-            
+                )            
             );
 
 return $fields;
