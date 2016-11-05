@@ -479,6 +479,8 @@ div#es-top:hover {
 .item-img, .item-prod-wrap {
     padding-top: 0;
 }
+.woocommerce span.onsale, 
+.woocommerce ul.products li.product .onsale,
 span.onsale {
     display: none;
 }
@@ -504,6 +506,9 @@ span.onsale {
 }
 .woocommerce div.product form.cart .variations select {
     width: auto;
+}
+.single.woocommerce span.onsale {
+    background: #cb3c83 none repeat scroll 0 0 !important;
 }
 
 
