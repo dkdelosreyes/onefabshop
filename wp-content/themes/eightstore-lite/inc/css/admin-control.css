@@ -104,7 +104,7 @@ label.row-element.more-detail{
 }
 
 .customize-text_editor_desc a {
-  background-color: #C85759;
+  background-color: #fecf52;
   padding: 5px;
   color: #fff;
   border-radius: 5px;
@@ -116,11 +116,11 @@ label.row-element.more-detail{
 }
 .customize-text_editor_desc a:hover {
   background-color: #fff;
-  color: #C85759;
+  color: #0bb1af;
 }
 .customize-text_editor_desc span {
   background-color: #fff;
-  color: #C85759;
+  color: #0bb1af;
   padding: 5px;
   margin: 5px 0;
   display: inline-block;

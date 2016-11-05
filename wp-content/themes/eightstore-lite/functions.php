@@ -334,3 +334,7 @@ require get_template_directory() . '/css/config-styles.php';
  * Load Custom Plugin Suggestion
  */
 require get_template_directory() . '/inc/eightstore-tgm.php';
+/**
+ * Load support Information
+ */
+require get_template_directory() . '/inc/eightstore-themeinfo.php';

@@ -17,7 +17,7 @@ get_header( 'shop' ); ?>
 <?php
 if(get_theme_mod('eightstore_shop_slider')=="1"){
 //load slider
-	do_action('es_homepage_slider');
+	do_action('eightstore_lite_homepage_slider');
 }
 ?>
 <?php

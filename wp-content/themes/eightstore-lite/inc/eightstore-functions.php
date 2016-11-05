@@ -7,22 +7,6 @@
 /**
  * My Functions
  */
-//adding custom scripts and styles in header for favicon and other
-function eightstore_lite_header_scripts(){
-	//Custom CSS CODE
-	$custom_css = get_theme_mod('eightstore_lite_custom_tools_css');
-	if(!empty($custom_css)){
-		echo "<style type='text/css' media='all'>";
-		echo $custom_css;
-		echo "</style>\n";
-	}
-		//custom js
-	$custom_js = get_theme_mod('eightstore_lite_custom_tools_js');
-	if(!empty($custom_js)){
-		echo '<script type="text/javascript">'.$custom_js.'</script>';
-	}
-}
-add_action('wp_head','eightstore_lite_header_scripts');
 
 //adding class to body boxed/full-width
 function eightstore_lite_bodyclass($classes){
@@ -190,15 +174,23 @@ function eightstore_lite_homepage_slider_content(){
 				$image = wp_get_attachment_image_src( get_post_thumbnail_id( get_the_ID() ), 'full', false );
 				?>
 				<div class="slides">
-					<img src="<?php echo esc_url($image[0]); ?>" alt="<?php the_title_attribute(); ?>" />
+					<a href="<?php the_permalink();?>">
+						<img src="<?php echo esc_url($image[0]); ?>" alt="<?php the_title_attribute(); ?>" />
+					</a>
 					<?php 
 					$display_captions = get_theme_mod('display_captions','1');
 					if(($display_captions!=0)){$display_captions=1;}
 					if($display_captions == 1): ?>
 					<div class="banner-caption">
 						<div class="caption-wrapper">
-							<div class="caption-title"><?php eightstore_lite_get_title(get_the_title()); ?></div>
-							<div class="caption-desc"><?php echo eightstore_lite_excerpt(get_the_content(),100,'...',true,true); ?></div>
+							<div class="caption-title">
+								<a href="<?php the_permalink();?>">
+									<?php eightstore_lite_get_title(get_the_title()); ?>
+								</a>
+							</div>
+							<div class="caption-desc">
+								<?php echo eightstore_lite_excerpt(get_the_content(),100,'...',true,true); ?>
+							</div>
 						</div>
 					</div>
 					<?php  
@@ -631,13 +623,6 @@ if(is_woocommerce_available()):
 		array(
 			'name'      => '8Degree Coming Soon Page',
 			'slug'      => '8-degree-coming-soon-page',
-			'required'  => false,		
-			'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-			'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
-			),
-		array(
-			'name'      => '8Degree Notification Bar',
-			'slug'      => '8-degree-notification-bar',
 			'required'  => false,		
 			'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
 			'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.

@@ -809,7 +809,7 @@ function eightstore_lite_custom_customize_register( $wp_customize ) {
 
 	$wp_customize->add_setting('wc_product_number_rows',array(
 		'default' => '4',
-		'sanitize_callback' => 'eightstore_lite_eightstore_lite_sanitize_integer_product_rows'
+		'sanitize_callback' => 'eightstore_lite_sanitize_integer_product_rows'
 		));
 
 	$wp_customize->add_control('wc_product_number_rows',array(

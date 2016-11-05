@@ -6,9 +6,9 @@
 * @package 8Store Lite
 */
 if(is_woocommerce_available()):
-  add_action('widgets_init', 'register_product_widget');
+  add_action('widgets_init', 'eightstore_lite_register_product_widget');
 
-function register_product_widget(){
+function eightstore_lite_register_product_widget(){
   register_widget('eightstore_lite_product');
 }
 
