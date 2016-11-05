@@ -1,16 +1,16 @@
 <?php
 /*
 Plugin Name: Custom Permalinks
-Plugin URI: http://atastypixel.com/blog/wordpress/plugins/custom-permalinks/
+Plugin URI: https://wordpress.org/plugins/custom-permalinks/
 Donate link: http://atastypixel.com/blog/wordpress/plugins/custom-permalinks/
 Description: Set custom permalinks on a per-post basis
-Version: 0.7.21
+Version: 0.8
 Author: Michael Tyson
 Author URI: http://atastypixel.com/blog
 Text Domain: custom-permalinks
 */
 
-/*  Copyright 2008-2015 Michael Tyson <michael@atastypixel.com>
+/*  Copyright 2008-2016 Michael Tyson <michael@atastypixel.com> and Sami Ahmed Siddiqui <sami@samisiddiqui.com>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -92,7 +92,6 @@ function custom_permalinks_term_link($permalink, $term) {
  * @since 0.1
  */
 function custom_permalinks_redirect() {
-  
   // Get request URI, strip parameters
   $url = parse_url(get_bloginfo('url')); 
   $url = isset($url['path']) ? $url['path'] : '';
@@ -105,7 +104,7 @@ function custom_permalinks_redirect() {
   $original_permalink = '';
 
   // If the post/tag/category we're on has a custom permalink, get it and check against the request
-  if ( is_single() || is_page() ) {
+  if ( (is_single() || is_page()) && !empty($wp_query->post) ) {
     $post = $wp_query->post;
     $custom_permalink = get_post_meta( $post->ID, 'custom_permalink', true );
     $original_permalink = ( $post->post_type == 'page' ? custom_permalinks_original_page_link( $post->ID ) : custom_permalinks_original_post_link( $post->ID ) );
@@ -162,20 +161,19 @@ function custom_permalinks_request($query) {
   if ( !$request ) return $query;
   
   // Queries are now WP3.9 compatible (by Steve from Sowmedia.nl)
-    $sql = $wpdb->prepare("SELECT $wpdb->posts.ID, $wpdb->postmeta.meta_value, $wpdb->posts.post_type FROM $wpdb->posts  ".
-              "LEFT JOIN $wpdb->postmeta ON ($wpdb->posts.ID = $wpdb->postmeta.post_id) WHERE ".
-              "  meta_key = 'custom_permalink' AND ".
-              "  meta_value != '' AND ".
-              "  ( LOWER(meta_value) = LEFT(LOWER('%s'), LENGTH(meta_value)) OR ".
-              "    LOWER(meta_value) = LEFT(LOWER('%s'), LENGTH(meta_value)) ) ".
-              "  AND post_status != 'trash' AND post_type != 'nav_menu_item'".
-              " ORDER BY LENGTH(meta_value) DESC, ".
-              " FIELD(post_status,'publish','private','draft','auto-draft','inherit'),".
-              " FIELD(post_type,'post','page'),".
-              "$wpdb->posts.ID ASC  LIMIT 1",
-      $request_noslash,
-      $request_noslash."/"
-        );
+  $sql = $wpdb->prepare("SELECT $wpdb->posts.ID, $wpdb->postmeta.meta_value, $wpdb->posts.post_type, $wpdb->posts.post_status FROM $wpdb->posts  ".
+            "LEFT JOIN $wpdb->postmeta ON ($wpdb->posts.ID = $wpdb->postmeta.post_id) WHERE ".
+            "  meta_key = 'custom_permalink' AND ".
+            "  meta_value != '' AND ".
+            "  ( LOWER(meta_value) = LEFT(LOWER('%s'), LENGTH(meta_value)) OR ".
+            "    LOWER(meta_value) = LEFT(LOWER('%s'), LENGTH(meta_value)) ) ".
+            "  AND post_status != 'trash' AND post_type != 'nav_menu_item'".
+            " ORDER BY LENGTH(meta_value) DESC, ".
+            " FIELD(post_status,'publish','private','draft','auto-draft','inherit'),".
+            " FIELD(post_type,'post','page'),".
+            "$wpdb->posts.ID ASC  LIMIT 1",
+    $request_noslash,
+    $request_noslash."/");
 
   $posts = $wpdb->get_results($sql);
 
@@ -185,12 +183,20 @@ function custom_permalinks_request($query) {
     // Preserve this url for later if it's the same as the permalink (no extra stuff)
     if ( $request_noslash == trim($posts[0]->meta_value,'/') ) 
       $_CPRegisteredURL = $request;
-        
-    $originalUrl =  preg_replace( '@/+@', '/', str_replace( trim( strtolower($posts[0]->meta_value),'/' ),
-                  ( $posts[0]->post_type == 'page' ? 
-                      custom_permalinks_original_page_link($posts[0]->ID) 
-                      : custom_permalinks_original_post_link($posts[0]->ID) ),
-                   strtolower($request_noslash) ) );
+    
+    if ( $posts[0]->post_status == 'draft' ) {
+      if( $posts[0]->post_type == 'page' ) {
+        $originalUrl = "?page_id=" . $posts[0]->ID;
+      } else {
+        $originalUrl = "?post_type=".$posts[0]->post_type."&p=" . $posts[0]->ID;
+      }
+    } else {
+      $originalUrl =  preg_replace( '@/+@', '/', str_replace( trim( strtolower($posts[0]->meta_value),'/' ),
+                    ( $posts[0]->post_type == 'page' ? 
+                        custom_permalinks_original_page_link($posts[0]->ID) 
+                        : custom_permalinks_original_post_link($posts[0]->ID) ),
+                     strtolower($request_noslash) ) );
+    }
   }
 
   if ( $originalUrl === NULL ) {
@@ -274,8 +280,12 @@ function custom_permalinks_trailingslash($string, $type) {
   if ( !trim($request) ) return $string;
 
   if ( trim($_CPRegisteredURL,'/') == trim($request,'/') ) {
-    return ($string{0} == '/' ? '/' : '') . trailingslashit($url['path']) . $_CPRegisteredURL;
-  }
+		if( isset($url['path']) ){
+			return ($string{0} == '/' ? '/' : '') . trailingslashit($url['path']) . $_CPRegisteredURL;
+		}else{
+			return ($string{0} == '/' ? '/' : '') . $_CPRegisteredURL;
+		}
+	}
   return $string;
 }
 
@@ -291,8 +301,8 @@ function custom_permalinks_trailingslash($string, $type) {
  * @since 0.6
  */
 function custom_permalink_get_sample_permalink_html($html, $id, $new_title, $new_slug) {
-    $permalink = get_post_meta( $id, 'custom_permalink', true );
-  $post = &get_post($id);
+  $permalink = get_post_meta( $id, 'custom_permalink', true );
+  $post = get_post($id);
   
   ob_start();
   ?>
@@ -378,15 +388,19 @@ function custom_permalinks_page_options() {
  * @since 0.1
  */
 function custom_permalinks_term_options($object) {
-  $permalink = custom_permalinks_permalink_for_term($object->term_id);
+  if ( is_object($object) && isset($object->term_id) ) {
+    $permalink = custom_permalinks_permalink_for_term($object->term_id);
   
-  if ( $object->term_id ) {
+    if ( $object->term_id ) {
       $originalPermalink = ($object->taxonomy == 'post_tag' ? 
                     custom_permalinks_original_tag_link($object->term_id) :
                     custom_permalinks_original_category_link($object->term_id) );
     }
-      
-  custom_permalinks_form($permalink, $originalPermalink);
+
+    custom_permalinks_form($permalink, $originalPermalink);
+  } else {
+    custom_permalinks_form('');
+  }
 
   // Move the save button to above this form
   wp_enqueue_script('jquery');
@@ -675,10 +689,16 @@ function custom_permalinks_admin_rows() {
 function custom_permalinks_original_post_link($post_id) {
   remove_filter( 'post_link', 'custom_permalinks_post_link', 'edit_files', 2 ); // original hook
   remove_filter( 'post_type_link', 'custom_permalinks_post_link', 'edit_files', 2 );
-  $originalPermalink = ltrim(str_replace(home_url(), '', get_permalink( $post_id )), '/');
+  
+  require_once ABSPATH . '/wp-admin/includes/post.php';
+  list( $permalink, $post_name ) = get_sample_permalink( $post_id );
+  $permalink = str_replace(array('%pagename%','%postname%'), $post_name, $permalink);
+  $permalink = ltrim(str_replace(home_url(), '', $permalink), '/');
+  
   add_filter( 'post_link', 'custom_permalinks_post_link', 'edit_files', 2 ); // original hook
   add_filter( 'post_type_link', 'custom_permalinks_post_link', 'edit_files', 2 );
-  return $originalPermalink;
+  
+  return $permalink;
 }
 
 /**
@@ -688,12 +708,17 @@ function custom_permalinks_original_post_link($post_id) {
  * @since 0.4
  */
 function custom_permalinks_original_page_link($post_id) {
-  remove_filter( 'page_link', 'custom_permalinks_page_link', 'edit_files', 2 );
-  remove_filter( 'user_trailingslashit', 'custom_permalinks_trailingslash', 'edit_files', 2 );
-  $originalPermalink = ltrim(str_replace(home_url(), '', get_permalink( $post_id )), '/');
-  add_filter( 'user_trailingslashit', 'custom_permalinks_trailingslash', 'edit_files', 2 );
-  add_filter( 'page_link', 'custom_permalinks_page_link', 'edit_files', 2 );
-  return $originalPermalink;
+    remove_filter( 'page_link', 'custom_permalinks_page_link', 'edit_files', 2 );
+    remove_filter( 'user_trailingslashit', 'custom_permalinks_trailingslash', 'edit_files', 2 );
+    
+    require_once ABSPATH . '/wp-admin/includes/post.php';
+    list( $permalink, $post_name ) = get_sample_permalink( $post_id );
+    $permalink = str_replace(array('%pagename%','%postname%'), $post_name, $permalink);
+    $permalink = ltrim(str_replace(home_url(), '', $permalink), '/');
+    
+    add_filter( 'user_trailingslashit', 'custom_permalinks_trailingslash', 'edit_files', 2 );
+    add_filter( 'page_link', 'custom_permalinks_page_link', 'edit_files', 2 );
+    return $permalink;
 }
 
 

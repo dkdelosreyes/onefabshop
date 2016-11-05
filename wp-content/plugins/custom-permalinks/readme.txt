@@ -1,10 +1,13 @@
 === Custom Permalinks ===
 
+Contributors: michaeltyson, sasiddiqui
 Donate link: http://atastypixel.com/blog/wordpress/plugins/custom-permalinks/
-Tags: permalink, url, link, address, custom, redirect
+Tags: permalink, url, link, address, custom, redirect, custom post type
 Requires at least: 2.6
-Tested up to: 4.1
-Stable tag: 0.7.21
+Tested up to: 4.6
+Stable tag: 0.8
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Set custom permalinks on a per-post, per-tag or per-category basis.
 
@@ -28,6 +31,39 @@ within that category.
 3. Edit any post, page, tag or category to set a custom permalink.
 
 == Changelog ==
+
+= 0.8 =
+
+ * Fixed (Draft preview issue for custom post types + some PHP Warnings)
+
+= 0.7.28 =
+
+ * Fixed draft preview issue(posts + pages)
+
+= 0.7.27 =
+
+ * Fixed Loop Redirecting issue
+
+= 0.7.26 =
+
+ * Fixed PHP Notice issue
+
+= 0.7.25 =
+
+ * Fixed draft preview issue
+
+= 0.7.24 =
+
+ * Fixed a problem with page URLs
+
+= 0.7.23 =
+
+  * Fixed a problem with permalinks with "/" components
+  
+= 0.7.22 =
+
+  * Fixed PHP warning
+  * Fixed initial permalink display for new posts/pages
 
 = 0.7.21 =
 
