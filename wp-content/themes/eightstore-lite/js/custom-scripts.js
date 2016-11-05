@@ -115,7 +115,7 @@ jQuery(document).ready(function($) {
 
 	
 	$('.cat-parent').hover(function() {
-		// $(this).children('ul.children').stop(true, false, true).slideToggle(300);
+		$(this).children('ul.children').stop(true, false, true).slideToggle(300);
 	});
 	
 });//document.ready close
