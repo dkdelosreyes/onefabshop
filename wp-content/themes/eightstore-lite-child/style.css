@@ -766,6 +766,11 @@ h3.comment-reply-title {
 }
 
 /* FOR TAB ==================================================================================== */
+@media screen and (max-width: 1096px){
+    .header-callto {
+        width: 75% !important; 
+    }
+}
 @media(min-width:768px) and (max-width:991px){
 
     /* TOP HEADER */
@@ -790,6 +795,7 @@ h3.comment-reply-title {
         display: inline-block;
         text-align: center;
         line-height: .9;
+        font-size: 13px !important;
     }
     a.top-phone {
         width: 121px;
